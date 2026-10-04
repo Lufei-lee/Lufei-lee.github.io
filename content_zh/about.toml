@@ -1,0 +1,22 @@
+type = "about"
+title = "关于"
+
+[profile]
+research_interests = [
+  "动态暗能量",
+  "宇宙大尺度结构",
+  "宇宙学模拟器",
+  "科学机器学习"
+]
+
+[[sections]]
+id = "about"
+type = "markdown"
+source = "bio.md"
+title = "关于我"
+
+[[sections]]
+id = "news"
+type = "list"
+title = "正在进行"
+source = "news.toml"

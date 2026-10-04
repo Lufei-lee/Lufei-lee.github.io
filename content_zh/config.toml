@@ -1,0 +1,36 @@
+[site]
+title = "Lufei · 宇宙学"
+description = "Lufei 的宇宙学研究主页：暗能量、宇宙大尺度结构、数值模拟与科学机器学习。"
+last_updated = "2026年10月"
+
+[author]
+name = "Lufei"
+title = "宇宙学研究"
+institution = "暗能量 · 大尺度结构 · 科学机器学习"
+
+[social]
+github = "https://github.com/Lufei-lee"
+
+[[navigation]]
+title = "关于"
+type = "page"
+target = "about"
+href = "/"
+
+[[navigation]]
+title = "研究"
+type = "page"
+target = "research"
+href = "/research"
+
+[[navigation]]
+title = "研究档案"
+type = "page"
+target = "cv"
+href = "/cv"
+
+[[navigation]]
+title = "留言"
+type = "section"
+target = "guestbook"
+href = "/#guestbook"

@@ -1,0 +1,55 @@
+[site]
+title = "Lufei · Cosmology"
+description = "Lufei 的宇宙学研究主页：暗能量、宇宙大尺度结构、数值模拟与科学机器学习。"
+favicon = "/favicon.svg"
+last_updated = "2026年10月"
+
+[author]
+name = "Lufei"
+title = "Cosmology Research"
+institution = "Dark Energy · LSS · Scientific ML"
+avatar = "/cosmic-web-hero.png"
+
+[social]
+github = "https://github.com/Lufei-lee"
+
+[features]
+enable_likes = false
+enable_one_page_mode = true
+
+[i18n]
+enabled = true
+locales = ["zh", "en"]
+default_locale = "zh"
+mode = "auto"
+fixed_locale = "zh"
+persist = true
+switcher = true
+
+[i18n.labels]
+zh = "中文"
+en = "English"
+
+[[navigation]]
+title = "关于"
+type = "page"
+target = "about"
+href = "/"
+
+[[navigation]]
+title = "研究"
+type = "page"
+target = "research"
+href = "/research"
+
+[[navigation]]
+title = "研究档案"
+type = "page"
+target = "cv"
+href = "/cv"
+
+[[navigation]]
+title = "留言"
+type = "section"
+target = "guestbook"
+href = "/#guestbook"
