@@ -19,7 +19,7 @@ export default function Guestbook() {
     script.src = 'https://giscus.app/client.js';
     script.async = true;
     script.crossOrigin = 'anonymous';
-    script.setAttribute('data-repo', 'Lufei-lee/Lufei-lee.github.io');
+    script.setAttribute('data-repo', 'luffy-cosmology/luffy-cosmology.github.io');
     script.setAttribute('data-repo-id', 'R_kgDOU7LLLw');
     script.setAttribute('data-category', 'Announcements');
     script.setAttribute('data-category-id', 'DIC_kwDOU7LLL84DHAbn');
@@ -61,7 +61,7 @@ export default function Guestbook() {
             </p>
           </div>
           <a
-            href="https://github.com/Lufei-lee/Lufei-lee.github.io/discussions/1"
+            href="https://github.com/luffy-cosmology/luffy-cosmology.github.io/discussions/1"
             target="_blank"
             rel="noreferrer"
             className="mt-5 inline-flex shrink-0 items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-2.5 text-sm font-medium text-cyan-100 transition hover:border-cyan-200/60 hover:bg-cyan-300/15 sm:mt-0"
