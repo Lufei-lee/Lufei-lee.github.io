@@ -43,7 +43,7 @@ const copy = {
   zh: {
     about: '关于',
     intro: [
-      '你好，我是 Lufei。我的兴趣集中在宇宙学、引力与宇宙大尺度结构，并关注理论预测如何与数值计算和观测数据相互连接。',
+      '你好，我是 Lufei。我的兴趣集中在宇宙学、宇宙大尺度结构、暗物质与暗能量，以及机器学习，并关注这些方向如何通过理论、计算与观测相互连接。',
       '这个主页用于整理我的研究兴趣、学术经历与公开笔记。随着内容完善，我会在这里补充论文、报告和其他可以公开的材料。',
     ],
     interests: '研究兴趣',
@@ -60,7 +60,7 @@ const copy = {
   en: {
     about: 'About',
     intro: [
-      'Hello, I am Lufei. My interests center on cosmology, gravity, and the large-scale structure of the Universe, with particular attention to the links between theory, numerical calculation, and observation.',
+      'Hello, I am Lufei. My interests center on cosmology, large-scale structure, dark matter and dark energy, and machine learning, with particular attention to how theory, computation, and observation connect these fields.',
       'This website collects my research interests, academic background, and public notes. Papers, talks, and other materials will be added as they are ready to share.',
     ],
     interests: 'Research Interests',

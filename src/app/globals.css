@@ -270,9 +270,14 @@ html.light .academic-frame {
 .topic-header > p { color: var(--accent); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
 .topic-header h1 { margin-top: 0.75rem; color: var(--primary); font-family: var(--font-serif); font-size: clamp(2.6rem, 6vw, 4.8rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
 .topic-header > div { margin-top: 1.35rem; color: var(--neutral-600); font-size: clamp(1.04rem, 2vw, 1.25rem); line-height: 1.75; }
+.topic-artwork { position: relative; margin-top: 2.5rem; overflow: hidden; border: 1px solid var(--neutral-200); border-radius: 1.1rem; background: #071222; box-shadow: 0 24px 70px rgb(2 8 23 / 0.2); }
+.topic-artwork img { display: block; width: 100%; height: clamp(280px, 48vw, 560px); object-fit: cover; }
+.topic-artwork::after { position: absolute; inset: 0 0 3.1rem; pointer-events: none; background: linear-gradient(180deg, transparent 62%, rgb(2 8 23 / 0.2)); content: ''; }
+.topic-artwork figcaption { position: relative; z-index: 1; min-height: 3.1rem; border-top: 1px solid rgb(255 255 255 / 0.1); padding: 0.9rem 1.1rem; color: #cbd5e1; background: #0b1728; font-size: 0.85rem; line-height: 1.5; }
 .topic-figure { margin-top: 2.5rem; overflow: hidden; border: 1px solid var(--neutral-200); border-radius: 1rem; background: var(--neutral-50); }
 .topic-figure svg { display: block; width: 100%; min-height: 240px; }
 .topic-figure figcaption { border-top: 1px solid var(--neutral-200); padding: 0.85rem 1.1rem; color: var(--neutral-500); font-size: 0.83rem; line-height: 1.5; }
+.topic-diagram-figure { margin-top: 1.25rem; }
 .topic-grid { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
 .topic-prose { border: 1px solid var(--neutral-200); border-radius: 0.9rem; padding: 1.45rem; background: var(--neutral-50); }
 .topic-prose h2 { display: flex; align-items: center; gap: 0.6rem; color: var(--primary); font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; }

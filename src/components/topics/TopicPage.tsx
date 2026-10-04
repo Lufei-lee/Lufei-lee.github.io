@@ -2,6 +2,7 @@
 
 import { ArrowLeft, BookOpen, CircleDot, Telescope } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useLocaleStore } from '@/lib/stores/localeStore';
 
 export type TopicKey = 'cosmology' | 'large-scale-structure' | 'dark-sector' | 'machine-learning';
@@ -100,6 +101,37 @@ const topics: Record<TopicKey, { en: TopicCopy; zh: TopicCopy }> = {
   },
 };
 
+const topicArtwork: Record<TopicKey, { src: string; en: string; zh: string; captionEn: string; captionZh: string }> = {
+  cosmology: {
+    src: '/topics/cosmology.webp',
+    en: 'A panoramic scientific visualization of the evolving Universe, from an early glow to the cosmic web and mature galaxies',
+    zh: '从早期余辉、宇宙网到成熟星系的宇宙演化全景科学视觉图',
+    captionEn: 'An editorial visualization connecting the early Universe, the cosmic web, and the galaxies we observe today.',
+    captionZh: '连接早期宇宙、宇宙网与今日可观测星系的科学视觉图。',
+  },
+  'large-scale-structure': {
+    src: '/topics/large-scale-structure.webp',
+    en: 'A scientific visualization of dense cosmic-web nodes, fine filaments, and large empty voids',
+    zh: '由致密节点、细丝状结构和巨大空洞组成的宇宙网科学视觉图',
+    captionEn: 'A simulation-inspired view of the cosmic web, where matter gathers along filaments around underdense voids.',
+    captionZh: '受数值模拟启发的宇宙网视图：物质沿纤维聚集，包围低密度空洞。',
+  },
+  'dark-sector': {
+    src: '/topics/dark-matter-dark-energy.webp',
+    en: 'A galaxy cluster surrounded by gravitational lensing arcs and an extended cosmic matter field',
+    zh: '被引力透镜弧和延展宇宙物质场包围的星系团',
+    captionEn: 'Lensing arcs reveal how otherwise invisible mass bends light around a massive galaxy cluster.',
+    captionZh: '引力透镜弧展示了不可见质量如何在大质量星系团周围弯曲光线。',
+  },
+  'machine-learning': {
+    src: '/topics/machine-learning.webp',
+    en: 'Cosmological simulations and survey data flowing through a learned model into a physical prediction',
+    zh: '宇宙学模拟与巡天数据经过学习模型转化为物理预测的科学工作流',
+    captionEn: 'A research workflow in which simulations and observations are compressed into fast, testable physical predictions.',
+    captionZh: '把模拟与观测压缩为快速、可检验物理预测的研究工作流。',
+  },
+};
+
 function TopicDiagram({ topic, locale }: { topic: TopicKey; locale: string }) {
   const zh = locale === 'zh';
   if (topic === 'cosmology') {
@@ -128,6 +160,8 @@ function TopicDiagram({ topic, locale }: { topic: TopicKey; locale: string }) {
 export default function TopicPage({ topic }: { topic: TopicKey }) {
   const locale = useLocaleStore((state) => state.locale);
   const text = topics[topic][locale === 'zh' ? 'zh' : 'en'];
+  const artwork = topicArtwork[topic];
+  const zh = locale === 'zh';
   const labels = locale === 'zh' ? { home: '返回主页', definition: '基本概念', questions: '核心问题', methods: '常用方法', importance: '为什么重要' } : { home: 'Back to home', definition: 'The basic picture', questions: 'Core questions', methods: 'Common methods', importance: 'Why it matters' };
 
   return (
@@ -137,11 +171,15 @@ export default function TopicPage({ topic }: { topic: TopicKey }) {
         <header className="topic-header">
           <p>{text.eyebrow}</p><h1>{text.title}</h1><div>{text.summary}</div>
         </header>
-        <figure className="topic-figure"><TopicDiagram topic={topic} locale={locale}/><figcaption>{text.figureCaption}</figcaption></figure>
+        <figure className="topic-artwork">
+          <Image src={artwork.src} alt={zh ? artwork.zh : artwork.en} width={1536} height={1024} sizes="(max-width: 768px) 100vw, 1100px" priority />
+          <figcaption>{zh ? artwork.captionZh : artwork.captionEn}</figcaption>
+        </figure>
         <div className="topic-grid">
           <section className="topic-prose"><h2><BookOpen className="h-5 w-5"/>{labels.definition}</h2><p>{text.definition}</p></section>
           <section className="topic-prose"><h2><CircleDot className="h-5 w-5"/>{labels.questions}</h2><ul>{text.questions.map((q)=><li key={q}>{q}</li>)}</ul></section>
         </div>
+        <figure className="topic-figure topic-diagram-figure"><TopicDiagram topic={topic} locale={locale}/><figcaption>{text.figureCaption}</figcaption></figure>
         <section className="mt-10"><h2 className="section-title">{labels.methods}</h2><div className="method-grid">{text.methods.map(([name,desc])=><div key={name}><Telescope className="h-5 w-5"/><h3>{name}</h3><p>{desc}</p></div>)}</div></section>
         <section className="importance-panel"><h2>{labels.importance}</h2><p>{text.importance}</p></section>
       </div>
