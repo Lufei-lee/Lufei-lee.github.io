@@ -14,6 +14,7 @@ interface ProfileProps {
 
 export default function Profile({ author, social, researchInterests }: ProfileProps) {
   const locale = useLocaleStore((state) => state.locale);
+  const interestLinks = ['/cosmology/', '/large-scale-structure/', '/dark-matter-dark-energy/', '/machine-learning/'];
 
   return (
     <aside className="lg:sticky lg:top-6 lg:self-start">
@@ -49,7 +50,7 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
       {researchInterests && researchInterests.length > 0 && (
         <div className="interest-panel mt-7">
           <h3>{locale === 'zh' ? '研究兴趣' : 'Research Interests'}</h3>
-          <ul>{researchInterests.map((interest) => <li key={interest}>{interest}</li>)}</ul>
+          <ul>{researchInterests.map((interest, index) => <li key={interest}><a href={interestLinks[index] || '#research'}>{interest}</a></li>)}</ul>
         </div>
       )}
     </aside>

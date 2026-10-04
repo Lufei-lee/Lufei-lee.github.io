@@ -31,7 +31,7 @@ export default function Navigation({ items, siteTitle, i18n, itemsByLocale, site
   return (
     <header className="site-frame site-frame-nav">
       <div className="flex h-20 items-center justify-between px-6 md:px-10 lg:px-12">
-        <a href="#about" className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+        <a href="/#about" className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
           {shortTitle}
         </a>
 
@@ -39,7 +39,7 @@ export default function Navigation({ items, siteTitle, i18n, itemsByLocale, site
           {effectiveItems.map((item, index) => (
             <a
               key={item.target}
-              href={`#${item.target}`}
+              href={`/#${item.target}`}
               className={`nav-link ${index === 0 ? 'nav-link-active' : ''}`}
             >
               {item.title}
@@ -59,7 +59,7 @@ export default function Navigation({ items, siteTitle, i18n, itemsByLocale, site
       {open && (
         <nav className="border-t border-slate-200 px-6 py-3 dark:border-slate-700 lg:hidden" aria-label="Mobile navigation">
           {effectiveItems.map((item) => (
-            <a key={item.target} href={`#${item.target}`} className="block rounded-lg px-3 py-3 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" onClick={() => setOpen(false)}>
+            <a key={item.target} href={`/#${item.target}`} className="block rounded-lg px-3 py-3 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" onClick={() => setOpen(false)}>
               {item.title}
             </a>
           ))}

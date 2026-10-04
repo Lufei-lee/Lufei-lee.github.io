@@ -12,8 +12,8 @@ interface ThemeStore {
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => ({
-      // The academic layout opens in its light reading mode by default.
-      theme: 'light',
+      // The cosmology layout opens in dark mode by default.
+      theme: 'dark',
       setTheme: (theme: Theme) => {
         set({ theme });
         updateTheme(theme);
@@ -27,7 +27,7 @@ export const useThemeStore = create<ThemeStore>()(
       },
     }),
     {
-      name: 'theme-storage',
+      name: 'theme-storage-v2',
       storage: createJSONStorage(() => {
         if (typeof window !== 'undefined') {
           return localStorage;

@@ -49,10 +49,10 @@ const copy = {
     interests: '研究兴趣',
     interestLead: '这些方向构成了我理解宇宙演化的主要视角。',
     areas: [
-      ['宇宙大尺度结构', '研究物质在宇宙尺度上的分布、增长与统计特征。'],
-      ['暗能量与宇宙膨胀', '关注晚期宇宙膨胀以及不同理论描述带来的可观测差异。'],
-      ['数值宇宙学', '使用数值方法连接解析模型、模拟结果和实际观测。'],
-      ['科学计算', '重视清晰、可复现并具有物理解释的计算流程。'],
+      { title: '宇宙学', description: '从整体上研究宇宙的起源、组成、演化与未来。', href: '/cosmology/' },
+      { title: '宇宙大尺度结构', description: '研究物质在宇宙尺度上的分布、增长与统计特征。', href: '/large-scale-structure/' },
+      { title: '暗物质与暗能量', description: '理解不可见质量、结构形成与宇宙加速膨胀。', href: '/dark-matter-dark-energy/' },
+      { title: '机器学习', description: '用可验证的学习方法连接复杂计算与宇宙学数据。', href: '/machine-learning/' },
     ],
     profile: '学术概况',
     profileText: '研究方向以宇宙学为核心，涉及理论建模、数值计算与数据分析。教育背景、单位和正式成果将在确认公开信息后补充。',
@@ -66,10 +66,10 @@ const copy = {
     interests: 'Research Interests',
     interestLead: 'These themes shape how I approach the evolution of the Universe.',
     areas: [
-      ['Large-scale Structure', 'The distribution, growth, and statistical description of matter on cosmic scales.'],
-      ['Dark Energy & Expansion', 'Late-time expansion and the observable consequences of different physical descriptions.'],
-      ['Numerical Cosmology', 'Numerical methods that connect analytic models, simulations, and observations.'],
-      ['Scientific Computing', 'Clear, reproducible computational workflows with interpretable physical assumptions.'],
+      { title: 'Cosmology', description: 'The origin, composition, evolution, and possible future of the Universe.', href: '/cosmology/' },
+      { title: 'Large-scale Structure', description: 'The distribution, growth, and statistical description of matter on cosmic scales.', href: '/large-scale-structure/' },
+      { title: 'Dark Matter & Dark Energy', description: 'Invisible mass, structure formation, and the accelerated expansion of the Universe.', href: '/dark-matter-dark-energy/' },
+      { title: 'Machine Learning', description: 'Validated learning methods that connect complex calculations with cosmological data.', href: '/machine-learning/' },
     ],
     profile: 'Academic Profile',
     profileText: 'My work is centered on cosmology and spans theoretical modelling, numerical computation, and data analysis. Education, affiliation, and formal outputs will be added once the public details are confirmed.',
@@ -103,12 +103,13 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
               <p className="mt-2 text-slate-500 dark:text-slate-400">{text.interestLead}</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {text.areas.map(([title, description], index) => (
-                <article key={title} className="research-card">
+              {text.areas.map((area, index) => (
+                <a key={area.title} href={area.href} className="research-card group">
                   <span className="orbit-index">0{index + 1}</span>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                </article>
+                  <h3>{area.title}</h3>
+                  <p>{area.description}</p>
+                  <span className="research-card-link">{locale === 'zh' ? '阅读科普介绍' : 'Read the introduction'}</span>
+                </a>
               ))}
             </div>
           </section>
