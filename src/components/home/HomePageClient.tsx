@@ -2,6 +2,7 @@
 
 import Profile from '@/components/home/Profile';
 import Guestbook from '@/components/home/Guestbook';
+import Image from 'next/image';
 import type { SiteConfig } from '@/lib/config';
 import type { Publication } from '@/types/publication';
 import type { CardPageConfig, PublicationPageConfig, TextPageConfig } from '@/types/page';
@@ -49,10 +50,10 @@ const copy = {
     interests: '研究兴趣',
     interestLead: '这些方向构成了我理解宇宙演化的主要视角。',
     areas: [
-      { title: '宇宙学', description: '从整体上研究宇宙的起源、组成、演化与未来。', href: '/cosmology/' },
-      { title: '宇宙大尺度结构', description: '研究物质在宇宙尺度上的分布、增长与统计特征。', href: '/large-scale-structure/' },
-      { title: '暗物质与暗能量', description: '理解不可见质量、结构形成与宇宙加速膨胀。', href: '/dark-matter-dark-energy/' },
-      { title: '机器学习', description: '用可验证的学习方法连接复杂计算与宇宙学数据。', href: '/machine-learning/' },
+      { title: '宇宙学', description: '从整体上研究宇宙的起源、组成、演化与未来。', href: '/cosmology/', image: '/topics/cosmology.webp' },
+      { title: '宇宙大尺度结构', description: '研究物质在宇宙尺度上的分布、增长与统计特征。', href: '/large-scale-structure/', image: '/topics/large-scale-structure-illustris.webp' },
+      { title: '暗物质与暗能量', description: '理解不可见质量、结构形成与宇宙加速膨胀。', href: '/dark-matter-dark-energy/', image: '/topics/dark-matter-dark-energy.webp' },
+      { title: '机器学习', description: '用可验证的学习方法连接复杂计算与宇宙学数据。', href: '/machine-learning/', image: '/topics/machine-learning.webp' },
     ],
     profile: '学术概况',
     profileText: '研究方向以宇宙学为核心，涉及理论建模、数值计算与数据分析。教育背景、单位和正式成果将在确认公开信息后补充。',
@@ -66,10 +67,10 @@ const copy = {
     interests: 'Research Interests',
     interestLead: 'These themes shape how I approach the evolution of the Universe.',
     areas: [
-      { title: 'Cosmology', description: 'The origin, composition, evolution, and possible future of the Universe.', href: '/cosmology/' },
-      { title: 'Large-scale Structure', description: 'The distribution, growth, and statistical description of matter on cosmic scales.', href: '/large-scale-structure/' },
-      { title: 'Dark Matter & Dark Energy', description: 'Invisible mass, structure formation, and the accelerated expansion of the Universe.', href: '/dark-matter-dark-energy/' },
-      { title: 'Machine Learning', description: 'Validated learning methods that connect complex calculations with cosmological data.', href: '/machine-learning/' },
+      { title: 'Cosmology', description: 'The origin, composition, evolution, and possible future of the Universe.', href: '/cosmology/', image: '/topics/cosmology.webp' },
+      { title: 'Large-scale Structure', description: 'The distribution, growth, and statistical description of matter on cosmic scales.', href: '/large-scale-structure/', image: '/topics/large-scale-structure-illustris.webp' },
+      { title: 'Dark Matter & Dark Energy', description: 'Invisible mass, structure formation, and the accelerated expansion of the Universe.', href: '/dark-matter-dark-energy/', image: '/topics/dark-matter-dark-energy.webp' },
+      { title: 'Machine Learning', description: 'Validated learning methods that connect complex calculations with cosmological data.', href: '/machine-learning/', image: '/topics/machine-learning.webp' },
     ],
     profile: 'Academic Profile',
     profileText: 'My work is centered on cosmology and spans theoretical modelling, numerical computation, and data analysis. Education, affiliation, and formal outputs will be added once the public details are confirmed.',
@@ -105,10 +106,13 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
             <div className="grid gap-4 sm:grid-cols-2">
               {text.areas.map((area, index) => (
                 <a key={area.title} href={area.href} className="research-card group">
+                  <div className="research-card-media"><Image src={area.image} alt="" width={800} height={450} sizes="(max-width: 640px) 100vw, 430px" /></div>
                   <span className="orbit-index">0{index + 1}</span>
-                  <h3>{area.title}</h3>
-                  <p>{area.description}</p>
-                  <span className="research-card-link">{locale === 'zh' ? '阅读科普介绍' : 'Read the introduction'}</span>
+                  <div className="research-card-body">
+                    <h3>{area.title}</h3>
+                    <p>{area.description}</p>
+                    <span className="research-card-link">{locale === 'zh' ? '阅读科普介绍' : 'Read the introduction'}</span>
+                  </div>
                 </a>
               ))}
             </div>

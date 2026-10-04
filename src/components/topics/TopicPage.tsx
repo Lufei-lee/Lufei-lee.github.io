@@ -101,34 +101,42 @@ const topics: Record<TopicKey, { en: TopicCopy; zh: TopicCopy }> = {
   },
 };
 
-const topicArtwork: Record<TopicKey, { src: string; en: string; zh: string; captionEn: string; captionZh: string }> = {
+const topicArtwork: Record<TopicKey, { src: string; en: string; zh: string; captionEn: string; captionZh: string; credit: string; sourceUrl: string }> = {
   cosmology: {
     src: '/topics/cosmology.webp',
-    en: 'A panoramic scientific visualization of the evolving Universe, from an early glow to the cosmic web and mature galaxies',
-    zh: '从早期余辉、宇宙网到成熟星系的宇宙演化全景科学视觉图',
-    captionEn: 'An editorial visualization connecting the early Universe, the cosmic web, and the galaxies we observe today.',
-    captionZh: '连接早期宇宙、宇宙网与今日可观测星系的科学视觉图。',
+    en: 'The Hubble Ultra Deep Field, filled with galaxies seen across billions of years of cosmic history',
+    zh: '哈勃超深场，其中包含跨越数十亿年宇宙历史的众多星系',
+    captionEn: 'Hubble Ultra Deep Field: nearly 10,000 galaxies in a tiny patch of sky.',
+    captionZh: '哈勃超深场：一小片天空中包含近一万个星系。',
+    credit: 'NASA, ESA, S. Beckwith and the HUDF Team (STScI), B. Mobasher (STScI)',
+    sourceUrl: 'https://science.nasa.gov/asset/hubble/hubble-ultra-deep-field/',
   },
   'large-scale-structure': {
-    src: '/topics/large-scale-structure.webp',
-    en: 'A scientific visualization of dense cosmic-web nodes, fine filaments, and large empty voids',
-    zh: '由致密节点、细丝状结构和巨大空洞组成的宇宙网科学视觉图',
-    captionEn: 'A simulation-inspired view of the cosmic web, where matter gathers along filaments around underdense voids.',
-    captionZh: '受数值模拟启发的宇宙网视图：物质沿纤维聚集，包围低密度空洞。',
+    src: '/topics/large-scale-structure-illustris.webp',
+    en: 'The Illustris simulation showing dark matter density transitioning into gas density across the cosmic web',
+    zh: 'Illustris 模拟中的宇宙网，从暗物质密度平滑过渡到气体密度',
+    captionEn: 'An Illustris large-scale projection: dark matter density on the left transitions into gas density on the right.',
+    captionZh: 'Illustris 大尺度投影：左侧为暗物质密度，向右平滑过渡为气体密度。',
+    credit: 'Illustris Collaboration / Illustris Simulation',
+    sourceUrl: 'https://www.illustris-project.org/media/',
   },
   'dark-sector': {
     src: '/topics/dark-matter-dark-energy.webp',
-    en: 'A galaxy cluster surrounded by gravitational lensing arcs and an extended cosmic matter field',
-    zh: '被引力透镜弧和延展宇宙物质场包围的星系团',
-    captionEn: 'Lensing arcs reveal how otherwise invisible mass bends light around a massive galaxy cluster.',
-    captionZh: '引力透镜弧展示了不可见质量如何在大质量星系团周围弯曲光线。',
+    en: 'The Bullet Cluster with hot gas shown in pink and inferred dark matter shown in blue',
+    zh: '子弹星系团合成图，其中粉色表示热气体，蓝色表示推断出的暗物质',
+    captionEn: 'The Bullet Cluster: Webb imaging, Chandra X-rays in pink, and inferred dark matter in blue.',
+    captionZh: '子弹星系团：Webb 图像、粉色的 Chandra X 射线气体和蓝色的暗物质分布。',
+    credit: 'NASA, ESA, CSA, STScI, CXC',
+    sourceUrl: 'https://science.nasa.gov/asset/webb/bullet-cluster-webb-and-chandra-image/',
   },
   'machine-learning': {
     src: '/topics/machine-learning.webp',
-    en: 'Cosmological simulations and survey data flowing through a learned model into a physical prediction',
-    zh: '宇宙学模拟与巡天数据经过学习模型转化为物理预测的科学工作流',
-    captionEn: 'A research workflow in which simulations and observations are compressed into fast, testable physical predictions.',
-    captionZh: '把模拟与观测压缩为快速、可检验物理预测的研究工作流。',
+    en: 'Six unusual galaxies and gravitational lenses identified in the Hubble archive with an AI-assisted search',
+    zh: '通过人工智能辅助搜索在哈勃档案中识别出的六个异常星系与引力透镜',
+    captionEn: 'Six unusual objects found by applying machine learning to nearly 100 million Hubble image cutouts.',
+    captionZh: '机器学习分析近一亿张哈勃图像切片后发现的六个异常天体。',
+    credit: "NASA, ESA, David O'Ryan, Pablo Gómez, Mahdi Zamani",
+    sourceUrl: 'https://science.nasa.gov/missions/hubble/ai-unlocks-hundreds-of-cosmic-anomalies-in-hubble-archive/',
   },
 };
 
@@ -173,7 +181,10 @@ export default function TopicPage({ topic }: { topic: TopicKey }) {
         </header>
         <figure className="topic-artwork">
           <Image src={artwork.src} alt={zh ? artwork.zh : artwork.en} width={1536} height={1024} sizes="(max-width: 768px) 100vw, 1100px" priority />
-          <figcaption>{zh ? artwork.captionZh : artwork.captionEn}</figcaption>
+          <figcaption>
+            <span>{zh ? artwork.captionZh : artwork.captionEn}</span>
+            <a href={artwork.sourceUrl} target="_blank" rel="noreferrer">{zh ? '图片来源' : 'Image credit'}: {artwork.credit}</a>
+          </figcaption>
         </figure>
         <div className="topic-grid">
           <section className="topic-prose"><h2><BookOpen className="h-5 w-5"/>{labels.definition}</h2><p>{text.definition}</p></section>
