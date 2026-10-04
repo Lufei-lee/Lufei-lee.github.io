@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, BookOpen, CircleDot, Telescope } from 'lucide-react';
+import Link from 'next/link';
 import { useLocaleStore } from '@/lib/stores/localeStore';
 
 export type TopicKey = 'cosmology' | 'large-scale-structure' | 'dark-sector' | 'machine-learning';
@@ -132,7 +133,7 @@ export default function TopicPage({ topic }: { topic: TopicKey }) {
   return (
     <article className="academic-frame topic-page">
       <div className="px-6 py-10 md:px-10 lg:px-16 lg:py-14">
-        <a href="/" className="topic-back"><ArrowLeft className="h-4 w-4" />{labels.home}</a>
+        <Link href="/" className="topic-back"><ArrowLeft className="h-4 w-4" />{labels.home}</Link>
         <header className="topic-header">
           <p>{text.eyebrow}</p><h1>{text.title}</h1><div>{text.summary}</div>
         </header>
