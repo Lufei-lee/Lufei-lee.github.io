@@ -5,26 +5,26 @@ last_updated = "2026年10月"
 
 [author]
 name = "Lufei"
-title = "宇宙学研究"
-institution = "暗能量 · 大尺度结构 · 科学机器学习"
+title = "宇宙学"
+institution = "理论 · 计算 · 观测"
 
 [social]
-github = "https://github.com/luffy-cosmology"
+github = "https://github.com/Lufei-lee"
 
 [[navigation]]
 title = "关于"
-type = "page"
+type = "section"
 target = "about"
 href = "/"
 
 [[navigation]]
 title = "研究"
-type = "page"
+type = "section"
 target = "research"
 href = "/research"
 
 [[navigation]]
-title = "研究档案"
+title = "学术概况"
 type = "page"
 target = "cv"
 href = "/cv"

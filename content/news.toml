@@ -1,7 +1,3 @@
 [[news]]
-date = "2026-10"
-content = "Building an auditable cosmology emulator workflow around spectral equivalence and independent validation."
-
-[[news]]
 date = "2026"
-content = "Consolidating research notes, uncertainty summaries, and reproducible artifacts for publication."
+content = "Organizing public notes and background material in cosmology and scientific computing."

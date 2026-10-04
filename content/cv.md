@@ -1,19 +1,12 @@
-## Research profile
+## Research focus
 
-**Focus**  
-Cosmological structure formation, dynamical dark energy, matter power spectra, emulator construction, and independent simulation validation.
+Cosmology, gravity, large-scale structure, dark energy, and numerical methods.
 
 ## Methods
 
-- Numerical root solving and spectral-equivalence mappings
-- N-body simulation analysis and cross-model validation
-- Scientific machine learning and conditional emulation
-- Reproducible Python workflows, versioned data products, and uncertainty reporting
+- Theoretical modelling
+- Numerical computation
+- Statistical data analysis
+- Reproducible scientific workflows
 
-## Current priorities
-
-- Publication-level validation of fast cosmology mappings
-- Clear separation of internal approximation error and external physical discrepancy
-- Extensions toward survey observables and broader parameter coverage
-
-> Education, affiliation, publications, and contact details can be added here once you are ready to make them public.
+> Education, affiliations, publications, and contact details will be added after the public information is confirmed.

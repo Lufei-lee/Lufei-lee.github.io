@@ -1,5 +1,3 @@
-I work at the intersection of **theoretical cosmology, numerical simulation, and scientific machine learning**. My current focus is turning expensive high-precision calculations into fast, auditable prediction pipelines without hiding their physical limits.
+My interests lie at the intersection of **cosmology, gravity, numerical computation, and observation**. I am especially interested in the growth of cosmic structure and in physical questions that can be tested by connecting models with data.
 
-The questions that interest me most are how dynamical dark-energy models reshape the matter power spectrum, how spectral-equivalence mappings can accelerate inference, and how those approximations should be tested against independent N-body simulations.
-
-I value reproducible research: frozen assumptions, explicit coverage, transparent error tails, and a clear separation between numerical mapping accuracy and end-to-end physical discrepancy.
+This page is a concise public record of my academic interests. Additional background, publications, and notes will be added as they are ready to share.

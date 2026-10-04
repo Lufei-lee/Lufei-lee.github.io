@@ -12,8 +12,8 @@ interface ThemeStore {
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => ({
-      // Default to system preference
-      theme: 'system',
+      // The academic layout opens in its light reading mode by default.
+      theme: 'light',
       setTheme: (theme: Theme) => {
         set({ theme });
         updateTheme(theme);

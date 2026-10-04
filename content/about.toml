@@ -3,10 +3,10 @@ title = "About"
 
 [profile]
 research_interests = [
-  "Dark Energy",
+  "Cosmology",
   "Large-scale Structure",
-  "Cosmological Emulators",
-  "Scientific Machine Learning"
+  "Dark Energy",
+  "Numerical Methods"
 ]
 
 [[sections]]
