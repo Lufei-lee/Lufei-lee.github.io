@@ -8,7 +8,7 @@ export const articles = {
       "From the expanding Universe to the cosmic web: reading history in light and matter.",
       "从膨胀宇宙到宇宙网：在光与物质中阅读宇宙历史。"
     ],
-    "image": "expansion.svg",
+    "image": "wmap-timeline.jpg",
     "sections": [
       [
         "A Universe with a history",
@@ -186,7 +186,7 @@ export const articles = {
       "From examples to predictions: models, optimization and the limits of generalization.",
       "从样本到预测：模型、优化与泛化的边界。"
     ],
-    "image": "learning.svg",
+    "image": "neural-network.svg",
     "sections": [
       [
         "Learning begins with a question",
@@ -268,7 +268,7 @@ export const articles = {
       "Stocks, portfolios and crypto networks: understanding value, uncertainty and market structure.",
       "股票、投资组合与加密网络：理解价值、不确定性与市场结构。"
     ],
-    "image": "markets.svg",
+    "image": "efficient-frontier.jpg",
     "sections": [
       [
         "What is actually being traded?",

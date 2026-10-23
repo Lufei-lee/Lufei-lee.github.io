@@ -229,7 +229,7 @@ html.light .academic-frame {
 }
 
 .research-card-media { aspect-ratio: 16 / 8.5; overflow: hidden; background: #071222; }
-.research-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 350ms ease; }
+.research-card-media img { width: 100%; height: 100%; object-fit: contain; background:#fff; transition: transform 350ms ease; }
 .research-card:hover .research-card-media img { transform: scale(1.025); }
 .research-card-body { padding: 1.2rem 1.3rem 1.3rem; }
 .research-card h3 { color: var(--primary); font-size: 1.06rem; font-weight: 700; }
@@ -296,7 +296,18 @@ html.light .academic-frame {
 .essay-secondary img { max-height:330px; width:100%; object-fit:contain; background:#0b1323; border-radius:12px; }
 .essay-secondary figcaption { color:var(--neutral-500); font-size:.8rem; margin-top:10px; line-height:1.6; }
 .equation-card { background:var(--neutral-50); border:1px solid var(--neutral-200); border-left:3px solid var(--accent); border-radius:8px; margin:1.2rem 0; padding:1.5rem; }
-.equation-card [role=math] { overflow-x:auto; white-space:nowrap; color:var(--primary); font:1.15rem Georgia,serif; padding:8px 0; }
+.math-scroll { overflow-x:auto; color:var(--primary); padding:8px 0; max-width:100%; }
+.math-scroll .katex-display { margin:.5em 0; }
+.math-scroll .katex-display>.katex { white-space:nowrap; text-align:left; }
+.essay-body, .essay-layout > * { min-width:0; }
+.essay-opening { font-size:1.16rem!important; line-height:1.95!important; padding:0 0 1.8rem; color:var(--primary)!important; }
+.figure-surface { display:block; background:#0b1323; }
+.figure-surface.paper { background:#fff; padding:24px; }
+.figure-surface.paper img { background:#fff; border-radius:0; max-height:420px; }
+.essay-secondary img,.essay-hero img { height:auto; }
+.essay-secondary figcaption a,.essay-hero figcaption a { text-decoration:underline; text-underline-offset:3px; }
+.equation-number { font-variant-numeric:tabular-nums; }
+@media(max-width:600px) { .equation-card { padding:1rem .7rem; } .math-scroll { font-size:.85rem; } .figure-surface.paper { padding:12px; } }
 .equation-card figcaption { font-size:.85rem; line-height:1.7; color:var(--neutral-600); margin-top:.8rem; }
 .classic-list>div { padding:1.25rem 0; border-top:1px solid var(--neutral-200); }
 .classic-list span { display:block; color:var(--neutral-500); font-size:.8rem; margin-bottom:.6rem; }
