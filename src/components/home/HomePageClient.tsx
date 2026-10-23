@@ -56,7 +56,8 @@ const copy = {
       { title: '金融市场与数字资产', description: '探索股票、组合风险、市场效率与加密网络。', href: '/finance/', image: '/topics/efficient-frontier.jpg' },
     ],
     profile: '学术概况',
-    profileText: '研究方向以宇宙学为核心，涉及理论建模、数值计算与数据分析。教育背景、单位和正式成果将在确认公开信息后补充。',
+    profileText: '我在上海交通大学学习，兴趣以宇宙学为核心，涉及理论建模、数值计算与数据分析。',
+    education: [['2022–2027', '上海交通大学', '本科生'], ['2027–', '上海交通大学', '博士生 · 即将开始']],
   },
   en: {
     about: 'About',
@@ -73,7 +74,8 @@ const copy = {
       { title: 'Financial Markets & Digital Assets', description: 'Stocks, portfolio risk, market efficiency, and crypto networks.', href: '/finance/', image: '/topics/efficient-frontier.jpg' },
     ],
     profile: 'Academic Profile',
-    profileText: 'My work is centered on cosmology and spans theoretical modelling, numerical computation, and data analysis. Education, affiliation, and formal outputs will be added once the public details are confirmed.',
+    profileText: 'I study at Shanghai Jiao Tong University, with interests centered on cosmology, theoretical modelling, numerical computation, and data analysis.',
+    education: [['2022–2027', 'Shanghai Jiao Tong University', 'Undergraduate student'], ['2027–', 'Shanghai Jiao Tong University', 'PhD student · Upcoming']],
   },
 };
 
@@ -121,6 +123,13 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
           <section id="cv" className="scroll-mt-28">
             <h2 className="section-title">{text.profile}</h2>
             <div className="academic-note mt-6"><p>{text.profileText}</p></div>
+            <ol className="mt-6 space-y-6 border-l border-slate-300 pl-6 dark:border-slate-600" aria-label={locale === 'zh' ? '教育经历' : 'Education'}>
+              {text.education.map(([years, institution, role]) => <li key={years}>
+                <p className="text-sm font-medium text-amber-700 dark:text-amber-300">{years}</p>
+                <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">{institution}</h3>
+                <p className="mt-1 text-slate-600 dark:text-slate-300">{role}</p>
+              </li>)}
+            </ol>
           </section>
 
           <Guestbook />

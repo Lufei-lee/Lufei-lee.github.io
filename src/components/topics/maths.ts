@@ -1,4 +1,11 @@
 import type { ArticleKey } from './articles';
+// Placement is zero-based: section, paragraph, equation. Each equation appears once.
+export const equationPlacements: Record<ArticleKey, {section:number; paragraph:number; equation:number}[]> = {
+ cosmology:[{section:1,paragraph:0,equation:0},{section:5,paragraph:0,equation:1},{section:3,paragraph:1,equation:2}],
+ 'dark-sector':[{section:1,paragraph:0,equation:0},{section:4,paragraph:0,equation:1},{section:4,paragraph:1,equation:2}],
+ 'machine-learning':[{section:1,paragraph:0,equation:0},{section:2,paragraph:0,equation:1},{section:2,paragraph:1,equation:2}],
+ finance:[{section:1,paragraph:0,equation:0},{section:2,paragraph:0,equation:1},{section:3,paragraph:0,equation:2}],
+};
 // Separate lines deliberately keep wide expressions readable on small screens.
 export const maths: Record<ArticleKey, string[]> = {
  cosmology:[String.raw`1+z=\frac{1}{a},\qquad H=\frac{\dot a}{a}`,String.raw`H^2(a)=H_0^2\!\left[\Omega_r a^{-4}+\Omega_m a^{-3}+\Omega_\Lambda\right]`,String.raw`\begin{gathered}\delta=\frac{\rho-\bar\rho}{\bar\rho}\\[4pt]\ddot\delta+2H\dot\delta-4\pi G\bar\rho_m\delta=0\end{gathered}`],

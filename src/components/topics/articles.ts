@@ -41,10 +41,10 @@ export const articles = {
         "星系巡天提供天球位置、红移及样本选择信息。构建地图时，需要处理遮罩、亮度阈值和观测不完备性。星系自身的运动还会扭曲由红移推断的位置。忽略这些效应，可能把巡天的特征误当作宇宙的特征。\n相关函数衡量在指定间距上找到星系对的超额概率；其傅里叶对应量功率谱按空间尺度描述结构。早期声波留下统计意义上的优选间距，即重子声学振荡，可作为经过标定的宇宙标尺。结合这一标尺、弱引力透镜和结构增长测量，有助于区分几何变化与引力变化。"
       ],
       [
-        "What the equations are saying",
-        "公式背后的物理含义",
-        "The first equation connects an observable, redshift, to expansion. The second gives the expansion history of a spatially flat model containing radiation, nonrelativistic matter and a cosmological constant. Each density parameter is defined today and their sum is one in this model. Radiation dilutes faster than matter because photon energies also redshift.\nThe density contrast compares local density with the cosmic mean. Its linear evolution describes the competition between gravitational amplification and the damping effect of expansion. This equation assumes pressureless matter, general relativity, small perturbations and scales where the Newtonian treatment applies. It should not be used unchanged inside a collapsed galaxy. The important lesson is that expansion and clustering are linked predictions rather than independent stories.",
-        "第一条公式把可观测红移与膨胀联系起来。第二条描述包含辐射、非相对论物质和宇宙学常数的空间平直模型；各密度参数取今天的值，在该模型下总和为 1。辐射比物质稀释得更快，因为光子的能量也会红移。\n密度反差比较局部密度与宇宙平均密度。线性演化方程描述引力放大与膨胀抑制之间的竞争，假设无压物质、广义相对论、小扰动及牛顿近似适用的尺度。它不能原封不动用于已经坍缩的星系内部。关键是膨胀和聚集是相互联系的预言，而非两段独立故事。"
+        "Expansion and growth belong together",
+        "膨胀与结构增长如何联系",
+        "The Friedmann equation gives the expansion history of a spatially flat model containing radiation, nonrelativistic matter and a cosmological constant. Each density parameter is defined today and their sum is one in this model. Radiation dilutes faster than matter because photon energies also redshift.\nThe density contrast compares local density with the cosmic mean. Its linear evolution describes the competition between gravitational amplification and the damping effect of expansion. This equation assumes pressureless matter, general relativity, small perturbations and scales where the Newtonian treatment applies. It should not be used unchanged inside a collapsed galaxy. The important lesson is that expansion and clustering are linked predictions rather than independent stories.",
+        "弗里德曼方程描述包含辐射、非相对论物质和宇宙学常数的空间平直模型；各密度参数取今天的值，在该模型下总和为 1。辐射比物质稀释得更快，因为光子的能量也会红移。\n密度反差比较局部密度与宇宙平均密度。线性演化方程描述引力放大与膨胀抑制之间的竞争，假设无压物质、广义相对论、小扰动及牛顿近似适用的尺度。它不能原封不动用于已经坍缩的星系内部。关键是膨胀和聚集是相互联系的预言，而非两段独立故事。"
       ]
     ],
     "equations": [
@@ -133,8 +133,8 @@ export const articles = {
       [
         "Negative pressure is not a local wind",
         "负压不是吹向星系的风",
-        "In general relativity, pressure contributes to cosmic acceleration as well as energy density. A component with sufficiently negative pressure can make the scale factor accelerate. For a cosmological constant, pressure is minus its energy density and the density remains constant as space expands. Ordinary nonrelativistic matter instead dilutes approximately as the inverse cube of the scale factor.\nThis does not mean a measurable local wind pushes every planet apart. Bound systems are governed by their local dynamics. Nor does acceleration alone determine the far future: predictions depend on whether dark energy stays constant, evolves or ceases to dominate. The equation below is a description within a model, not a laboratory identification of the underlying substance.",
-        "在广义相对论中，压强与能量密度一起影响宇宙加速度。压强足够负的成分可使尺度因子加速增长。对于宇宙学常数，压强等于能量密度的负值，其密度不会随空间膨胀而改变；普通非相对论物质的密度则近似按尺度因子的三次方反比稀释。\n这不意味着存在一阵局部的风把所有行星吹散，束缚系统仍服从局部动力学。加速现象也不能独自决定遥远未来：预测依赖暗能量是否恒定、演化或不再占主导。下面的方程是在模型框架内描述现象，并不是对某种物质的实验室鉴定。"
+        "In general relativity, pressure contributes to cosmic acceleration as well as energy density. A component with sufficiently negative pressure can make the scale factor accelerate. For a cosmological constant, pressure is minus its energy density and the density remains constant as space expands. Ordinary nonrelativistic matter instead dilutes approximately as the inverse cube of the scale factor.\nThis does not mean a measurable local wind pushes every planet apart. Bound systems are governed by their local dynamics. Nor does acceleration alone determine the far future: predictions depend on whether dark energy stays constant, evolves or ceases to dominate. These equations describe behaviour within a model, not a laboratory identification of the underlying substance.",
+        "在广义相对论中，压强与能量密度一起影响宇宙加速度。压强足够负的成分可使尺度因子加速增长。对于宇宙学常数，压强等于能量密度的负值，其密度不会随空间膨胀而改变；普通非相对论物质的密度则近似按尺度因子的三次方反比稀释。\n这不意味着存在一阵局部的风把所有行星吹散，束缚系统仍服从局部动力学。加速现象也不能独自决定遥远未来：预测依赖暗能量是否恒定、演化或不再占主导。这些方程是在模型框架内描述现象，并不是对某种物质的实验室鉴定。"
       ],
       [
         "The next question is how to distinguish models",

@@ -5,11 +5,13 @@ last_updated = "2026年10月"
 
 [author]
 name = "Lufei"
-title = "宇宙学"
-institution = "理论 · 计算 · 观测"
+title = "本科生 · 宇宙学"
+institution = "上海交通大学"
 
 [social]
 github = "https://github.com/Lufei-lee"
+email = "1191743253@qq.com"
+qq = "1191743253"
 
 [[navigation]]
 title = "关于"

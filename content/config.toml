@@ -6,12 +6,14 @@ last_updated = "October 2026"
 
 [author]
 name = "Lufei"
-title = "Cosmology"
-institution = "Theory · Computation · Observation"
+title = "Undergraduate Student · Cosmology"
+institution = "Shanghai Jiao Tong University"
 avatar = "/cosmic-web-hero.png"
 
 [social]
 github = "https://github.com/Lufei-lee"
+email = "1191743253@qq.com"
+qq = "1191743253"
 
 [features]
 enable_likes = false

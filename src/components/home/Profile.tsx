@@ -53,6 +53,10 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
           <ul>{researchInterests.map((interest, index) => <li key={interest}><a href={interestLinks[index] || '#research'}>{interest}</a></li>)}</ul>
         </div>
       )}
+      <address className="mt-6 space-y-2 break-words text-sm not-italic text-slate-600 dark:text-slate-300">
+        {typeof social.email === 'string' && <p><span>{locale === 'zh' ? '邮箱：' : 'Email: '}</span><a className="underline underline-offset-4" href={'mailto:'+social.email}>{social.email}</a></p>}
+        {typeof social.qq === 'string' && <p>QQ: {social.qq}</p>}
+      </address>
     </aside>
   );
 }
