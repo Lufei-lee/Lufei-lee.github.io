@@ -273,6 +273,38 @@ html.light .academic-frame {
 .dark .guestbook-button:hover { background: #e4c28e; }
 
 .topic-page { min-height: 70vh; }
+.long-article { padding: clamp(24px,5vw,72px); }
+.article-tools { display:flex; justify-content:space-between; gap:16px; color:var(--accent); font-size:.85rem; }
+.article-tools button { cursor:pointer; }
+.essay-header { max-width:900px; padding:3.5rem 0 2rem; }
+.essay-header h1 { font-family:var(--font-serif); color:var(--primary); font-size:clamp(2.4rem,5vw,4.4rem); line-height:1.1; letter-spacing:-.045em; margin:1rem 0; text-wrap:balance; }
+.essay-header>p:not(.reading-kicker) { font-size:1.2rem; line-height:1.8; color:var(--neutral-600); }
+.essay-header>span { display:block; margin-top:1rem; color:var(--neutral-500); font-size:.85rem; }
+.essay-hero { border-radius:16px; overflow:hidden; border:1px solid var(--neutral-200); background:#0b1323; }
+.essay-hero img { display:block; width:100%; max-height:560px; object-fit:contain; }
+.essay-hero figcaption { color:#bac9dc; padding:14px 20px; font-size:.8rem; line-height:1.6; }
+.essay-layout { display:grid; grid-template-columns:210px minmax(0,1fr); gap:3rem; margin-top:3.5rem; }
+.essay-toc { align-self:start; position:sticky; top:110px; display:grid; gap:14px; font-size:.83rem; color:var(--neutral-500); }
+.essay-toc strong { font-size:.7rem; letter-spacing:.12em; color:var(--accent); }
+.essay-toc a { display:flex; gap:10px; line-height:1.6; }
+.essay-toc a:hover { color:var(--accent); }
+.essay-body { max-width:76ch; min-width:0; }
+.essay-body section { scroll-margin-top:110px; padding-bottom:2.5rem; margin-bottom:2.5rem; border-bottom:1px solid var(--neutral-200); }
+.essay-body h2 { font-family:var(--font-serif); font-size:clamp(1.5rem,3vw,2rem); line-height:1.35; color:var(--primary); margin:.6rem 0 1.2rem; }
+.essay-body p { color:var(--neutral-600); line-height:1.95; margin-top:1rem; font-size:1.05rem; text-wrap:pretty; }
+.essay-secondary { margin:2rem 0 0; color:var(--accent); }
+.essay-secondary img { max-height:330px; width:100%; object-fit:contain; background:#0b1323; border-radius:12px; }
+.essay-secondary figcaption { color:var(--neutral-500); font-size:.8rem; margin-top:10px; line-height:1.6; }
+.equation-card { background:var(--neutral-50); border:1px solid var(--neutral-200); border-left:3px solid var(--accent); border-radius:8px; margin:1.2rem 0; padding:1.5rem; }
+.equation-card [role=math] { overflow-x:auto; white-space:nowrap; color:var(--primary); font:1.15rem Georgia,serif; padding:8px 0; }
+.equation-card figcaption { font-size:.85rem; line-height:1.7; color:var(--neutral-600); margin-top:.8rem; }
+.classic-list>div { padding:1.25rem 0; border-top:1px solid var(--neutral-200); }
+.classic-list span { display:block; color:var(--neutral-500); font-size:.8rem; margin-bottom:.6rem; }
+.classic-list a { color:var(--accent); font-size:1.05rem; line-height:1.6; text-decoration:underline; text-underline-offset:4px; }
+.essay-next { display:flex; flex-wrap:wrap; gap:1rem; padding-top:2rem; }
+.essay-next a { color:var(--accent); border:1px solid var(--neutral-200); padding:1rem; border-radius:8px; }
+@media(max-width:850px) { .essay-layout { grid-template-columns:1fr; gap:2rem; } .essay-toc { position:static; border-bottom:1px solid var(--neutral-200); padding-bottom:1.5rem; } }
+@media print { @page { size:A4; margin:14mm; } header.site-frame, footer, .article-tools, .essay-toc, .essay-next { display:none!important; } html,body,.long-article { background:white!important; color:#111!important; } .long-article { padding:0!important; border:0!important; box-shadow:none!important; width:100%!important; } .essay-layout { display:block; margin-top:12pt; } .essay-body { max-width:none; } .essay-body p { font-size:10pt; line-height:1.6; color:#222!important; } .essay-body h2 { font-size:16pt; color:#111!important; } .essay-header { padding:0 0 12pt; } .essay-header h1 { font-size:26pt; color:#111!important; } .essay-hero img { max-height:190px; } .essay-secondary img,.essay-secondary svg { max-height:140px; } .essay-body section { margin-bottom:12pt; padding-bottom:12pt; } figure,.classic-list>div { break-inside:avoid; } h2 { break-after:avoid; } }
 .reading-section { margin-top: 4rem; }
 .reading-kicker { color: var(--accent); font-size: .75rem; letter-spacing: .14em; font-weight: 700; }
 .reading-index { display: flex; flex-wrap: wrap; gap: .8rem 1.5rem; padding: 1.3rem 0 2rem; border-bottom: 1px solid var(--neutral-200); }

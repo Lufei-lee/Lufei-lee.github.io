@@ -44,16 +44,16 @@ const copy = {
   zh: {
     about: '关于',
     intro: [
-      '你好，我是 Lufei。我的兴趣集中在宇宙学、宇宙大尺度结构、暗物质与暗能量，以及机器学习，并关注这些方向如何通过理论、计算与观测相互连接。',
+      '你好，我是 Lufei。我的兴趣涵盖宇宙学与大尺度结构、暗物质与暗能量、机器学习，以及金融市场与数字资产。我喜欢用模型、数据和可检验的证据理解复杂系统。',
       '这个主页用于整理我的研究兴趣、学术经历与公开笔记。随着内容完善，我会在这里补充论文、报告和其他可以公开的材料。',
     ],
-    interests: '研究兴趣',
-    interestLead: '这些方向构成了我理解宇宙演化的主要视角。',
+    interests: '研究与探索',
+    interestLead: '从宇宙的演化到模型的学习，再到市场的信息与风险。四条阅读路线，连接直觉、公式与经典文献。',
     areas: [
-      { title: '宇宙学', description: '从整体上研究宇宙的起源、组成、演化与未来。', href: '/cosmology/', image: '/topics/cosmology.webp' },
-      { title: '宇宙大尺度结构', description: '研究物质在宇宙尺度上的分布、增长与统计特征。', href: '/large-scale-structure/', image: '/topics/large-scale-structure-illustris.webp' },
+      { title: '宇宙学与大尺度结构', description: '从热大爆炸、宇宙膨胀到引力塑造的宇宙网。', href: '/cosmology/', image: '/topics/expansion.svg' },
       { title: '暗物质与暗能量', description: '理解不可见质量、结构形成与宇宙加速膨胀。', href: '/dark-matter-dark-energy/', image: '/topics/dark-matter-dark-energy.webp' },
-      { title: '机器学习', description: '用可验证的学习方法连接复杂计算与宇宙学数据。', href: '/machine-learning/', image: '/topics/machine-learning.webp' },
+      { title: '机器学习', description: '理解神经网络、梯度优化、泛化与科学验证。', href: '/machine-learning/', image: '/topics/learning.svg' },
+      { title: '金融市场与数字资产', description: '探索股票、组合风险、市场效率与加密网络。', href: '/finance/', image: '/topics/markets.svg' },
     ],
     profile: '学术概况',
     profileText: '研究方向以宇宙学为核心，涉及理论建模、数值计算与数据分析。教育背景、单位和正式成果将在确认公开信息后补充。',
@@ -61,16 +61,16 @@ const copy = {
   en: {
     about: 'About',
     intro: [
-      'Hello, I am Lufei. My interests center on cosmology, large-scale structure, dark matter and dark energy, and machine learning, with particular attention to how theory, computation, and observation connect these fields.',
+      'Hello, I am Lufei. My interests span cosmology and large-scale structure, dark matter and dark energy, machine learning, and financial markets and digital assets. I enjoy understanding complex systems through models, data, and testable evidence.',
       'This website collects my research interests, academic background, and public notes. Papers, talks, and other materials will be added as they are ready to share.',
     ],
-    interests: 'Research Interests',
-    interestLead: 'These themes shape how I approach the evolution of the Universe.',
+    interests: 'Research & Exploration',
+    interestLead: 'From cosmic evolution to learning systems and market dynamics. Four reading routes connecting intuition, equations, and classic papers.',
     areas: [
-      { title: 'Cosmology', description: 'The origin, composition, evolution, and possible future of the Universe.', href: '/cosmology/', image: '/topics/cosmology.webp' },
-      { title: 'Large-scale Structure', description: 'The distribution, growth, and statistical description of matter on cosmic scales.', href: '/large-scale-structure/', image: '/topics/large-scale-structure-illustris.webp' },
+      { title: 'Cosmology & Large-scale Structure', description: 'From the hot Big Bang and expansion to the gravitational cosmic web.', href: '/cosmology/', image: '/topics/expansion.svg' },
       { title: 'Dark Matter & Dark Energy', description: 'Invisible mass, structure formation, and the accelerated expansion of the Universe.', href: '/dark-matter-dark-energy/', image: '/topics/dark-matter-dark-energy.webp' },
-      { title: 'Machine Learning', description: 'Validated learning methods that connect complex calculations with cosmological data.', href: '/machine-learning/', image: '/topics/machine-learning.webp' },
+      { title: 'Machine Learning', description: 'Neural networks, gradient optimization, generalization, and scientific validation.', href: '/machine-learning/', image: '/topics/learning.svg' },
+      { title: 'Financial Markets & Digital Assets', description: 'Stocks, portfolio risk, market efficiency, and crypto networks.', href: '/finance/', image: '/topics/markets.svg' },
     ],
     profile: 'Academic Profile',
     profileText: 'My work is centered on cosmology and spans theoretical modelling, numerical computation, and data analysis. Education, affiliation, and formal outputs will be added once the public details are confirmed.',
@@ -111,7 +111,7 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
                   <div className="research-card-body">
                     <h3>{area.title}</h3>
                     <p>{area.description}</p>
-                    <span className="research-card-link">{locale === 'zh' ? '阅读科普介绍' : 'Read the introduction'}</span>
+                    <span className="research-card-link">{locale === 'zh' ? '阅读长文 · 图解 / 公式 / 经典文献 →' : 'Read the essay · diagrams / equations / classics →'}</span>
                   </div>
                 </a>
               ))}

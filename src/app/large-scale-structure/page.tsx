@@ -1,3 +1,3 @@
-import TopicPage from '@/components/topics/TopicPage';
+import TopicPage from '@/components/topics/LongArticle';
 
-export default function LargeScaleStructurePage() { return <TopicPage topic="large-scale-structure" />; }
+export default function LargeScaleStructurePage() { return <TopicPage topic="cosmology" />; }
