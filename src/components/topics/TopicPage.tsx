@@ -3,6 +3,7 @@
 import { ArrowLeft, BookOpen, CircleDot, Telescope } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Reading from './Reading';
 import { useLocaleStore } from '@/lib/stores/localeStore';
 
 export type TopicKey = 'cosmology' | 'large-scale-structure' | 'dark-sector' | 'machine-learning';
@@ -192,6 +193,7 @@ export default function TopicPage({ topic }: { topic: TopicKey }) {
         </div>
         <figure className="topic-figure topic-diagram-figure"><TopicDiagram topic={topic} locale={locale}/><figcaption>{text.figureCaption}</figcaption></figure>
         <section className="mt-10"><h2 className="section-title">{labels.methods}</h2><div className="method-grid">{text.methods.map(([name,desc])=><div key={name}><Telescope className="h-5 w-5"/><h3>{name}</h3><p>{desc}</p></div>)}</div></section>
+        <Reading topic={topic} zh={zh} />
         <section className="importance-panel"><h2>{labels.importance}</h2><p>{text.importance}</p></section>
       </div>
     </article>
