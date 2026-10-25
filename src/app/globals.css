@@ -50,27 +50,25 @@
   text-align:center;
   text-shadow:0 2px 8px rgba(0,0,0,.65),0 6px 40px rgba(0,0,0,.45);
 }
+@font-face {
+  font-family:"Cover Script";
+  src:url("/fonts/GreatVibes-Regular.ttf") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
 .cosmic-cover-copy h2 {
-  margin:0;
-  font-family:"Kaiti SC",STKaiti,KaiTi,"Songti SC",STSong,serif;
-  font-size:clamp(40px,5.5vw,88px);
-  font-weight:500;
-  line-height:1.5;
-  letter-spacing:.12em;
+  margin:0 auto;
+  max-width:1400px;
+  font-family:"Cover Script","Snell Roundhand","Apple Chancery",cursive;
+  font-size:clamp(60px,7.4vw,118px);
+  font-weight:600;
+  line-height:1.3;
+  letter-spacing:.01em;
+  -webkit-text-stroke:.3px currentColor;
   text-wrap:balance;
 }
 .cosmic-cover-copy h2 span { display:inline-block; white-space:nowrap; }
-.cosmic-cover-copy p {
-  margin:20px auto 0;
-  max-width:90%;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(12px,1.45vw,22px);
-  font-weight:400;
-  line-height:1.9;
-  letter-spacing:.23em;
-  color:#f3e6d0;
-  text-wrap:balance;
-}
 .cosmic-cover-enter {
   position:absolute;
   bottom:max(7%,calc(env(safe-area-inset-bottom) + 24px));
@@ -88,23 +86,18 @@
   text-shadow:0 2px 12px #000;
   text-decoration:none;
 }
-.cosmic-cover-enter>span { font-size:14px; letter-spacing:.2em; }
-.cosmic-cover-enter small { font-family:Georgia,serif; font-size:10px; letter-spacing:.26em; opacity:.85; }
-.cosmic-cover-enter svg { margin-top:12px; filter:drop-shadow(0 2px 5px #0008); }
+.cosmic-cover-enter svg { margin-top:0; filter:drop-shadow(0 2px 5px #0008); }
 .cosmic-cover-enter:hover { color:#fff; }
 .cosmic-cover-enter:focus-visible { outline:2px solid #fff3db; outline-offset:6px; border-radius:4px; }
 @media(max-width:600px) {
   .cosmic-cover { min-height:460px; }
   .cosmic-cover-copy { top:34%; left:6%; right:6%; }
-  .cosmic-cover-copy h2 { font-size:clamp(34px,9vw,50px); letter-spacing:.14em; line-height:1.7; }
+  .cosmic-cover-copy h2 { font-size:clamp(44px,12vw,68px); letter-spacing:0; line-height:1.4; }
   .cosmic-cover-copy h2 span { display:block; }
-  .cosmic-cover-copy p { margin-top:16px; max-width:320px; font-size:11px; letter-spacing:.17em; }
-  .cosmic-cover-enter>span { font-size:12px; }
 }
 @media(max-height:540px) and (min-width:601px) {
   .cosmic-cover { min-height:360px; }
-  .cosmic-cover-copy h2 { font-size:36px; }
-  .cosmic-cover-copy p { margin-top:10px; font-size:12px; }
+  .cosmic-cover-copy h2 { font-size:clamp(48px,7vw,76px); }
   .cosmic-cover-enter { bottom:16px; gap:6px; }
   .cosmic-cover-enter svg { margin-top:4px; }
 }
