@@ -32,6 +32,8 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
+          NEXT_PUBLIC_GUESTBOOK_API: ${{ vars.GUESTBOOK_API }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

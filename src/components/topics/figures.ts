@@ -16,5 +16,5 @@ export const figures: Record<ArticleKey, {hero:Figure; inline:{after:number;figu
  cosmology:{hero:timeline,inline:[{after:2,figure:cmb},{after:3,figure:web}]},
  'dark-sector':{hero:bullet,inline:[{after:3,figure:timeline},{after:5,figure:cmb}]},
  'machine-learning':{hero:network,inline:[{after:0,figure:digits},{after:3,figure:overfit}]},
- finance:{hero:frontier,inline:[{after:1,figure:candle},{after:5,figure:bitcoin}]},
+ finance:{hero:frontier,inline:[{after:6,figure:candle},{after:4,figure:bitcoin}]},
 };

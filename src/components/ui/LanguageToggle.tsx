@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useHydrated } from '@/lib/useHydrated';
 import { motion } from 'framer-motion';
 import { LanguageIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
@@ -13,12 +14,8 @@ interface LanguageToggleProps {
 
 export default function LanguageToggle({ i18n }: LanguageToggleProps) {
   const { locale, setLocale } = useLocaleStore();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHydrated();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!i18n.enabled || !i18n.switcher || i18n.locales.length <= 1) {
     return null;

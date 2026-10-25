@@ -43,7 +43,7 @@ function buildLocaleBootstrapScript(config: ReturnType<typeof getRuntimeI18nConf
   return `
     try {
       const cfg = ${serializedConfig};
-      const storageKey = 'locale-storage-v2';
+      const storageKey = 'locale-storage-v3';
       const normalize = (value) => typeof value === 'string' ? value.trim().replace('_', '-').toLowerCase() : '';
       const matchLocale = (candidate) => {
         const normalized = normalize(candidate);
@@ -137,9 +137,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                const theme = localStorage.getItem('theme-storage-v2');
+                const theme = localStorage.getItem('theme-storage-v3');
                 const parsed = theme ? JSON.parse(theme) : null;
-                const setting = parsed?.state?.theme || 'dark';
+                const setting = parsed?.state?.theme || 'light';
                 const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const effective = setting === 'dark' ? 'dark' : (setting === 'light' ? 'light' : (prefersDark ? 'dark' : 'light'));
                 var root = document.documentElement;
@@ -147,8 +147,8 @@ export default function RootLayout({
                 root.setAttribute('data-theme', effective);
               } catch (e) {
                 var root = document.documentElement;
-                root.classList.add('dark');
-                root.setAttribute('data-theme', 'dark');
+                root.classList.add('light');
+                root.setAttribute('data-theme', 'light');
               }
             `,
           }}

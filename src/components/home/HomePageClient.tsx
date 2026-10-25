@@ -2,6 +2,7 @@
 
 import Profile from '@/components/home/Profile';
 import Guestbook from '@/components/home/Guestbook';
+import CosmicArrival from '@/components/home/CosmicArrival';
 import Image from 'next/image';
 import type { SiteConfig } from '@/lib/config';
 import type { Publication } from '@/types/publication';
@@ -133,6 +134,7 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
           </section>
 
           <Guestbook />
+          <CosmicArrival />
         </div>
       </div>
     </div>

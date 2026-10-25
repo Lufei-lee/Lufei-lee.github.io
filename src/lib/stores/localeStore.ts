@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { matchLocale } from '@/lib/i18n/config';
 import type { I18nRuntimeConfig } from '@/types/i18n';
 
-const LOCALE_STORAGE_KEY = 'locale-storage-v2';
+const LOCALE_STORAGE_KEY = 'locale-storage-v3';
 
 interface LocaleStore {
   locale: string;
@@ -73,7 +73,7 @@ function resolveInitialLocale(config: I18nRuntimeConfig): string {
 }
 
 export const useLocaleStore = create<LocaleStore>()((set, get) => ({
-  locale: 'en',
+  locale: 'zh',
   isReady: false,
   locales: ['en'],
   defaultLocale: 'en',

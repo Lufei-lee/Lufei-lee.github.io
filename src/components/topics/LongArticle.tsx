@@ -8,7 +8,8 @@ import { useLocaleStore } from '@/lib/stores/localeStore';
 import { articles, type ArticleKey } from './articles';
 import { figures, type Figure } from './figures';
 import { maths, equationPlacements } from './maths';
-import { deeperReading, openings } from './deeper-reading';
+import { openings } from './deeper-reading';
+import { plainLanguage } from './plain-language';
 
 function SourcedFigure({figure, lang, hero=false}:{figure:Figure;lang:0|1;hero?:boolean}) {
   return <figure className={hero?'essay-hero':'essay-secondary'}>
@@ -21,7 +22,7 @@ function SourcedFigure({figure, lang, hero=false}:{figure:Figure;lang:0|1;hero?:
 export default function LongArticle({topic}:{topic:ArticleKey}) {
   const zh=useLocaleStore(s=>s.locale)==='zh';
   const a=articles[topic]; const lang:0|1=zh?1:0;
-  const sections=[...a.sections,...deeperReading[topic]];
+  const sections=plainLanguage[topic];
   return <article className="academic-frame long-article">
     <div className="article-tools"><Link href="/">{zh?'← 返回主页':'← Home'}</Link><button onClick={()=>window.print()}>{zh?'打印 / 保存 PDF':'Print / Save PDF'}</button></div>
     <header className="essay-header"><p className="reading-kicker">{zh?'科学与市场 · 长篇阅读':'SCIENCE & MARKETS · LONG READ'}</p><h1>{a.title[lang]}</h1><p>{a.subtitle[lang]}</p><span>{zh?'入门长读 · 约 15 分钟':'An introductory essay · about 15 minutes'}</span></header>
@@ -30,7 +31,7 @@ export default function LongArticle({topic}:{topic:ArticleKey}) {
       <nav className="essay-toc" aria-label={zh?'文章目录':'Contents'}><strong>{zh?'本文内容':'ON THIS PAGE'}</strong>{sections.map((s,i)=><a href={'#part-'+i} key={s[0]}><span>{String(i+1).padStart(2,'0')}</span>{s[lang]}</a>)}<a href="#classics">{zh?'经典文献':'Classic reading'}</a></nav>
       <div className="essay-body"><p className="essay-opening">{openings[topic][lang]}</p>
         {sections.map((s,i)=><section id={'part-'+i} key={s[0]}><p className="reading-kicker">{String(i+1).padStart(2,'0')}</p><h2>{s[lang]}</h2>{s[zh?3:2].split('\n').map((p,j)=><Fragment key={j}><p>{p}</p>{equationPlacements[topic].filter(e=>e.section===i&&e.paragraph===j).map(({equation:n})=><figure className="equation-card" key={n}><div className="math-scroll" tabIndex={0} aria-label={zh?'数学公式':'Mathematical expression'} dangerouslySetInnerHTML={{__html:katex.renderToString(maths[topic][n],{displayMode:true,throwOnError:true,trust:false,output:'htmlAndMathml'})}}/><figcaption>{a.equations[n][zh?2:1]}</figcaption></figure>)}</Fragment>)}{figures[topic].inline.filter(f=>f.after===i).map(f=><SourcedFigure key={f.figure.file} figure={f.figure} lang={lang}/>)}</section>)}
-        <section id="classics" className="classic-list"><h2>{zh?'经典文献 · 从哪里读起':'Classic reading · where to begin'}</h2><p>{zh?'不必一开始就读懂全部推导。可以先看论文提出了什么问题、用了哪些图，再回头检查假设。部分期刊全文需要机构访问。':'There is no need to master every derivation at once. Start with the question and the figures, then return to the assumptions. Some journal full texts require institutional access.'}</p>{a.refs.map((r,i)=><div key={r[0]}><span>0{i+1} / {r[0]}</span><a href={r[2]} target="_blank" rel="noreferrer">{r[1]} ↗</a><p>{r[zh?4:3]}</p></div>)}</section>
+        <section id="classics" className="classic-list"><h2>{zh?'经典文献 · 从哪里读起':'Classic reading · where to begin'}</h2>{a.refs.map((r,i)=><div key={r[0]}><span>0{i+1} / {r[0]}</span><a href={r[2]} target="_blank" rel="noreferrer">{r[1]} ↗</a><p>{r[zh?4:3]}</p></div>)}</section>
       </div>
     </div>
     <nav className="essay-next" aria-label={zh?'继续探索':'Explore another field'}>{Object.entries(articles).filter(([k])=>k!==topic).map(([k,v])=><Link href={k==='dark-sector'?'/dark-matter-dark-energy/':'/'+k+'/'} key={k}>{v.title[lang]} →</Link>)}</nav>

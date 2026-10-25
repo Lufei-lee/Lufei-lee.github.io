@@ -22,9 +22,9 @@ enable_one_page_mode = true
 [i18n]
 enabled = true
 locales = ["zh", "en"]
-default_locale = "en"
+default_locale = "zh"
 mode = "fixed"
-fixed_locale = "en"
+fixed_locale = "zh"
 persist = true
 switcher = true
 

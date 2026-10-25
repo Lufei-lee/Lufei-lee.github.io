@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useHydrated } from '@/lib/useHydrated';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
@@ -38,13 +39,9 @@ function useThemeOptions(): ThemeOption[] {
 
 export function ThemeToggle() {
   const { theme, setTheme } = useThemeStore();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHydrated();
   const messages = useMessages();
   const themes = useThemeOptions();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) {
     return (
@@ -99,14 +96,10 @@ export function ThemeToggle() {
 
 export function ThemeToggleDropdown() {
   const { theme, setTheme } = useThemeStore();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHydrated();
   const [isOpen, setIsOpen] = useState(false);
   const messages = useMessages();
   const themes = useThemeOptions();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) {
     return (
