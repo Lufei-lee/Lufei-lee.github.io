@@ -40,7 +40,7 @@ export default function Guestbook() {
   finally {setToken('');if(widgetId.current)window.turnstile?.reset(widgetId.current);}
  }
  return <section id="guestbook" className="guestbook-section scroll-mt-28">
-  <h2 className="section-title">{zh?'留下一句话':'Leave a message'}</h2>
+  <h2 className="section-title">{zh?'留言':'Guestbook'}</h2>
   <form onSubmit={submit} className="guestbook-form">
    <label htmlFor="guest-name">{zh?'你的名字（选填）':'Your name (optional)'}</label>
    <input id="guest-name" autoComplete="nickname" maxLength={40} value={name} onChange={e=>setName(e.target.value)} placeholder={zh?'不填则显示为「一位访客」':'Leave blank to post as a visitor'}/>
