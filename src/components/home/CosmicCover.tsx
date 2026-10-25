@@ -20,7 +20,7 @@ export default function CosmicCover() {
       />
       <div className="cosmic-cover-shade" aria-hidden="true" />
       <div className="cosmic-cover-copy">
-        <h2 id="cosmic-cover-title" lang="en"><span>Our journey is</span>{' '}<span>the sea of stars</span></h2>
+        <h2 id="cosmic-cover-title" lang="en" aria-label="Our journey is the sea of stars"><span aria-hidden="true">𝒪𝓊𝓇 𝒿ℴ𝓊𝓇𝓃ℯ𝓎 𝒾𝓈</span>{' '}<span aria-hidden="true">𝓉𝒽ℯ 𝓈ℯ𝒶 ℴ𝒻 𝓈𝓉𝒶𝓇𝓈</span></h2>
       </div>
       <a className="cosmic-cover-enter" href="#home-content" aria-label="上滑或点击进入主页 · Scroll to enter">
         <svg width="44" height="28" viewBox="0 0 44 28" fill="none" aria-hidden="true">
