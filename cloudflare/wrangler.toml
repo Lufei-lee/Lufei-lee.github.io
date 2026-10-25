@@ -1,0 +1,12 @@
+name = "lufei-guestbook"
+main = "worker.mjs"
+compatibility_date = "2026-10-25"
+account_id = "accac395ad886d225f1660a1956b8751"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lufei-guestbook"
+database_id = "573d8668-71ba-4300-a636-deea6bc77578"
+
+# TURNSTILE_SECRET is stored only as a Cloudflare Worker secret.

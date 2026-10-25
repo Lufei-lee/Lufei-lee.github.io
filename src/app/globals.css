@@ -3,7 +3,7 @@
 .guestbook-section { background:#f3f0e4; border:1px solid #dedacb; border-radius:14px; padding:clamp(24px,4vw,42px); color:#272b29; }
 .dark .guestbook-section { background:#151d28; border-color:#354052; color:#dce3ec; }
 .guestbook-lead { font-family:Georgia,serif; margin:18px 0 28px; font-size:1.05rem; line-height:1.8; }
-.guestbook-form { display:grid; gap:12px; }
+.guestbook-form { display:grid; gap:12px; margin-top:28px; }
 .guestbook-form>label { font-size:.85rem; }
 .guestbook-form>input,.guestbook-form textarea { border:1px solid #c4c2b7; background:transparent; padding:15px; border-radius:3px; width:100%; color:inherit; }
 .guestbook-form textarea { resize:vertical; min-height:140px; }
