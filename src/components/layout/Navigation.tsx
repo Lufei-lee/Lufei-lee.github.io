@@ -30,7 +30,7 @@ export default function Navigation({ items, siteTitle, i18n, itemsByLocale, site
   const shortTitle = fullTitle.split('·')[0].trim();
 
   return (
-    <header className="site-frame site-frame-nav">
+    <header id="home-content" className="site-frame site-frame-nav">
       <div className="flex h-20 items-center justify-between px-6 md:px-10 lg:px-12">
         <Link href="/#about" className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
           {shortTitle}

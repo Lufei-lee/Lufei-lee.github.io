@@ -8,6 +8,7 @@ import { getConfig } from '@/lib/config';
 import { getRuntimeI18nConfig } from '@/lib/i18n/config';
 import type { SiteConfig } from '@/lib/config';
 import PrivateAnalytics from '@/components/analytics/PrivateAnalytics';
+import CosmicCover from '@/components/home/CosmicCover';
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = getConfig();
@@ -162,6 +163,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <ThemeProvider>
           <LocaleProvider config={runtimeI18n}>
+            <CosmicCover />
             <Navigation
               items={config.navigation}
               siteTitle={config.site.title}
