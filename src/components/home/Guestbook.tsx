@@ -16,6 +16,7 @@ export default function Guestbook() {
  const [name,setName]=useState('');const [message,setMessage]=useState('');
  const [token,setToken]=useState('');
  const [ready,setReady]=useState(false);
+ const [verificationError,setVerificationError]=useState(false);
  const widget=useRef<HTMLDivElement>(null);const widgetId=useRef<string|null>(null);
  useEffect(()=>{
   if(!endpoint)return;
@@ -25,7 +26,7 @@ export default function Guestbook() {
  },[]);
  useEffect(()=>{
   if(!ready||!widget.current||!window.turnstile||!sitekey)return;
-  widgetId.current=window.turnstile.render(widget.current,{sitekey,action:'guestbook',theme:'auto',size:widget.current.clientWidth<300?'compact':'normal',language:zh?'zh-CN':'en',callback:(t:string)=>setToken(t),'expired-callback':()=>setToken(''),'error-callback':()=>{setToken('');setStatus('error');}});
+  widgetId.current=window.turnstile.render(widget.current,{sitekey,action:'guestbook',theme:'auto',size:widget.current.clientWidth<300?'compact':'normal',language:zh?'zh-cn':'en',callback:(t:string)=>{setToken(t);setVerificationError(false);},'expired-callback':()=>setToken(''),'error-callback':()=>{setToken('');setVerificationError(true);}});
   return ()=>{if(widgetId.current)window.turnstile?.remove(widgetId.current);setToken('');};
  },[ready,zh]);
  async function submit(e:React.FormEvent) {
@@ -47,9 +48,10 @@ export default function Guestbook() {
    <label htmlFor="guest-message">{zh?'留言内容':'Your message'}</label>
    <textarea id="guest-message" required maxLength={2000} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder={zh?'打个招呼，分享一个想法，或留下你来过的痕迹。':'Say hi, share a thought, or leave a little sign that you were here.'}/>
    <div className="guestbook-count">{message.length} / 2000</div>
-   {enabled&&<><Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={()=>setReady(true)} onError={()=>setStatus('error')}/><div ref={widget}/></>}
+   {enabled&&<><Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={()=>setReady(true)} onError={()=>setVerificationError(true)}/><div ref={widget}/></>}
+   {verificationError&&<p role="status">{zh?'人机验证暂未通过，输入内容已保留。请在验证框中重试，或刷新页面后重新验证。':'Verification did not complete. Your text is preserved. Retry in the verification box, or reload the page to verify again.'}</p>}
    <button className="guestbook-submit" type="submit" disabled={!enabled||!token||!message.trim()||status==='posting'}>{status==='posting'?(zh?'正在提交…':'Posting…'):(zh?'发布留言':'Post message')}</button>
-   <p role="status" aria-live="polite">{status==='pending'?(zh?'已收到，审核后会显示在这里。谢谢你的留言！':'Received — your message will appear after review. Thank you!'):status==='error'?(zh?'暂时无法连接留言服务，或验证已失效。请稍后重试；输入内容已保留。':'Could not connect or verification expired. Please retry; your text is preserved.'):status==='loading'?(zh?'正在读取留言…':'Loading messages…'):''}</p>
+   <p role="status" aria-live="polite">{status==='pending'?(zh?'已收到，审核后会显示在这里。谢谢你的留言！':'Received — your message will appear after review. Thank you!'):status==='error'?(zh?'留言服务暂时未能完成请求。请稍后重试；输入内容已保留。':'The message service could not complete the request. Please retry; your text is preserved.'):status==='loading'?(zh?'正在读取留言…':'Loading messages…'):''}</p>
   </form>
   <div className="guestbook-messages">{messages.map(m=><article key={m.id} className="guestbook-entry"><header><h3>{m.name|| (zh?'一位访客':'A visitor')}</h3><time dateTime={m.created_at}>{new Intl.DateTimeFormat(zh?'zh-CN':'en-GB',{year:'numeric',month:'short',day:'numeric',timeZone:'Asia/Shanghai'}).format(new Date(m.created_at))}</time></header><p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region|| (zh?'未知':'Unknown')}</small></article>)}</div>
   {enabled&&messages.length===0&&status==='idle'&&<p className="guestbook-notice">{zh?'这里还没有公开留言，欢迎留下第一句话。':'No public messages yet. Be the first to say hello.'}</p>}
