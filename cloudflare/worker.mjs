@@ -33,8 +33,10 @@ export function regionLabel(cf = {}) {
   if (!/^[A-Z]{2}$/.test(cf.country || '') || cf.country === 'XX') return '';
   let country = cf.country;
   try { country = new Intl.DisplayNames(['zh-CN'], {type: 'region'}).of(country); } catch { /* ISO fallback. */ }
-  const region = typeof cf.region === 'string' ? cf.region.slice(0, 80) : '';
-  return [country, region].filter(Boolean).join(' · ');
+  const clean = value => typeof value === 'string' ? value.trim().slice(0, 80) : '';
+  const region = clean(cf.region), city = clean(cf.city);
+  // Cities are approximate network locations; never infer a missing city.
+  return [...new Set([country, region, city].filter(Boolean))].join(' · ');
 }
 
 async function fingerprint(ip, window, secret) {
@@ -44,7 +46,18 @@ async function fingerprint(ip, window, secret) {
   return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
 }
 
-export async function handle(request, env, verifyFetch = fetch) {
+// Dormant until a verified sender and EMAIL binding are explicitly configured.
+export async function notifyOwner(env, id) {
+  if (!env.EMAIL || !env.NOTIFY_FROM) return;
+  await env.EMAIL.send({
+    from: env.NOTIFY_FROM,
+    to: '1191743253@qq.com',
+    subject: '个人主页有一条新留言待审核',
+    text: `你的主页收到了一条新留言。\n留言编号：${id}\n请登录 Cloudflare 查看内容并审核：\nhttps://dash.cloudflare.com/accac395ad886d225f1660a1956b8751/workers/d1/databases/573d8668-71ba-4300-a636-deea6bc77578/studio\n\n此邮件仅为通知，留言仍需审核后才会公开。`,
+  });
+}
+
+export async function handle(request, env, verifyFetch = fetch, context) {
   const path = new URL(request.url).pathname;
   const origin = request.headers.get('Origin');
   if (origin && origin !== ORIGIN) return json({error:'origin_not_allowed'}, 403);
@@ -104,12 +117,18 @@ export async function handle(request, env, verifyFetch = fetch) {
   const id = crypto.randomUUID();
   await env.DB.prepare("INSERT INTO messages(id, name, message, created_at, region, status) VALUES (?, ?, ?, ?, ?, 'pending')")
     .bind(id, name, message, new Date(now).toISOString(), regionLabel(request.cf)).run();
+  if (env.EMAIL && env.NOTIFY_FROM) {
+    // Notification failure must not turn a saved message into a failed submission.
+    const notification = notifyOwner(env, id).catch(() => console.error('guestbook_notification_failed', id));
+    if (context?.waitUntil) context.waitUntil(notification);
+    else await notification;
+  }
   return json({status:'pending', id}, 202);
 }
 
 export default {
-  async fetch(request, env) {
-    try { return await handle(request, env); }
+  async fetch(request, env, context) {
+    try { return await handle(request, env, fetch, context); }
     catch { return json({error:'service_unavailable'}, 503); }
   },
 };

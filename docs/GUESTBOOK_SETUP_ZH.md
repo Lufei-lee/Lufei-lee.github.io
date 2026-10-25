@@ -86,3 +86,26 @@ node --test cloudflare/worker.test.mjs
 - 不必修改主站 DNS，也没有迁移 GitHub Pages 或启用付费计划。
 
 官方参考：[D1](https://developers.cloudflare.com/d1/get-started/)、[Turnstile 服务端验证](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/)。
+
+## 城市属地与邮件提醒（2026-10-25）
+
+新留言会保存 Cloudflare 提供的国家、省/地区及城市；同名城市与地区只显示一次。如果网络元数据没有城市，就只显示已知地区，不猜测、不追溯旧留言，也不公开完整 IP。城市名使用 Cloudflare 原始名称，因此部分为英文。
+
+邮件提醒按你的选择暂不启用，已保留后端接入位置。以后准备好发信域名后：
+
+1. 在 Cloudflare Email Service 配置自己的发信域名，并验证收件地址 `1191743253@qq.com`。
+2. 给现有 Worker 添加 `EMAIL` 发信绑定，将接收地址限制为上述 QQ 邮箱。
+3. 设置 Worker 变量 `NOTIFY_FROM` 为已验证域名下的发信地址。不要把未验证的 QQ 邮箱用作发信地址。
+4. 提交一条测试留言，确认收件箱收到通知。当前没有进行真实邮件发送测试。
+
+代码中的 `notifyOwner` 会在成功存储待审留言后发送一封简短提醒，只包含留言编号和审核入口，不附带访客正文或 IP。通知失败不会影响留言保存；Worker 日志会记录 `guestbook_notification_failed`。当前未设置重试队列。缺少 `EMAIL` 或 `NOTIFY_FROM` 时不会发信。
+
+官方配置：[邮件发送绑定](https://developers.cloudflare.com/email-service/configuration/send-bindings/)。
+
+## 开场与配乐（2026-10-25）
+
+开场延长至约 20 秒，分为早期炽热宇宙、空间膨胀、光的自由传播、宇宙网四幕。保留跳过、Esc 退出与页尾重播；同一会话不反复自动弹出，系统开启减少动态效果时不自动播放动画。
+
+背景音乐使用 Spotify 官方《星际穿越》原声 **Cornfield Chase — Hans Zimmer** 播放器，初始化后调用播放，不下载或重新分发音频。浏览器拦截有声自动播放时，访客需点击播放器或“播放原声”；第三方服务的网络可达性、账号及地区规则决定能否播放和试听范围。开场结束或跳过时销毁播放器，停止音乐。
+
+按你的要求，最后这版原声接入及动画细化未做功能验收；部署流程仍会正常构建。上线后由你体验效果。

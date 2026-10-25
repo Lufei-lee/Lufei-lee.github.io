@@ -26,6 +26,38 @@ function post(body=data, origin='https://lufei-lee.github.io', ip='192.0.2.1') {
 }
 const valid = async () => Response.json({success:true, hostname:'lufei-lee.github.io', action:'guestbook'});
 
+test('region includes a provided city, deduplicates it, and handles missing geolocation', () => {
+  assert.equal(regionLabel({country:'CN',region:'Guangdong',city:'Shenzhen'}),'中国 · Guangdong · Shenzhen');
+  assert.equal(regionLabel({country:'CN',region:'Shanghai',city:'Shanghai'}),'中国 · Shanghai');
+  assert.equal(regionLabel({country:'US',city:'Austin'}),'美国 · Austin');
+  assert.equal(regionLabel({country:'XX',city:'Unknown'}),'');
+  assert.equal(regionLabel({country:'CN',region:'Shanghai',city:null}),'中国 · Shanghai');
+});
+
+test('optional notification follows persistence and never changes moderation', async () => {
+  const {sqlite,env}=fixture();const sent=[];const background=[];
+  env.NOTIFY_FROM='guestbook@example.test';
+  env.EMAIL={async send(mail){assert.equal(sqlite.prepare('SELECT count(*) AS n FROM messages').get().n,1);sent.push(mail);}};
+  const result=await handle(post(),env,valid,{waitUntil:p=>background.push(p)});
+  await Promise.all(background);
+  assert.equal(result.status,202);assert.equal(sent.length,1);
+  assert.equal(sent[0].to,'1191743253@qq.com');
+  assert.ok(!sent[0].text.includes(data.message));
+  assert.equal(sqlite.prepare('SELECT status FROM messages').get().status,'pending');
+  assert.equal((await handle(post(),env,async()=>Response.json({success:false}))).status,403);
+  assert.equal(sent.length,1);
+  sqlite.close();
+});
+
+test('notification failure does not lose an accepted message', async (t) => {
+  const {sqlite,env}=fixture();
+  t.mock.method(console,'error',()=>{});
+  env.NOTIFY_FROM='guestbook@example.test';env.EMAIL={async send(){throw Error('offline');}};
+  assert.equal((await handle(post(),env,valid)).status,202);
+  assert.equal(sqlite.prepare('SELECT status FROM messages').get().status,'pending');
+  sqlite.close();
+});
+
 test('valid input persists privately; approval makes only public fields visible', async () => {
   const {sqlite,env} = fixture();
   const response = await handle(post({...data, message:"<script>alert('x')</script>"}), env, valid);
