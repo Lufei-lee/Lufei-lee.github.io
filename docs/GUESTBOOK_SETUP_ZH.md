@@ -106,7 +106,7 @@ node --test cloudflare/worker.test.mjs
 
 原开场动画、倒计时、重播按钮与 Spotify 音乐播放器已移除。
 
-首页顶部改用你提供的 `figures/carina_nebula~orig.png`，原样复制到 `public/carina-nebula.png`，作为全屏背景。题字仅保留英文“Our journey is the sea of stars”，使用本地托管的 Great Vibes 花体，放大并加粗。字体许可证保存在 `public/fonts/GreatVibes-OFL.txt`。移动端自动调整字号与换行。底部仅保留箭头，不显示中英文滚动提示文字。
+首页顶部改用你提供的 `figures/carina_nebula~orig.png`，原样复制到 `public/carina-nebula.png`，作为全屏背景。题字仅保留英文“Our journey is the sea of stars”，使用 Georgia 粗斜体衬线字，让字母清晰分离，保留渐显与微光效果。移动端自动调整字号与换行。底部仅保留箭头，不显示中英文滚动提示文字。
 
 封面使用正常页面滚动：手机向上滑动、电脑向下滚动或点击底部箭头，都可进入原主页。不设置自动退出、不锁定滚动，也不播放音频。四篇文章页面不增加封面，主页的已有锚点链接仍可直达对应内容。
 

@@ -50,22 +50,15 @@
   text-align:center;
   text-shadow:0 2px 8px rgba(0,0,0,.65),0 6px 40px rgba(0,0,0,.45);
 }
-@font-face {
-  font-family:"Cover Script";
-  src:url("/fonts/GreatVibes-Regular.ttf") format("truetype");
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
-}
 .cosmic-cover-copy h2 {
   margin:0 auto;
   max-width:1400px;
-  font-family:"Cover Script","Snell Roundhand","Apple Chancery",cursive;
-  font-size:clamp(60px,7.4vw,118px);
-  font-weight:600;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(42px,6vw,96px);
+  font-weight:700;
+  font-style:italic;
   line-height:1.3;
-  letter-spacing:.01em;
-  -webkit-text-stroke:.3px currentColor;
+  letter-spacing:-.025em;
   text-wrap:balance;
   animation:cover-script-glow 3s 1.8s ease-in-out both;
 }
@@ -109,12 +102,12 @@
 @media(max-width:600px) {
   .cosmic-cover { min-height:460px; }
   .cosmic-cover-copy { top:34%; left:6%; right:6%; }
-  .cosmic-cover-copy h2 { font-size:clamp(44px,12vw,68px); letter-spacing:0; line-height:1.4; }
+  .cosmic-cover-copy h2 { font-size:clamp(30px,8.6vw,50px); letter-spacing:0; line-height:1.4; }
   .cosmic-cover-copy h2 span { display:block; }
 }
 @media(max-height:540px) and (min-width:601px) {
   .cosmic-cover { min-height:360px; }
-  .cosmic-cover-copy h2 { font-size:clamp(48px,7vw,76px); }
+  .cosmic-cover-copy h2 { font-size:clamp(36px,5.6vw,64px); }
   .cosmic-cover-enter { bottom:16px; gap:6px; }
   .cosmic-cover-enter svg { margin-top:4px; }
 }
