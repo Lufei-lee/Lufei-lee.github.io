@@ -96,8 +96,8 @@ export default function Guestbook() {
    {enabled&&<><Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={()=>setReady(true)} onError={()=>setVerificationError(true)}/><div ref={widget}/></>}
    {verificationError&&<p role="status">{zh?'人机验证暂未完成。若验证框无法加载，可尝试开启代理/VPN或切换网络，再重新验证。输入内容仍保留在当前页面。':'Verification did not complete. If the verification box cannot load, try a proxy/VPN or another network, then verify again. Your text remains on this page.'}</p>}
    <button className="guestbook-submit" type="submit" disabled={!enabled||!token||!message.trim()||status==='posting'}>{status==='posting'?(zh?'正在提交…':'Posting…'):(zh?'发布留言':'Post message')}</button>
-   <p role="status" aria-live="polite">{status==='pending'?(zh?'已收到，审核后会显示在这里。谢谢你的留言！':'Received — your message will appear after review. Thank you!'):postError?failureText(postError,zh):''}</p>
-   {loadError&&status!=='posting'&&status!=='pending'&&!postError&&<p role="status">{loadError!=='network'&&(zh?'留言列表未能加载。':'Could not load messages. ')}{failureText(loadError,zh)}</p>}
+   <p role="status" aria-live="polite" className={postError&&status!=='pending'?'guestbook-error':undefined}>{postError&&status!=='pending'&&<span aria-hidden="true">✕ </span>}{status==='pending'?(zh?'已收到，审核后会显示在这里。谢谢你的留言！':'Received — your message will appear after review. Thank you!'):postError?failureText(postError,zh):''}</p>
+   {loadError&&status!=='posting'&&status!=='pending'&&!postError&&<p role="status" className="guestbook-error"><span aria-hidden="true">✕ </span>{loadError!=='network'&&(zh?'留言列表未能加载。':'Could not load messages. ')}{failureText(loadError,zh)}</p>}
    {loading&&status==='idle'&&<p role="status">{zh?'正在读取留言…':'Loading messages…'}</p>}
 
   </form>
