@@ -2,7 +2,7 @@
 title = "Lufei · Cosmology"
 description = "Lufei's academic homepage for cosmology, large-scale structure, and scientific computing."
 favicon = "/favicon.svg"
-last_updated = "October 2026"
+last_updated = "2026-10-26"
 
 [author]
 name = "Lufei"
@@ -45,10 +45,16 @@ target = "research"
 href = "/research"
 
 [[navigation]]
-title = "Profile"
+title = "Education"
 type = "page"
 target = "cv"
 href = "/cv"
+
+[[navigation]]
+title = "Articles"
+type = "section"
+target = "articles"
+href = "/#articles"
 
 [[navigation]]
 title = "Guestbook"
