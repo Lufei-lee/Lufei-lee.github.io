@@ -1,32 +1,34 @@
 import Image from 'next/image';
 import katex from 'katex';
-
-function Equation({ tex, caption }: { tex: string; caption: string }) {
-  return <figure className="equation-card"><div className="math-scroll" tabIndex={0} dangerouslySetInnerHTML={{ __html: katex.renderToString(tex, { displayMode: true, throwOnError: true, trust: false, output: 'htmlAndMathml' }) }} /><figcaption>{caption}</figcaption></figure>;
-}
+import ResearchProse from './ResearchProse';
+import { researchCopy } from './research-copy';
 
 export default function DarkSectorResearch({ zh }: { zh: boolean }) {
+  const lang = zh ? 'zh' : 'en';
   return <>
     <section id="pandax">
       <p className="reading-kicker">09</p>
       <h2>{zh ? '在锦屏山下，等待暗物质的轻轻一碰' : 'PandaX: listening for a tiny collision beneath Jinping'}</h2>
-      <p>{zh ? '这些寻找并不遥远。上海交通大学发起并主导的 PandaX 合作组，把探测器放在四川锦屏山约 2400 米的岩石屏蔽之下，用岩层挡住大量宇宙线，给极微弱的信号留出一个安静的环境。液氙既是等待碰撞的靶，也是记录能量的介质：一次相互作用可以产生闪光和自由电子，电子被电场带到气相后，又产生第二次发光。两次信号的强弱与时间间隔，帮助研究者重建事件的位置和性质。' : 'PandaX, initiated and led by Shanghai Jiao Tong University, searches for rare interactions beneath about 2,400 metres of rock at Jinping in Sichuan. The rock suppresses cosmic rays. Liquid xenon acts as both target and signal medium: an interaction can produce a prompt flash and free electrons. An electric field carries the electrons into gas, where they produce a second light signal. Their relative sizes and timing help reconstruct the location and character of an event.'}</p>
-      <p>{zh ? '截至 2026 年 10 月，已发表的代表性直接搜索结果包括 PandaX-4T 的 1.54 吨·年数据分析（2025 年发表于 PRL）：没有看到显著超出背景预期的核反冲事件。在暗物质质量为 40 GeV/c² 时，自旋无关暗物质—核子散射截面的 90% 置信水平上限达到 1.6 × 10⁻⁴⁷ cm²。这里的“截面”衡量相互作用发生的几率；限值越低，能排除的相互作用越弱。它是在压缩候选模型的空间，还不是探测到暗物质。' : 'As of October 2026, a representative published direct-search result is the 1.54 tonne-year PandaX-4T analysis, published in PRL in 2025. It found no significant excess of nuclear recoils over background. At a dark-matter mass of 40 GeV/c², the 90% confidence-level upper limit on the spin-independent dark-matter–nucleon cross section reaches 1.6 × 10⁻⁴⁷ cm². A cross section measures interaction probability: a lower limit tests weaker interactions. This narrows the candidate space rather than establishing a detection.'} <a href="https://arxiv.org/abs/2408.00664" target="_blank" rel="noreferrer">{zh ? '论文 ↗' : 'Paper ↗'}</a></p>
-      <p>{zh ? '2026 年 6 月，合作组与理论团队还利用氙-136 双贝塔衰变的电子能谱，约束一种可能连接中微子与暗物质的轻标量粒子，并结合宇宙学数据限制相关暗物质自相互作用模型。换句话说，同一台探测器不仅能“等碰撞”，也能从已知衰变的能量分布中寻找新物理留下的细微缺口。' : 'In June 2026, a collaboration with theorists used the electron-energy spectrum of xenon-136 double-beta decay to constrain a light scalar that could connect neutrinos with dark matter. Combining this with cosmological information also constrains related dark-matter self-interaction models. The detector can therefore look for new physics both through rare collisions and through subtle changes to a known decay spectrum.'} <a href="https://tdli.sjtu.edu.cn/post/16008" target="_blank" rel="noreferrer">{zh ? '交大成果介绍 ↗' : 'SJTU research report ↗'}</a></p>
-      <p>{zh ? '实验本身也在升级：PandaX-4T 已于 2026 年 4 月结束阶段性运行，合作组正在推进 PandaX-20T。更大的靶质量、更低的背景，意味着有机会在更长的等待中辨认更罕见的相互作用。' : 'The apparatus is also evolving: PandaX-4T concluded its staged operation in April 2026, and the collaboration is advancing PandaX-20T. A larger target and lower backgrounds open the way to rarer interactions.'} <a href="https://pandax.sjtu.edu.cn/node/499" target="_blank" rel="noreferrer">{zh ? '官方升级进展 ↗' : 'Official upgrade update ↗'}</a></p>
+      <ResearchProse>{researchCopy.pandax[lang]}</ResearchProse>
       <figure className="essay-secondary">
         <a href="/topics/pandax-20t.png" target="_blank" rel="noreferrer" className="figure-surface"><Image src="/topics/pandax-20t.png" width={1280} height={642} unoptimized alt={zh ? 'PandaX-20T 地下实验设施布局示意图，展示水屏蔽、时间投影室和低温纯化系统' : 'PandaX-20T facility layout showing water shielding, the time projection chamber and supporting systems'} /></a>
         <figcaption>{zh ? 'PandaX-20T 设施布局示意图。水屏蔽包围核心探测器，低温、纯化等系统共同维持安静而稳定的探测环境。' : 'PandaX-20T facility layout. Water shielding surrounds the central detector, supported by cryogenic and purification systems.'}<br/><a href="https://pandax.sjtu.edu.cn/node/499" target="_blank" rel="noreferrer">{zh ? '图片：PandaX 合作组，2026 年升级公告（原图）' : 'Image: PandaX Collaboration, 2026 upgrade announcement (unmodified)'}</a></figcaption>
       </figure>
+      <p><a href="https://pandax.sjtu.edu.cn/" target="_blank" rel="noopener noreferrer">{zh ? 'PandaX 官方网站 ↗' : 'PandaX official website ↗'}</a></p>
     </section>
     <section id="my-dark-energy-research">
       <p className="reading-kicker">10</p>
       <h2>{zh ? '我的研究：让更多暗能量模型算得更快' : 'My research: faster predictions for a wider range of dark-energy models'}</h2>
-      <p>{zh ? '在暗能量这一侧，我关注的是怎样更快地比较不同宇宙模型。如果暗能量的性质随时间变化，宇宙膨胀和结构生长也会改变。一个常用的描述只需要两个参数：w₀ 表示今天的状态，wₐ 描述它随尺度因子变化的趋势。把今天的尺度因子 a 定为 1，就得到下面的写法；w₀ = −1、wₐ = 0 对应宇宙学常数。' : 'On the dark-energy side, I work on comparing cosmological models more efficiently. If dark energy evolves, it changes both expansion and structure growth. A common description uses two parameters: w₀ gives its present equation of state, while wₐ describes its variation with scale factor. Setting the present scale factor a to 1 gives the expression below; w₀ = −1 and wₐ = 0 recover a cosmological constant.'}</p>
-      <Equation tex={String.raw`w(a)=w_0+(1-a)w_a`} caption={zh ? 'w 是暗能量压强与能量密度之比；a 越小，对应越早的宇宙。' : 'w is the ratio of dark-energy pressure to energy density; smaller a describes an earlier Universe.'}/>
-      <p>{zh ? '难点在于计算成本：直接为每一组参数重新做宇宙模拟很昂贵，而已经训练好的宇宙学模拟器，又只覆盖有限的参数范围。我的研究利用“谱等效”的思路，给目标宇宙寻找一个模拟器能够处理的等效模型：在指定红移匹配到最后散射面的共动距离，并匹配物质起伏的线性振幅，再借助等效模型近似预测目标的物质功率谱。功率谱可以理解为一份清单，记录宇宙中不同尺度的聚集有多强。' : 'The obstacle is computational cost. Running a new cosmological simulation for every parameter choice is expensive, while an existing emulator covers only a limited domain. My work uses spectral equivalence: at a specified redshift, find a supported auxiliary model with matching comoving distance to last scattering and matching linear clustering amplitude. Its spectrum can then approximate the target matter power spectrum—a summary of how strongly matter clusters on different scales.'}</p>
-      <p>{zh ? '寻找等效模型本身也需要反复积分与求根。因此，我用两阶段机器学习来加速这一步：第一阶段预测距离匹配所需的暗能量参数，第二阶段预测初始扰动振幅的修正。当前采用两阶段树模型；数值求解负责提供训练参考，实际调用时由模型快速给出等效参数。这样可以把已有模拟器接到更多目标模型上，而不必为每个新目标从头训练一套模拟器。' : 'Constructing that auxiliary model repeatedly also costs time through integration and root finding. I accelerate this step with two successive machine-learning predictors: the first estimates the distance-matched dark-energy parameter, and the second the primordial-amplitude correction. The current method uses two tree-based models trained on numerical reference solutions. Fast parameter predictions then connect the existing emulator to a broader set of targets.'}</p>
-      <p>{zh ? '目前的单线程对照中，等效参数计算的中位耗时由约 2.54 秒降至 4.34 毫秒，总耗时加速约 623 倍。这里加速的是参数匹配步骤，不是整场宇宙模拟。精度则通过未参与训练的目标模型，以及九个已发表暗能量 N 体模型上的完整预测流程来比较。对我而言，这项工作的意义是让更多暗能量假设进入可实际计算、可与观测比较的范围。' : 'In the current single-thread comparison, median equivalent-parameter computation falls from about 2.54 seconds to 4.34 milliseconds, with an aggregate speedup of roughly 623 times. This accelerates parameter matching, not an entire cosmological simulation. Accuracy is assessed on targets held out from training and through the complete prediction pipeline for nine published dark-energy N-body models. The aim is to make more dark-energy hypotheses practical to calculate and compare with observations.'}</p>
+      <ResearchProse>{researchCopy.de_intro[lang]}</ResearchProse>
+      <figure className="equation-card"><div className="math-scroll" tabIndex={0} aria-label={zh ? '动态暗能量状态方程' : 'Dynamical dark-energy equation of state'} dangerouslySetInnerHTML={{ __html: katex.renderToString(String.raw`w(a)=w_0+(1-a)w_a.`, { displayMode: true, throwOnError: true, trust: false, output: 'htmlAndMathml' }) }} /></figure>
+      <ResearchProse>{researchCopy.de_before[lang]}</ResearchProse>
+      <figure className="essay-secondary">
+        <a href="/topics/dark-energy-equivalent-models.png" target="_blank" rel="noreferrer" className="figure-surface paper">
+          <Image src="/topics/dark-energy-equivalent-models.png" width={1132} height={934} unoptimized alt={zh ? '动态暗能量参数空间：灰色 CSST 插值器覆盖区域、蓝色 DESI DR2+CMB 约束、九个 DDE 目标模型和不同红移的等效参数位置' : 'Dark-energy parameter space: grey CSST emulator coverage, blue DESI DR2+CMB constraints, nine DDE target models and equivalent parameter positions at different redshifts'} />
+        </a>
+        <figcaption>{zh ? '研究配图：灰色区域为 CSST 插值器的直接覆盖范围，蓝色为图中采用的 DESI DR2+CMB 约束。下方彩色圆点和黑色星号标出 DDE 目标模型，上方随色条变化的标记表示不同红移 z 的等效参数位置。点击可查看原图。' : 'Research figure: grey denotes direct CSST emulator coverage; blue shows the DESI DR2+CMB constraints used in the figure. Coloured dots and the black star below mark DDE targets; the upper markers follow the colour bar to indicate equivalent parameters at different redshifts z. Click to view the original image.'}</figcaption>
+      </figure>
+      <ResearchProse>{researchCopy.de_after[lang]}</ResearchProse>
     </section>
   </>;
 }
