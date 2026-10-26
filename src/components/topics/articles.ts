@@ -227,9 +227,9 @@ export const articles = {
     ],
     "equations": [
       [
-        "h = φ(Wx + b)",
-        "x: input; W: weights; b: bias; φ: nonlinear activation.",
-        "x：输入；W：权重；b：偏置；φ：非线性激活。"
+        "h = ϕ(Wx + b)",
+        "x: input; W: weights; b: bias; ϕ: nonlinear activation.",
+        "x：输入；W：权重；b：偏置；ϕ：非线性激活。"
       ],
       [
         "L(θ) = (1/N) Σᵢ [fθ(xᵢ) − yᵢ]² + λ‖θ‖²",
