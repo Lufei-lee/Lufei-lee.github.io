@@ -172,8 +172,8 @@ export const articles = {
         "Clowe et al. (2006)",
         "A Direct Empirical Proof of the Existence of Dark Matter",
         "https://arxiv.org/abs/astro-ph/0608407",
-        "Compare the gas and lensing mass maps; the title is the authors’ wording.",
-        "比较气体和透镜质量图；标题保留作者原文。"
+        "Compare the gas and lensing mass maps.",
+        "比较气体和透镜质量图。"
       ]
     ]
   },

@@ -24,3 +24,11 @@ Legacy expansion.svg, learning.svg and markets.svg remain in version history/sou
 - Display equations use bundled fonts and MathML; no external math CDN. Long equations are split into lines and containers can scroll on narrow screens.
 - The WMAP timeline is a historical schematic. Its dates are approximate, its time axis is compressed, and its funnel is not the shape or edge of the Universe.
 - Financial text is educational: no investment recommendations or forecasts. Background checks: https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks ; https://bitcoin.org/bitcoin.pdf . ML evaluation reference: https://scikit-learn.org/stable/model_selection.html .
+
+
+## PandaX addition — 2026-10-26
+
+- `public/topics/pandax-20t.png`: original facility layout from the PandaX Collaboration, https://pandax.sjtu.edu.cn/node/499 ; asset https://pandax.sjtu.edu.cn/sites/pandax/files/upload/pandax-20T.png . Attribution and source link displayed with image; no alteration.
+- Direct-search result: https://arxiv.org/abs/2408.00664 (PRL 134, 011805, 2025).
+- 2026 scalar-mediated interaction constraints: https://tdli.sjtu.edu.cn/post/16008 .
+- Personal research description checked against the current local manuscript and 2026-10-24 Method 2 handoff; no unpublished manuscript or research data files uploaded.
