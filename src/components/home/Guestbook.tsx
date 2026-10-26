@@ -36,8 +36,8 @@ async function requestMessages(init: RequestInit = {}, signal?: AbortSignal) {
 function failureText(kind: Failure, zh: boolean) {
  const copy = {
   network: [
-   '无法连接留言服务。部分网络直接连接时可能无法加载或提交留言，请尝试开启代理/VPN，或切换网络后重试。输入内容仍保留在当前页面；若刚刚点击过提交，也可能已送达但未收到回执，请勿连续重复提交。',
-   'Cannot reach the guestbook service. Some networks may not support a direct connection. Try enabling a proxy/VPN or switching networks, then retry. Your text remains on this page. If you just submitted, it may have arrived without a receipt; avoid repeated submissions.'
+   '留言列表未能加载。无法连接留言服务。请尝试开启代理/VPN后刷新网页重试。输入内容仍保留在当前页面；请勿连续重复提交。',
+   'The message list could not be loaded. Cannot connect to the guestbook service. Please try enabling a proxy/VPN, then refresh the page and try again. Your text remains on the current page; please avoid repeated submissions.'
   ],
   verification: ['验证已过期或未通过，请重新完成人机验证后提交。输入内容仍保留在当前页面。','Verification expired or failed. Complete a fresh verification and submit again. Your text remains on this page.'],
   rate: ['提交次数较多，请约 10 分钟后再试。输入内容仍保留在当前页面。','Too many submissions. Please try again in about 10 minutes. Your text remains on this page.'],
@@ -53,7 +53,6 @@ export default function Guestbook() {
  const [loading,setLoading]=useState(Boolean(endpoint));
  const [loadError,setLoadError]=useState<Failure|null>(null);
  const [postError,setPostError]=useState<Failure|null>(null);
- const [loadAttempt,setLoadAttempt]=useState(0);
  const [name,setName]=useState('');const [message,setMessage]=useState('');
  const [token,setToken]=useState('');
  const [ready,setReady]=useState(false);
@@ -70,7 +69,7 @@ export default function Guestbook() {
   }).catch(e=>{if(!controller.signal.aborted)setLoadError(e instanceof GuestbookError?e.kind:'service');})
    .finally(()=>{if(!controller.signal.aborted)setLoading(false);});
   return ()=>controller.abort();
- },[loadAttempt]);
+ },[]);
  useEffect(()=>{
   if(!ready||!widget.current||!window.turnstile||!sitekey)return;
   widgetId.current=window.turnstile.render(widget.current,{sitekey,action:'guestbook',theme:'auto',size:widget.current.clientWidth<300?'compact':'normal',language:zh?'zh-cn':'en',callback:(t:string)=>{setToken(t);setVerificationError(false);},'expired-callback':()=>setToken(''),'error-callback':()=>{setToken('');setVerificationError(true);}});
@@ -98,9 +97,8 @@ export default function Guestbook() {
    {verificationError&&<p role="status">{zh?'人机验证暂未完成。若验证框无法加载，可尝试开启代理/VPN或切换网络，再重新验证。输入内容仍保留在当前页面。':'Verification did not complete. If the verification box cannot load, try a proxy/VPN or another network, then verify again. Your text remains on this page.'}</p>}
    <button className="guestbook-submit" type="submit" disabled={!enabled||!token||!message.trim()||status==='posting'}>{status==='posting'?(zh?'正在提交…':'Posting…'):(zh?'发布留言':'Post message')}</button>
    <p role="status" aria-live="polite">{status==='pending'?(zh?'已收到，审核后会显示在这里。谢谢你的留言！':'Received — your message will appear after review. Thank you!'):postError?failureText(postError,zh):''}</p>
-   {loadError&&status!=='posting'&&status!=='pending'&&!postError&&<p role="status">{zh?'留言列表未能加载。':'Could not load messages. '}{failureText(loadError,zh)}</p>}
+   {loadError&&status!=='posting'&&status!=='pending'&&!postError&&<p role="status">{loadError!=='network'&&(zh?'留言列表未能加载。':'Could not load messages. ')}{failureText(loadError,zh)}</p>}
    {loading&&status==='idle'&&<p role="status">{zh?'正在读取留言…':'Loading messages…'}</p>}
-   {(loadError||postError==='network')&&<button type="button" onClick={()=>setLoadAttempt(n=>n+1)} disabled={loading||status==='posting'}>{loading?(zh?'正在重试…':'Retrying…'):(zh?'重新加载留言列表':'Retry loading messages')}</button>}
 
   </form>
   <div className="guestbook-messages">{messages.map(m=><article key={m.id} className="guestbook-entry"><header><h3>{m.name|| (zh?'一位访客':'A visitor')}</h3><time dateTime={m.created_at}>{new Intl.DateTimeFormat(zh?'zh-CN':'en-GB',{year:'numeric',month:'short',day:'numeric',timeZone:'Asia/Shanghai'}).format(new Date(m.created_at))}</time></header><p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region|| (zh?'未知':'Unknown')}</small></article>)}</div>
