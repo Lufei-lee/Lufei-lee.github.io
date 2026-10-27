@@ -2,13 +2,13 @@
 title = "Lufei · Cosmology"
 description = "Lufei's academic homepage for cosmology, large-scale structure, and scientific computing."
 favicon = "/favicon.svg"
-last_updated = "2026-10-26"
+last_updated = "2026-10-27"
 
 [author]
 name = "Lufei"
 title = "Undergraduate Student · Cosmology"
 institution = "Shanghai Jiao Tong University"
-avatar = "/cosmic-web-hero.png"
+avatar = "/profile-cosmo-cat.png"
 
 [social]
 github = "https://github.com/Lufei-lee"

@@ -21,10 +21,10 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
       <div className="profile-image">
         <Image
           src={author.avatar}
-          alt={locale === 'zh' ? '宇宙网与黑洞图像' : 'Cosmic web and black hole'}
+          alt={locale === 'zh' ? '宇宙学书桌旁的橘白猫头像' : 'An orange and white cat at a cosmology desk'}
           width={640}
           height={640}
-          className="h-full w-full object-cover object-[62%_center]"
+          className="h-full w-full object-cover object-center"
           priority
         />
         <div className="profile-image-label">COSMOLOGY</div>
