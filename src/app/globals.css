@@ -350,6 +350,7 @@ html.light .academic-frame {
 
 .research-card-media { aspect-ratio: 16 / 8.5; overflow: hidden; background: #071222; }
 .research-card-media img { width: 100%; height: 100%; object-fit: contain; background:#fff; transition: transform 350ms ease; }
+.research-card-media img.research-card-image-cover { object-fit: cover; }
 .research-card:hover .research-card-media img { transform: scale(1.025); }
 .research-card-body { padding: 1.2rem 1.3rem 1.3rem; }
 .research-card h3 { color: var(--primary); font-size: 1.06rem; font-weight: 700; }

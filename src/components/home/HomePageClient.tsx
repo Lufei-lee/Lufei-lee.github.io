@@ -139,7 +139,7 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
             <div className="grid gap-4 sm:grid-cols-2">
               {text.areas.map((area, index) => (
                 <a key={area.title} href={area.href} className="research-card group">
-                  <div className="research-card-media"><Image src={area.image} alt="" width={800} height={450} sizes="(max-width: 640px) 100vw, 430px" /></div>
+                  <div className="research-card-media"><Image src={area.image} alt="" width={800} height={450} sizes="(max-width: 640px) 100vw, 430px" className={area.href === '/dark-matter-dark-energy/' ? 'research-card-image-cover' : undefined} /></div>
                   <span className="orbit-index">0{index + 1}</span>
                   <div className="research-card-body">
                     <h3>{area.title}</h3>
