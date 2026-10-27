@@ -43,3 +43,9 @@ title = "留言"
 type = "section"
 target = "guestbook"
 href = "/#guestbook"
+
+[[navigation]]
+title = "友情链接"
+type = "section"
+target = "friends"
+href = "/#friends"

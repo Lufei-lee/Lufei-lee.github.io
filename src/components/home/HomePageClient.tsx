@@ -2,6 +2,7 @@
 
 import Profile from '@/components/home/Profile';
 import Guestbook from '@/components/home/Guestbook';
+import FriendLinks from '@/components/home/FriendLinks';
 import Image from 'next/image';
 import type { SiteConfig } from '@/lib/config';
 import type { Publication } from '@/types/publication';
@@ -180,6 +181,7 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
           </section>
 
           <Guestbook />
+          <FriendLinks />
         </div>
       </div>
     </div>
