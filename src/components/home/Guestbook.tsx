@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Script from 'next/script';
 import { useLocaleStore } from '@/lib/stores/localeStore';
+import { formatGuestbookTime } from '@/lib/guestbookTime';
 
 type Message = {id:string; name:string; message:string; created_at:string; region:string};
 type Turnstile = {render:(el:HTMLElement,opts:Record<string,unknown>)=>string; reset:(id:string)=>void; remove:(id:string)=>void};
@@ -138,7 +139,8 @@ export default function Guestbook() {
    {loading&&status==='idle'&&<p role="status">{zh?'正在读取留言…':'Loading messages…'}</p>}
 
   </form>
-  <div className="guestbook-messages">{messages.map(m=><article key={m.id} className="guestbook-entry"><header><h3>{m.name|| (zh?'一位访客':'A visitor')}</h3><time dateTime={m.created_at}>{new Intl.DateTimeFormat(zh?'zh-CN':'en-GB',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZone:'Asia/Shanghai'}).format(new Date(m.created_at))}</time></header><p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region|| (zh?'未知':'Unknown')}</small></article>)}</div>
+  {messages.length>0&&<p className="guestbook-notice">{zh?'留言时间均为北京时间（UTC+8），采用24小时制。':'All message times are in Beijing time (UTC+8), using the 24-hour clock.'}</p>}
+  <div className="guestbook-messages">{messages.map(m=><article key={m.id} className="guestbook-entry"><header><h3>{m.name|| (zh?'一位访客':'A visitor')}</h3><time dateTime={m.created_at} title={zh?'北京时间（UTC+8）':'Beijing time (UTC+8)'}>{formatGuestbookTime(m.created_at)||(zh?'时间未知':'Time unavailable')}</time></header><p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region|| (zh?'未知':'Unknown')}</small></article>)}</div>
   {enabled&&messages.length===0&&status==='idle'&&!loading&&!loadError&&<p className="guestbook-notice">{zh?'这里还没有公开留言，欢迎留下第一句话。':'No public messages yet. Be the first to say hello.'}</p>}
   <p className="guestbook-notice">{zh?'也可以使用下方的 GitHub 留言入口，登录 GitHub 留言。':'You can also sign in to GitHub and leave a message using the link below.'}</p>
   <a className="guestbook-archive" href="https://github.com/Lufei-lee/Lufei-lee.github.io/discussions/1" target="_blank" rel="noreferrer">{zh?'原 GitHub 留言板 ↗':'Original GitHub guestbook ↗'}</a>
