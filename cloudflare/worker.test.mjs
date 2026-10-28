@@ -7,7 +7,7 @@ import worker, { handle, regionLabel } from './worker.mjs';
 function fixture() {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec(readFileSync(new URL('./schema.sql', import.meta.url), 'utf8'));
-  const DB = {prepare(sql) {
+  const DB = {async batch(statements) { sqlite.exec('BEGIN'); try {const result=await Promise.all(statements.map(s=>s.run()));sqlite.exec('COMMIT');return result;} catch(e) {sqlite.exec('ROLLBACK');throw e;} },prepare(sql) {
     const statement = sqlite.prepare(sql);
     let args = [];
     return {bind(...values) {args = values; return this;},
@@ -71,7 +71,7 @@ test('valid input persists privately; approval makes only public fields visible'
   assert.equal(publicData.messages.length,0);
   sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(id);
   publicData = await (await handle(new Request('https://example.test/messages'),env)).json();
-  assert.deepEqual(Object.keys(publicData.messages[0]).sort(),['id','name','message','created_at','region'].sort());
+  assert.deepEqual(Object.keys(publicData.messages[0]).sort(),['id','name','message','created_at','region','likes','replies'].sort());
   assert.ok(!JSON.stringify(publicData).includes('192.0.2.1'));
   sqlite.close();
 });
@@ -116,4 +116,54 @@ test('missing service configuration and verification outage fail closed', async 
   assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM messages').get().n,0);
   assert.equal(regionLabel({country:'XX'}),'');
   sqlite.close();
+});
+
+test('replies require a public root, stay pending, and disappear with their parent',async()=>{
+ const {sqlite,env}=fixture();
+ const {id}=await (await handle(post(),env,valid)).json();
+ assert.equal((await handle(post({...data,parent_id:id}),env,valid)).status,404);
+ sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(id);
+ const response=await handle(post({...data,parent_id:id}),env,valid);
+ assert.equal(response.status,202);const reply=await response.json();
+ const read=async()=> (await (await handle(new Request('https://example.test/messages'),env)).json()).messages;
+ assert.equal((await read())[0].replies.length,0);
+ sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(reply.id);
+ assert.equal((await read())[0].replies[0].id,reply.id);
+ assert.equal((await handle(post({...data,parent_id:reply.id}),env,valid)).status,400);
+ sqlite.prepare("UPDATE messages SET status='rejected' WHERE id=?").run(id);
+ assert.deepEqual(await read(),[]);sqlite.close();
+});
+test('likes are verified, idempotent, reversible and never expose visitor hashes',async()=>{
+ const {sqlite,env}=fixture();const {id}=await (await handle(post(),env,valid)).json();
+ const like=(liked=true,visitor_id='11111111-1111-4111-8111-111111111111')=>new Request(`https://example.test/messages/${id}/like`,{method:'POST',headers:{Origin:'https://lufei-lee.github.io','Content-Type':'application/json','CF-Connecting-IP':'192.0.2.1'},body:JSON.stringify({token:'test',visitor_id,liked})});
+ assert.equal((await handle(like(),env,valid)).status,404);
+ sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(id);
+ assert.equal((await handle(like(),env,async()=>Response.json({success:false}))).status,403);
+ for(let i=0;i<2;i++)assert.equal((await (await handle(like(),env,valid)).json()).likes,1);
+ assert.equal((await (await handle(like(true,'22222222-2222-4222-8222-222222222222'),env,valid)).json()).likes,2);
+ assert.equal((await (await handle(like(false),env,valid)).json()).likes,1);
+ assert.equal((await (await handle(like(false),env,valid)).json()).likes,1);
+ const result=await (await handle(new Request('https://example.test/messages'),env)).json();
+ assert.equal(result.messages[0].likes,1);assert.ok(!JSON.stringify(result).includes('visitor_hash'));
+ sqlite.close();
+});
+
+test('failed reply linking rolls back the pending message',async()=>{
+ const {sqlite,env}=fixture();const {id}=await (await handle(post(),env,valid)).json();
+ sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(id);
+ sqlite.exec("CREATE TRIGGER fail_reply BEFORE INSERT ON message_replies BEGIN SELECT RAISE(ABORT,'test failure'); END;");
+ await assert.rejects(()=>handle(post({...data,parent_id:id}),env,valid));
+ assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM messages').get().n,1);sqlite.close();
+});
+test('likes enforce their independent limit and reject a hidden reply thread',async()=>{
+ const {sqlite,env}=fixture();const {id}=await (await handle(post(),env,valid)).json();
+ sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(id);
+ const reply=await (await handle(post({...data,parent_id:id}),env,valid)).json();
+ sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(reply.id);
+ const like=()=>new Request(`https://example.test/messages/${reply.id}/like`,{method:'POST',headers:{Origin:'https://lufei-lee.github.io','Content-Type':'application/json','CF-Connecting-IP':'192.0.2.1'},body:JSON.stringify({token:'test',visitor_id:'11111111-1111-4111-8111-111111111111',liked:true})});
+ for(let i=0;i<30;i++)assert.equal((await handle(like(),env,valid)).status,200);
+ assert.equal((await handle(like(),env,valid)).status,429);
+ assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM message_likes').get().n,1);
+ sqlite.prepare("UPDATE messages SET status='rejected' WHERE id=?").run(id);
+ assert.equal((await handle(like(),env,valid)).status,404);sqlite.close();
 });

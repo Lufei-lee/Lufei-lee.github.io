@@ -71,17 +71,31 @@ export async function handle(request, env, verifyFetch = fetch, context) {
       'Vary':'Origin',
     }});
   }
-  if (path !== '/messages' && path !== '/health') return json({error:'not_found'}, 404);
+  const likeMatch = path.match(/^\/messages\/([a-f0-9-]{36})\/like$/i);
+  if (path !== '/messages' && path !== '/health' && !likeMatch) return json({error:'not_found'}, 404);
   if (!env.DB || !env.TURNSTILE_SECRET) return json({error:'service_unavailable'}, 503);
   if (path === '/health' && request.method === 'GET') {
     await env.DB.prepare('SELECT id FROM messages LIMIT 1').all();
-    return json({status:'ok', service:'lufei-guestbook', moderation:'required'});
+    return json({status:'ok', service:'lufei-guestbook', moderation:'required', features:['replies','likes']});
   }
   if (path === '/messages' && request.method === 'GET') {
-    const {results} = await env.DB.prepare("SELECT id, name, message, created_at, region FROM messages WHERE status = 'approved' ORDER BY created_at DESC, id DESC LIMIT 50").all();
-    return json({messages:results});
+    const {results} = await env.DB.prepare(`SELECT m.id, m.name, m.message, m.created_at, m.region,
+      (SELECT COUNT(*) FROM message_likes l WHERE l.message_id=m.id) AS likes
+      FROM messages m WHERE m.status='approved' AND NOT EXISTS
+      (SELECT 1 FROM message_replies r WHERE r.message_id=m.id)
+      ORDER BY m.created_at DESC, m.id DESC LIMIT 50`).all();
+    let replies = [];
+    if (results.length) {
+      const rows = await env.DB.prepare(`SELECT m.id, m.name, m.message, m.created_at, m.region, r.parent_id,
+        (SELECT COUNT(*) FROM message_likes l WHERE l.message_id=m.id) AS likes
+        FROM messages m JOIN message_replies r ON r.message_id=m.id
+        WHERE m.status='approved' AND r.parent_id IN (${results.map(()=>'?').join(',')})
+        ORDER BY m.created_at ASC, m.id ASC LIMIT 500`).bind(...results.map(m=>m.id)).all();
+      replies = rows.results;
+    }
+    return json({messages:results.map(m=>({...m,replies:replies.filter(r=>r.parent_id===m.id)}))});
   }
-  if (path !== '/messages' || request.method !== 'POST') return json({error:'method_not_allowed'}, 405);
+  if ((path !== '/messages' && !likeMatch) || request.method !== 'POST') return json({error:'method_not_allowed'}, 405);
   if (origin !== ORIGIN) return json({error:'origin_not_allowed'}, 403);
   if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) return json({error:'invalid_content_type'}, 415);
   let body;
@@ -91,7 +105,17 @@ export async function handle(request, env, verifyFetch = fetch, context) {
   if (body.name !== undefined && typeof body.name !== 'string') return json({error:'invalid_name'}, 400);
   const name = (body.name || '').trim();
   const message = typeof body.message === 'string' ? body.message.trim() : '';
-  if (name.length > 40 || !message || message.length > 2000) return json({error:'invalid_message'}, 400);
+  if (!likeMatch && (name.length > 40 || !message || message.length > 2000)) return json({error:'invalid_message'}, 400);
+  if (likeMatch && (typeof body.visitor_id !== 'string' || !/^[a-f0-9-]{36}$/i.test(body.visitor_id) || typeof body.liked !== 'boolean')) return json({error:'invalid_like'},400);
+  if (body.parent_id !== undefined && (typeof body.parent_id !== 'string' || !/^[a-f0-9-]{36}$/i.test(body.parent_id))) return json({error:'invalid_parent'},400);
+  const targetId = likeMatch?.[1] || body.parent_id;
+  if (targetId) {
+    const target = await env.DB.prepare(`SELECT m.id FROM messages m WHERE m.id=? AND m.status='approved'
+      AND (NOT EXISTS(SELECT 1 FROM message_replies r WHERE r.message_id=m.id) OR
+      EXISTS(SELECT 1 FROM message_replies r JOIN messages p ON p.id=r.parent_id WHERE r.message_id=m.id AND p.status='approved'))`).bind(targetId).first();
+    if (!target) return json({error:'target_unavailable'},404);
+    if (!likeMatch && await env.DB.prepare('SELECT message_id FROM message_replies WHERE message_id=?').bind(targetId).first()) return json({error:'invalid_parent'},400);
+  }
   if (typeof body.token !== 'string' || !body.token || body.token.length > 2048) return json({error:'verification_required'}, 400);
   const ip = request.headers.get('CF-Connecting-IP');
   if (!ip) return json({error:'service_unavailable'}, 503);
@@ -107,16 +131,26 @@ export async function handle(request, env, verifyFetch = fetch, context) {
   } catch { return json({error:'verification_unavailable'}, 503); }
   if (verification.success !== true || verification.hostname !== HOSTNAME || verification.action !== 'guestbook') return json({error:'verification_failed'}, 403);
   const now = Date.now(); const window = Math.floor(now / 600000);
-  const key = await fingerprint(ip, window, env.TURNSTILE_SECRET);
+  const key = await fingerprint(ip, `${likeMatch?'like':'post'}:${window}`, env.TURNSTILE_SECRET);
   // An atomic counter prevents parallel submissions from skipping the limit.
   // Only a keyed, short-lived fingerprint is retained; the raw IP is never stored.
   const rate = await env.DB.prepare('INSERT INTO rate_limits(fingerprint, count, expires_at) VALUES (?, 1, ?) ON CONFLICT(fingerprint) DO UPDATE SET count = count + 1 RETURNING count')
     .bind(key, (window + 1) * 600000).first();
   await env.DB.prepare('DELETE FROM rate_limits WHERE expires_at < ?').bind(now).run();
-  if (rate.count > 3) return json({error:'too_many_messages'}, 429);
+  if (rate.count > (likeMatch ? 30 : 3)) return json({error:'too_many_messages'}, 429);
+  if (likeMatch) {
+    const visitor = await fingerprint(body.visitor_id, 'like-visitor-v1', env.TURNSTILE_SECRET);
+    if (body.liked) await env.DB.prepare('INSERT OR IGNORE INTO message_likes(message_id, visitor_hash, created_at) VALUES (?,?,?)').bind(targetId,visitor,new Date(now).toISOString()).run();
+    else await env.DB.prepare('DELETE FROM message_likes WHERE message_id=? AND visitor_hash=?').bind(targetId,visitor).run();
+    const count = await env.DB.prepare('SELECT COUNT(*) AS likes FROM message_likes WHERE message_id=?').bind(targetId).first();
+    return json({id:targetId,liked:body.liked,likes:count.likes});
+  }
   const id = crypto.randomUUID();
-  await env.DB.prepare("INSERT INTO messages(id, name, message, created_at, region, status) VALUES (?, ?, ?, ?, ?, 'pending')")
-    .bind(id, name, message, new Date(now).toISOString(), regionLabel(request.cf)).run();
+  const insert = env.DB.prepare("INSERT INTO messages(id, name, message, created_at, region, status) VALUES (?, ?, ?, ?, ?, 'pending')")
+    .bind(id, name, message, new Date(now).toISOString(), regionLabel(request.cf));
+  // D1 batch is transactional: a reply can never become an orphaned root message.
+  if (body.parent_id) await env.DB.batch([insert,env.DB.prepare('INSERT INTO message_replies(message_id,parent_id) VALUES (?,?)').bind(id,body.parent_id)]);
+  else await insert.run();
   if (env.EMAIL && env.NOTIFY_FROM) {
     // Notification failure must not turn a saved message into a failed submission.
     const notification = notifyOwner(env, id).catch(() => console.error('guestbook_notification_failed', id));
