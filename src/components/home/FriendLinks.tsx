@@ -24,8 +24,8 @@ export default function FriendLinks() {
   const [copyStatus,setCopyStatus] = useState<'idle'|'copied'|'manual'>('idle');
   const [showInfo,setShowInfo] = useState(false);
   const siteInfo = JSON.stringify({
-    name: 'Lufei · Cosmology',
-    description: zh ? 'Lufei 的宇宙学研究主页：暗能量、宇宙大尺度结构、数值模拟与科学机器学习。' : "Lufei's academic homepage for cosmology, large-scale structure, and scientific computing.",
+    name: 'Lufei',
+    description: zh ? 'Lufei 的个人主页' : "Lufei's personal homepage",
     icon: 'https://lufei-lee.github.io/profile-cosmo-cat.png',
     url: 'https://lufei-lee.github.io/',
   }, null, 2);
