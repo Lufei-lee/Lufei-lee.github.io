@@ -17,7 +17,7 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
   const interestLinks = ['/cosmology/', '/dark-matter-dark-energy/', '/machine-learning/', '/finance/'];
 
   return (
-    <aside className="lg:sticky lg:top-6 lg:self-start">
+    <aside className="profile-card lg:sticky lg:top-6 lg:self-start">
       <div className="profile-image">
         <Image
           src={author.avatar}
@@ -30,13 +30,13 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
         <div className="profile-image-label">COSMOLOGY</div>
       </div>
 
-      <div className="mt-7 text-center">
+      <div className="profile-summary mt-7 text-center">
         <h2 className="font-serif text-4xl font-bold tracking-tight text-slate-900 dark:text-white">{author.name}</h2>
         <p className="mt-3 text-lg font-medium text-amber-600 dark:text-amber-300">{author.title}</p>
         <p className="mt-1 text-slate-500 dark:text-slate-400">{author.institution}</p>
       </div>
 
-      <div className="mt-6 flex justify-center gap-3">
+      <div className="profile-social mt-6 flex justify-center gap-3">
         {social.github && (
           <a className="profile-icon" href={social.github as string} target="_blank" rel="noreferrer" aria-label="GitHub">
             <Github className="h-5 w-5" />
@@ -48,12 +48,12 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
       </div>
 
       {researchInterests && researchInterests.length > 0 && (
-        <div className="interest-panel mt-7">
+        <div className="interest-panel mt-7 hidden lg:block">
           <h3>{locale === 'zh' ? '研究与探索' : 'Research & Exploration'}</h3>
           <ul>{researchInterests.map((interest, index) => <li key={interest}><a href={interestLinks[index] || '#research'}>{interest}</a></li>)}</ul>
         </div>
       )}
-      <address className="mt-6 space-y-2 break-words text-sm not-italic text-slate-600 dark:text-slate-300">
+      <address className="profile-contact mt-6 space-y-2 break-words text-sm not-italic text-slate-600 dark:text-slate-300">
         {typeof social.email === 'string' && <p><span>{locale === 'zh' ? '邮箱：' : 'Email: '}</span><a className="underline underline-offset-4" href={'mailto:'+social.email}>{social.email}</a></p>}
         {typeof social.qq === 'string' && <p>QQ: {social.qq}</p>}
       </address>

@@ -1,77 +1,142 @@
 import type { ArticleKey } from './articles';
 
-// Additional examples follow the existing explanation and its equation.
-// Section indexes match plain-language.ts; existing equation placements stay intact.
+// Concise additions only; empty entries avoid repeating the main explanation.
+// Section indexes stay aligned with plain-language.ts and maths.ts.
 export const explanations: Record<ArticleKey, [string, string][]> = {
-  cosmology: [
-    ['Looking farther into space also means looking further back in time. Sunlight takes about eight minutes to reach Earth; a galaxy whose light has travelled for billions of years appears as it was long ago. A deep image is therefore a collection of different chapters of cosmic history. To reconstruct the story, astronomers compare populations seen at different times rather than watch one galaxy age for billions of years.',
-     '望向远方，也是在回看过去。阳光到达地球要走约八分钟；一座星系的光如果已经旅行了几十亿年，我们看见的就是它几十亿年前的样子。所以，一张深空照片并不是所有天体“此刻”的合影，而是不同年代的片段。天文学家把不同时代的星系放在一起比较，像翻阅一组跨越岁月的照片，逐步拼出宇宙的成长过程。'],
-    ['For a concrete example, light emitted when the scale factor was half its present value reaches us with twice its original wavelength: its cosmological redshift is z = 1. This is a statement about the expansion between emission and reception, not a claim that every distance simply equals speed times travel time. While the light was travelling, the Universe kept changing.',
-     '举个具体例子：如果光发出时，宇宙的尺度因子只有今天的一半，那么这束光到达我们这里时，波长就被拉长为原来的两倍，对应红移 z = 1。可以把光的波峰想成画在橡皮带上的刻度，带子伸长，刻度之间也变远了。这里描述的是发光和收光之间的整体伸展；宇宙在光传播途中一直变化，因此遥远天体“现在有多远”不能简单用光速乘旅行时间代替。'],
-    ['The CMB is often called a baby picture, but it records a particular transition: light becoming able to travel freely through the cooling gas. It does not show the first instant of existence. Its tiny hot and cold patches are useful because they preserve the imprint of density variations and moving gas. Their angular sizes and relative strengths allow us to infer conditions in the early Universe.',
-     '把 CMB 叫作“宇宙婴儿照”很形象，不过这张照片拍到的是气体冷却后、光终于能够自由远行的时刻，并不是诞生的第一瞬间。图上的冷热斑点也不是已经成形的星系，而是早期密度起伏和气体运动等因素留下的印记。研究者会比较斑点在天空上有多大、不同大小的起伏有多强，就像从水面波纹推测水里发生过什么。'],
-    ['A useful way to follow structure is to compare a region with the cosmic average. If it contains 110 units of matter where the average is 100, its density contrast is 0.1. A small positive contrast can grow as gravity draws in more matter. Expansion meanwhile carries regions apart. The cosmic web emerges from this competition, with dark matter assembling much of the gravitational framework in which gas and galaxies gather.',
-     '理解“密度起伏”，可以先做一道简单算术：同样大小的一块空间，平均装着 100 份物质，这里却有 110 份，那么它的密度对比度就是 0.1。多出来的物质产生更强的吸引，继续拉来周围的物质；与此同时，宇宙膨胀又在拉开大尺度上的距离。宇宙网就是在这种竞争中逐渐长出来的。暗物质搭建了重要的引力骨架，气体汇聚、冷却，才有了我们能看见的恒星与星系。'],
-    ['Imagine two maps containing the same number of dots: one has dots scattered almost evenly, while the other groups them in knots and strings. Counting the dots alone misses the difference. Counting pairs at each separation reveals it. A power spectrum asks a related question in terms of spatial scales: how much of the pattern comes from broad variations, and how much from fine detail?',
-     '想象两张点的数量完全相同的地图：一张比较均匀，另一张却有成团的结点和细长的丝线。只数点的总量，无法区分它们；统计“相隔某个距离的点对有多少”，就能看出聚集的特点。功率谱则换了一个角度：这幅图中，宽广缓慢的起伏占多少，细碎的结构又占多少？它和相关函数是描述空间分布的两种互相联系的语言。'],
-    ['Suppose a box following the cosmic expansion doubles in length, width and height. Its volume grows eightfold, so the density of a fixed number of matter particles falls to one eighth. Radiation loses energy in another way too: its wavelengths stretch. This is why matter and radiation dilute differently. A cosmological constant behaves differently again, retaining a constant energy density as space expands.',
-     '为什么公式里会出现不同的尺度因子幂次？想象一个随宇宙膨胀的盒子，长、宽、高都变成两倍，体积便变为八倍。盒子里的物质数量不变，平均密度就降到八分之一。光还要额外损失一份能量，因为波长也被拉长了，所以辐射的能量密度下降得更快。宇宙学常数则有另一种特点：空间膨胀时，它的能量密度保持不变。这些不同的变化速度，让不同时代的宇宙由不同成分主导。'],
-    ['A familiar ruler looks shorter when viewed from farther away. BAO uses a statistical counterpart: a preferred separation between galaxies inherited from early sound waves. Measuring its apparent angular size and its extent in redshift helps reconstruct distances and expansion. It takes a large survey because the excess of galaxy pairs at this separation is subtle, buried in many other structures.',
-     '同一把尺子放得越远，看起来就越短。BAO 使用的是一把藏在统计分布里的“尺子”：早期声波留下一个偏好的间距，使得这个距离附近的星系对稍微多一些。测量它在天空上张开多大的角度，以及沿视线方向跨过多少红移，就能约束距离和膨胀过程。这个信号很弱，单看几座星系找不到它，需要在大规模巡天中统计大量星系对。'],
-    ['A simulation begins with small fluctuations, advances matter through many short time steps, and stores snapshots. Comparing snapshots shows how filaments and halos assemble. To compare the result with a telescope, researchers also imitate what the instrument can see: faint objects may be missed, distances may be uncertain, and part of the sky may be hidden. Matching the observing process makes the comparison far more informative.',
-     '一场模拟通常从微小的密度起伏开始，把漫长的宇宙历史切成许多个短步骤：先算物质受到的力，再更新速度和位置，反复向前推进，并保存沿途的“快照”。但模拟中什么都能看见，望远镜却有亮度门槛、测量误差和天空遮挡。因此，与真实数据比较之前，还要让模拟结果经过一架“虚拟望远镜”，使两边看到的是同一类对象。这样，差别才更可能来自物理模型，而不是观察方式。'],
+  "cosmology": [
+    [
+      "",
+      ""
+    ],
+    [
+      "Expansion continues while light is travelling. A distant object’s present distance therefore cannot be found simply by multiplying the speed of light by its travel time.",
+      "光在途中传播时，宇宙也一直在变化。因此，遥远天体“现在有多远”，不能简单用光速乘旅行时间代替。"
+    ],
+    [
+      "This “baby picture” does not show the first instant of the Universe, and its patches are not already formed galaxies. Their angular sizes and strengths carry clues about early density variations and gas motions.",
+      "这张“宇宙婴儿照”并非诞生第一瞬间的照片，冷热斑点也不是已经成形的星系。斑点在天空上的大小与强弱，保存了早期密度起伏和气体运动的线索。"
+    ],
+    [
+      "For example, if equal volumes contain 110 units of matter here and 100 on average, the density contrast is 0.1. Dark matter supplies much of the gravitational framework; gas gathers and cools within it to form stars and galaxies.",
+      "例如，同样大小的空间平均装着 100 份物质，这里却有 110 份，那么密度反差就是 0.1。暗物质搭建了重要的引力骨架，气体在其中汇聚、冷却，逐渐形成恒星与星系。"
+    ],
+    [
+      "Two maps can contain the same number of galaxies yet look very different: one nearly uniform, the other full of knots and filaments. These statistics reveal the arrangement that a simple count misses.",
+      "两张星图可以有同样多的星系，一张近乎均匀，另一张却布满结点和纤维。这些统计量关心的，正是单纯数星系时会遗漏的排列方式。"
+    ],
+    [
+      "Picture a box whose sides all double with cosmic expansion. Its volume grows eightfold, so the density of a fixed amount of matter falls to one eighth. This gives a concrete meaning to the a⁻³ factor.",
+      "想象一个随宇宙膨胀的盒子：长、宽、高都变成两倍，体积就变成八倍。盒子里的物质总量不变，平均密度便降到八分之一，这就是 a⁻³ 的直观含义。"
+    ],
+    [
+      "The ruler also has a line-of-sight direction. Its extent in redshift provides information about the expansion rate, complementing the distance inferred from its angular size.",
+      "这把尺子还有沿视线方向的一面：测量它跨过多少红移，可以获得膨胀速率的信息，与天空中角尺度给出的距离信息相互补充。"
+    ],
+    [
+      "Researchers save snapshots along the way. Comparing them reveals when filaments and halos assemble, rather than showing only the final pattern.",
+      "研究者会保存演化途中的“快照”。把它们连起来比较，就能追踪纤维与暗晕怎样逐步形成，而不只看到最后的一幅图。"
+    ]
   ],
-  'dark-sector': [
-    ['The word dark describes how we observe these components, not a shared substance. Dark matter can collect around galaxies and help build structures. Dark energy describes the component associated with late-time accelerated expansion in the standard model. One helps explain where matter gathers; the other helps explain how the overall expansion changes. Their similar names can hide this very different behaviour.',
-     '“暗”说的是我们还不能像观察恒星那样直接认出它们，并不表示两者是一种东西。暗物质会在星系周围聚集，参与搭建结构；暗能量则用来描述标准模型中与晚期加速膨胀有关的成分。前者帮助回答“物质为什么这样聚在一起”，后者帮助回答“整个宇宙为什么这样膨胀”。名字只差一个字，物理角色却很不一样。'],
-    ['The speed of an orbiting object is a clue to the mass keeping it on its path. In the simple spherical model, if orbital speed remains roughly constant farther out, the enclosed mass must keep increasing with radius. That is the significance of a flat rotation curve. The conclusion comes from comparing a measured motion with a gravitational model, then asking whether visible stars and gas supply enough mass.',
-     '轨道速度为什么能用来称重？可以想象一颗绕星系中心运动的恒星：要让它不断转弯，就需要引力。距离中心越远，如果速度依然差不多，就意味着维持这条轨道所需的内部总质量仍在增加。这就是“平坦旋转曲线”重要的地方。我们先用运动估计质量，再与恒星和气体能提供的质量对账，发现了那一份看不见的缺口。'],
-    ['A gravitational lens works because mass bends the paths of light arriving from objects behind it. The distorted background images reveal where the foreground mass is concentrated. Hot gas, on the other hand, is mapped through its X-ray emission. In a colliding cluster these two maps need not peak in the same place. Comparing them separates the location of much of the ordinary matter from the location inferred for the total mass.',
-     '这里还有一个很巧妙的测量办法：把更远处的星系当作背景图案，看它们的影像被前方星系团拉弯、拉长了多少，就能推断引力质量集中在哪里。这叫引力透镜。再用 X 射线找出炽热气体的位置，两张图放在一起，便能比较“普通物质主要在哪里”和“总引力质量主要在哪里”。碰撞把不同成分暂时分开，因此像一次天然的分离实验。'],
-    ['A light source with known intrinsic brightness gives a distance estimate from how faint it looks. Type Ia supernovae become useful after correcting their observed light curves and colours. Astronomers then compare those distances with redshifts. The important evidence is the pattern across many explosions: the distance–redshift relation differs from what a simple matter-only, decelerating history would predict.',
-     '如果知道一盏灯本来有多亮，就可以根据它看起来有多暗估计距离。Ia 型超新星并非每一颗亮度都完全相同，但可以通过亮度随时间的变化和颜色进行校正。接着，把距离与红移配对，就得到一组记录膨胀历史的数据。加速膨胀的证据来自许多超新星共同呈现的规律：它们的距离与只有物质、持续减速的简单宇宙模型所预期的不同。'],
-    ['Negative pressure sounds strange because everyday pressure usually pushes on the walls of a container. In cosmology, pressure is part of the energy and stress that enter the equations of gravity. A cosmological constant has w = −1, making its contribution to the cosmic acceleration different from that of ordinary matter. This does not mean a local wind is blowing galaxies away; it describes the evolution of the large-scale geometry.',
-     '“负压强”听上去有些反直觉，因为我们熟悉的是气体顶着容器壁。在宇宙学中，压强还会进入决定时空演化的引力方程，并不只是日常意义上的推力。宇宙学常数对应 w = −1，它对宇宙加速度的贡献与普通物质不同。这里不是说星系受到了某种向外吹的风，而是整个大尺度空间的演化规律发生了变化。'],
-    ['Different observations help untangle effects that look similar in one measurement. Changing the amount of matter and changing the expansion history can both alter a galaxy survey. Early-universe information from the CMB and distance measurements from supernovae restrict those possibilities in other ways. Agreement across these measurements is more compelling than a fit to a single curve.',
-     '多种观测放在一起，还能解开一些“看起来很像”的效应。例如，改变物质含量与改变膨胀历史，都可能让星系分布发生变化，只看一张星图很难分清原因。CMB 提供早期的信息，超新星提供距离的信息，便能从另外两个方向缩小范围。一个解释同时经得住这些测量，比只拟合好一条曲线更有说服力。'],
-    ['A black hole is dark too, but darkness alone is not enough to make it the answer. Any proposed population must account for the required mass while also matching lensing, cosmic history and other observations. This is why dark matter research compares candidate properties, not simply whether something is difficult to see. The question is which hidden component could produce the full pattern of evidence.',
-     '黑洞也很暗，但“看不见”并不足以说明它就是全部暗物质的答案。任何候选者都要交出完整的账本：总量是否够，分布是否合适，会不会产生已经被观测排除的透镜或其他信号？因此，寻找暗物质并不是把宇宙里所有暗的东西凑在一起，而是检验哪种成分能够同时解释那一整组证据。'],
-    ['A detector signal must be distinguished from ordinary backgrounds, such as radiation from its surroundings. Researchers therefore study shielding, detector response and the expected pattern of a possible event. A convincing discovery would connect a reproducible signal to the properties of a candidate. Meanwhile, better maps of the sky test how any such candidate would shape the Universe over time.',
-     '探测器里偶尔出现一次小信号，并不自动意味着发现了新粒子。周围材料的放射性、宇宙线等也可能留下记录，所以实验需要屏蔽背景、标定响应，再比较信号的能量和时间分布。真正有力的发现，应当能重复观察，并与候选粒子的性质联系起来。天空观测则继续检验：如果这样的粒子存在，它会让宇宙长成什么样？'],
+  "dark-sector": [
+    [
+      "",
+      ""
+    ],
+    [
+      "In this simple model, an approximately constant orbital speed means that the enclosed mass keeps increasing with radius. Comparing that inferred mass with visible stars and gas reveals the missing contribution.",
+      "在这个简单模型里，如果转速近似不变，半径以内的总质量就必须随半径继续增加。再与恒星和气体提供的质量对账，便能看出那一份缺口。"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "Negative pressure describes a contribution to the evolution of spacetime. It does not mean a local wind is pushing galaxies outwards.",
+      "这里的负压强描述的是时空演化中的一项贡献，并不意味着有一阵向外吹的风在推动星系。"
+    ],
+    [
+      "For example, changing the matter content and changing the expansion history can produce similar effects in one galaxy survey. CMB and supernova measurements help distinguish them by adding constraints from other directions.",
+      "例如，改变物质含量与改变膨胀历史，可能在一次星系巡天中留下相似影响。CMB 和超新星从其他方向提供约束，便能帮助分清原因。"
+    ],
+    [
+      "Black holes are dark too, but any proposed population must satisfy constraints on its abundance, distribution and lensing effects. Being difficult to see is only the starting point for a candidate.",
+      "黑洞也很暗，但任何候选群体都需要满足总量、分布和透镜效应等约束。“看不见”只是候选者的起点，还要看它能否解释整组证据。"
+    ],
+    [
+      "A small detector signal may also come from radioactive materials or cosmic rays. Shielding, calibration and comparisons of the recorded events help separate a possible new interaction from these backgrounds.",
+      "探测器里的小信号也可能来自材料放射性或宇宙线。实验需要屏蔽、标定，并比较记录下来的事件特征，才能把可能的新相互作用与背景区分开。"
+    ]
   ],
-  'machine-learning': [
-    ['A computer receives a picture as numbers: the brightness values of its pixels. The label supplies the answer for a training example. Once trained, the model receives a new array of numbers without the answer and produces a prediction. This simple separation between input and target is useful far beyond handwriting, including predicting a continuous quantity such as temperature rather than choosing a category.',
-     '对计算机来说，一张图片首先是一组数字：每个像素有多亮，就对应一个数。训练时，我们同时告诉它这张图的正确标签；真正使用时，只给图片，不再给答案，让它自己输出预测。这个“输入—目标”的关系并不限于认字。输出可以是一个类别，也可以是连续数值，例如根据观测数据估计温度。先弄清楚输入是什么、希望得到什么，任务就已经清楚了一大半。'],
-    ['For a tiny example, suppose a unit receives two numbers, 2 and 3, with weights 0.5 and −1 and a bias of 1. Its weighted sum is −1. An activation such as ReLU then replaces negative values with zero. A large network repeats calculations of this kind many times. Its apparent complexity comes from the number and arrangement of simple operations, not from an individual unit understanding the picture.',
-     '拿一个只有两个输入的小单元试算：输入是 2 和 3，权重分别为 0.5 和 −1，偏置为 1，加权后的结果就是 −1。如果再经过一种叫 ReLU 的激活函数，负数会被变成 0。大网络只是把这样的简单运算做很多次，并连接成不同层次。单个单元并不会“理解”图片，复杂的识别能力来自许多计算共同形成的映射。'],
-    ['Learning rate controls how far one update moves the weights. Imagine trying to reach the bottom of a valley: very large steps can jump across it, while tiny steps take a long time. The gradient gives a local direction for reducing the loss. Repeating this over batches of examples gradually changes the model, although the terrain is far more complicated than a single smooth valley.',
-     '学习率可以理解为每次改答案的步子有多大。像沿山坡往低处走，步子太大可能反复跨过谷底，太小又走得很慢。梯度告诉我们当前位置往哪个方向调整，损失会下降得更快。训练时通常不会看完所有样本才改一次，而是分成小批次，一边看例子一边更新。损失逐渐下降，说明模型正在更好地完成眼前的训练任务。'],
-    ['Keeping an exam set separate also means keeping related examples together. If nearly identical photographs of one object are split between training and testing, the test becomes too familiar. Likewise, quantities used to normalise the data should be estimated from training data alone. The goal is to reproduce the situation at prediction time, when the answer and the future observations are genuinely unavailable.',
-     '考试卷与练习题分开，不只是随机抽几行数据那么简单。同一个对象拍摄的几张近似照片，如果分别进了训练集和测试集，模型就可能靠记住这个对象取得高分。连把数据缩放到相近范围时用到的平均值，也应当只从训练数据估计。我们想模拟的，是模型真正面对新对象的那一刻，而不是让未来的信息提前混进练习。'],
-    ['Consider forecasts that each assign an 80% chance of rain. Across many comparable forecasts, rain should occur about eight times in ten if those probabilities are well calibrated. Accuracy and calibration answer different questions: whether the prediction is right, and whether its stated confidence is believable. Both matter when predictions are used to decide which observations deserve another look.',
-     '可以借天气预报理解“校准”：如果许多次预报都说下雨概率为 80%，在这些相近情形里，实际下雨的比例也应接近八成。判断得准不准，与它说自己有多大把握，是两件相关但不同的事。一个模型可能经常答对，却在出错时过分自信；另一个模型则能比较诚实地指出哪些样本拿不准。后者能帮助我们把有限的人工检查放到更需要的地方。'],
-    ["The idea of a learned surrogate also appears in my current dark-energy research. I use machine learning to accelerate the equivalent-parameter calculation needed to extend an existing cosmological emulator to more target models. One stage predicts the dark-energy parameter required for distance matching; the second predicts the amplitude correction. The existing emulator then evaluates the spectrum. The learned surrogate speeds up the mapping step rather than replacing the CSST emulator itself.", "“插值器替身”的思路，也和我目前的暗能量研究直接相关。我在这里刚好用到了机器学习的方法：为了让已有宇宙学插值器处理更多目标模型，先用两阶段模型快速预测等效参数——第一阶段处理距离匹配所需的暗能量参数，第二阶段处理振幅修正——再把结果交给已有插值器计算功率谱。这里学习的是拓展插值器所需的参数映射，加速的是原本反复积分和求根的步骤，CSST 插值器本身仍负责后续的功率谱预测。"],
-    ['Suppose only ten out of a thousand objects are the rare class we want. A model that always says “ordinary” is 99% accurate but finds none of them. Recall asks how many of the ten were recovered; precision asks how many flagged objects really belong to that class. Raising the detection threshold often changes that balance, so the useful threshold depends on what happens to the flagged candidates next.',
-     '假设一千个对象中，只有十个是我们想找的稀有目标。模型一律回答“普通对象”，准确率也有 99%，却一个目标都没找到。召回率关心那十个里找回了几个，精确率关心被它挑出来的对象里有多少是真的。把判定门槛调高，候选名单通常会变短、但也可能漏掉目标；把门槛放低，则可能增加后续检查的工作量。指标要和任务放在一起看，才有意义。'],
-    ['One practical way to investigate a model is to change an input while keeping other details as similar as possible. Does removing an irrelevant background alter its answer? Does performance survive a new instrument or observing site? Such checks help reveal shortcuts. Establishing cause and effect takes further assumptions or experiments; an accurate association is a starting clue, not the end of that investigation.',
-     '想知道模型究竟学到了什么，可以试着改变与任务无关的背景，看答案是否跟着变化；也可以换一台仪器、换一批观测对象，再看它是否仍然有效。如果一换背景就失灵，说明它可能走了捷径。预测相关性是发现线索的好工具，而追问因果，还需要更有针对性的实验与假设：究竟改变什么，才会真正改变结果？'],
+  "machine-learning": [
+    [
+      "The target need not be a category. It can also be a continuous quantity, such as temperature estimated from observations. Defining the input and the desired output is the first step in choosing a useful model.",
+      "目标也可以是连续数值，例如根据观测数据估计温度。先弄清楚输入是什么、希望得到什么，才容易选择合适的模型。"
+    ],
+    [
+      "Take inputs 2 and 3, weights 0.5 and −1, and a bias of 1. The weighted sum is −1; a ReLU activation turns it into zero. A network combines many such simple calculations.",
+      "拿一个小单元试算：输入为 2 和 3，权重为 0.5 和 −1，偏置为 1，加权结果就是 −1。再经过 ReLU 激活函数，负数会变成 0。网络把许多这样的简单计算连接起来。"
+    ],
+    [
+      "Training usually updates the parameters using small batches of examples. A falling training loss shows progress on those examples; performance on unseen data still needs a separate check.",
+      "训练时通常把样本分成小批次，边看例子边更新参数。训练损失下降，说明模型更好地完成了眼前的练习；面对新数据的表现，还需要另行检查。"
+    ],
+    [
+      "Even the mean and scale used to normalise inputs should be estimated from training data alone. Otherwise, information from the test set enters the preparation of the model before its final evaluation.",
+      "连数据归一化所用的均值和尺度，也应当只从训练数据估计。否则，测试集的信息就会提前参与模型准备，让最后的评估失去独立性。"
+    ],
+    [
+      "Accuracy and calibration answer different questions: whether a prediction is close to the answer, and whether its stated uncertainty is trustworthy. Checking both helps identify cases that need closer inspection.",
+      "预测误差与不确定性校准回答两个问题：答案离真实值多近，以及给出的把握有多可信。把两者一起检查，才能找出更值得仔细查看的样本。"
+    ],
+    [
+      "The idea of a learned surrogate also appears in my current dark-energy research. I use machine learning to accelerate the equivalent-parameter calculation needed to extend an existing cosmological emulator to more target models. One stage predicts the dark-energy parameter required for distance matching; the second predicts the amplitude correction. The existing emulator then evaluates the spectrum. The learned surrogate speeds up the mapping step rather than replacing the CSST emulator itself.",
+      "“插值器替身”的思路，也和我目前的暗能量研究直接相关。我在这里刚好用到了机器学习的方法：为了让已有宇宙学插值器处理更多目标模型，先用两阶段模型快速预测等效参数——第一阶段处理距离匹配所需的暗能量参数，第二阶段处理振幅修正——再把结果交给已有插值器计算功率谱。这里学习的是拓展插值器所需的参数映射，加速的是原本反复积分和求根的步骤，CSST 插值器本身仍负责后续的功率谱预测。"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
   ],
-  finance: [
-    ['Price and rights are worth separating. Two assets can both have a live price chart while offering very different claims: a share represents ownership in a company, whereas a token may serve a network function without conveying a claim on profits. Reading the underlying arrangement tells us what cash flows or services, if any, the holder can expect. A similar-looking chart does not make the economic substance identical.',
-     '先把“有价格”和“拥有什么权利”分开，会更容易理解市场。股票和代币都能画出行情曲线，但前者代表公司所有权的一部分，后者可能只承担某种网络功能，并不天然赋予利润分配权。买到的究竟是未来现金流的权利、某种服务的使用资格，还是主要依赖转售需求的资产，需要回到具体安排。相似的价格界面，背后可能是完全不同的经济关系。'],
-    ['Percentage changes use the current amount as their base. A fall from 100 to 50 is a 50% loss, but returning from 50 to 100 takes a 100% gain. Compounding also explains why a hypothetical steady 10% annual return would turn 100 into 121 after two years, not 120. Real returns vary; following the sequence of gains and losses makes the arithmetic much clearer than adding percentages.',
-     '百分比每次使用的底数不同，这是许多直觉误差的来源。从 100 跌到 50 是跌了 50%，从 50 回到 100 却需要涨 100%。同样，假设每年都获得 10% 的收益，100 两年后会变成 121，而不是 120，因为第二年的收益也作用在第一年赚到的钱上。真实市场的收益会变化，但理解这套复利算术，才能读懂一条资产曲线究竟经历了什么。'],
-    ['Owning several funds does not automatically create several independent exposures: their largest holdings may overlap. The portfolio formula captures another issue too, through covariance. If two assets tend to move together, combining them offers less smoothing than if their movements differ. Diversification changes the mix of risks; a broad market shock can still affect many holdings at once.',
-     '账户里有很多名字，不一定意味着真正分散了风险。几只基金可能重仓同一批公司，看似买了好几个篮子，里面装的却差不多。组合公式里的协方差，描述的就是资产是否经常一起涨跌：同步程度越高，互相平滑波动的作用通常越弱。分散化改变的是风险的组合方式，一场影响整个市场的冲击，仍可能同时传到许多资产。'],
-    ['For example, at an assumed discount rate of 5%, a certain payment of 105 one year from now has a present value of 100. With a 10% rate, the same payment is worth about 95.45 today in this calculation. Stock valuation is harder because future payments are uncertain and extend across many years. Small changes in assumptions can therefore produce large changes in an estimated value.',
-     '例如，假设折现率为 5%，一年后确定收到的 105 元，今天的折现值就是 100 元；如果折现率改成 10%，同样的 105 元折到今天约为 95.45 元。股票估值更难，因为未来现金流并不确定，还可能延伸很多年。于是，一条盈利预期或利率消息，即使看起来变化不大，也可能让估值发生明显变化。价格是一个数，支撑这个数的却是一整套对未来的判断。'],
-    ['Think of a transaction output as a spendable piece of the ledger, rather than a balance that is simply overwritten. If an output is larger than the payment, a transaction can create one output for the recipient and another as change, with a fee accounting for the difference. Every validating node checks the rules. Consensus then resolves which valid transaction history becomes the accepted chain.',
-     '可以把交易输出想成账本上可花费的一份金额。假如某个输出比本次支付金额大，交易就会生成给收款人的输出和给自己的找零，并把差额中的一部分留作手续费。节点逐笔检查花费是否符合规则，而共识机制负责让网络最终认可同一段交易历史。前者像核对每一张单据，后者像决定这些单据按什么顺序进入大家共同使用的账本。'],
-    ['A simple example is a rule based on a company’s annual results. Those results describe an earlier financial period but become usable only when they are published. A backtest that acts on them before publication has borrowed information from the future. Choosing the best result from hundreds of attempted rules causes another problem: some rules will look impressive by chance. A later period left untouched during development offers a more demanding comparison.',
-     '用财报做策略时，这一点尤其容易弄错：一份年报写的是上一年的经营情况，但投资者要等它公布之后才知道内容。回测如果在公布前就使用这些数字，相当于提前拿到了答案。还有一种更隐蔽的情况：反复试几百条规则，总会有几条碰巧在历史上很好看。因此，把一段较晚的行情留到规则确定之后再看，才更接近一次真正面对未知的尝试。'],
-    ['Suppose ten units are offered at 100 and another ten at 101. Buying twenty immediately would cost an average of 100.5 per unit before fees, even though the first displayed asking price was 100. That difference is easy to overlook on a chart. Market depth—the quantities available at different prices—connects a proposed trade with the execution price it can actually obtain.',
-     '例如，卖盘在 100 元处只有 10 份，在 101 元处还有 10 份。如果立刻买入 20 份，忽略手续费，平均成交价就是 100.5 元，虽然最初屏幕上看到的最低卖价是 100 元。这个差别在一条价格曲线上往往看不出来。不同价位有多少可交易数量，叫作市场深度，它把纸面上的交易想法与实际成交连接起来。'],
-    ['It helps to ask three separate questions: who can authorise a transfer, what claim the holder has against an issuer or custodian, and how that claim can be redeemed. These are not answered by the same mechanism. A blockchain may record a transfer correctly while a custodian or issuer encounters financial trouble. Following both the technical process and the legal or economic claim gives a much fuller picture of a digital asset.',
-     '理解数字资产时，可以沿着三个问题往下追：谁能授权转账？持有人对发行方或托管方究竟有什么请求权？这些权利通过什么渠道兑现？三者并不是同一个机制在保障。链上转账记录完全正确，并不代表托管机构经营良好，也不代表某种代币一定能够按承诺赎回。把技术流程和经济权利一起看，才不会只看见账本，而忽略了账本之外的人与机构。'],
-  ],
+  "finance": [
+    [
+      "",
+      ""
+    ],
+    [
+      "A fall from 100 to 50 is a 50% loss; returning from 50 to 100 requires a 100% gain. The percentage uses a different starting value each time.",
+      "从 100 跌到 50 是亏损 50%，从 50 回到 100 却需要上涨 100%。每次百分比使用的底数不同，这也是理解回撤时容易忽略的一点。"
+    ],
+    [
+      "Several funds may hold the same companies. Looking through to those holdings helps reveal exposures that their different names conceal.",
+      "几只基金可能重仓同一批公司。把持仓展开来看，才能发现不同名字背后重叠的风险。"
+    ],
+    [
+      "At an assumed discount rate of 5%, a certain payment of 105 one year from now is worth 100 today. At 10%, it is worth about 95.45. Valuing a stock adds the uncertainty of payments stretching across many years.",
+      "假设折现率为 5%，一年后确定收到的 105 元，今天的折现值就是 100 元；折现率改为 10%，则约为 95.45 元。股票的现金流还可能延伸多年，并带有不确定性，估值也就更依赖假设。"
+    ],
+    [
+      "Checking whether each transaction follows the rules and agreeing on a shared history are different tasks. The first resembles checking individual receipts; the second decides which history enters the common ledger.",
+      "检查每笔交易是否符合规则，与让网络认可同一段历史，是两个层次的任务。前者像核对单据，后者像确定哪些记录进入大家共同使用的账本。"
+    ],
+    [
+      "An annual report describes an earlier year but is usable only after publication. Acting on it earlier borrows information from the future. Trying hundreds of rules creates another trap: some will fit the past well by chance.",
+      "年报写的是上一年的经营情况，却要等公布后才能使用。回测如果提前采用这些数字，就相当于拿到了未来的答案。反复试几百条规则还有另一种陷阱：其中一些可能只是碰巧贴合历史。"
+    ],
+    [
+      "If ten units are offered at 100 and another ten at 101, buying twenty immediately costs an average of 100.5 before fees. Market depth—the quantity available at each price—explains the gap between the first quote and the actual trade.",
+      "例如，100 元处有 10 份卖单，101 元处还有 10 份。立刻买入 20 份，忽略手续费，平均成交价就是 100.5 元。各价位可交易的数量，也就是市场深度，解释了报价与成交之间的差别。"
+    ],
+    [
+      "A correct blockchain record does not establish that a custodian is financially sound or that an issuer can honour redemptions. The ledger and the institutions around it need to be understood together.",
+      "链上记录正确，并不代表托管机构经营良好，也不代表发行方能兑现赎回承诺。理解数字资产，还需要把账本之外的人与机构一起看进去。"
+    ]
+  ]
 };
