@@ -192,8 +192,6 @@ export default function Guestbook() {
    {loading&&status==='idle'&&<p role="status">{zh?'正在读取留言…':'Loading messages…'}</p>}
 
   </form>
-  {messages.length>0&&<p className="guestbook-notice">{zh?'留言时间均为北京时间（UTC+8），采用24小时制。':'All message times are in Beijing time (UTC+8), using the 24-hour clock.'}</p>}
-  <p className="guestbook-notice">{zh?'留言与回复均需审核后公开。点赞需完成人机验证，同一浏览器对每条留言可赞一次，再次点击可取消。':'Messages and replies appear after review. Likes require verification; each browser can like a message once and click again to undo.'}</p>
   {likeNotice&&<p role="status" className="guestbook-error">{likeNotice}</p>}
   <div className="guestbook-messages">{messages.map(m=>entry(m))}</div>
   {enabled&&messages.length===0&&status==='idle'&&!loading&&!loadError&&<p className="guestbook-notice">{zh?'这里还没有公开留言，欢迎留下第一句话。':'No public messages yet. Be the first to say hello.'}</p>}

@@ -43,6 +43,11 @@ interface HomePageClientProps {
 
 const zhihuArticles = [
   {
+    "zh": "电动力学",
+    "en": "Electrodynamics",
+    "url": "https://zhuanlan.zhihu.com/p/2098722128728159667"
+  },
+  {
     "zh": "分析力学",
     "en": "Analytical Mechanics",
     "url": "https://zhuanlan.zhihu.com/p/30058778439"
