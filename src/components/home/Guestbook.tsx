@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useLocaleStore } from '@/lib/stores/localeStore';
 import { formatGuestbookTime } from '@/lib/guestbookTime';
 
-type Message = {id:string; name:string; message:string; created_at:string; region:string; likes?:number; replies?:Message[]; replies_cursor?:string|null};
+type Message = {id:string; name:string; message:string; created_at:string; region:string; likes?:number; replies?:Message[]; replies_cursor?:string|null; reply_count?:number; reply_to_id?:string|null; reply_to_name?:string|null};
 const endpoint=process.env.NEXT_PUBLIC_GUESTBOOK_API?.replace(/\/$/,'');
 const enabled=Boolean(endpoint);
 const draftKey='lufei-guestbook-draft-v1';
@@ -88,12 +88,13 @@ function failureText(kind: Failure, zh: boolean) {
 export default function Guestbook() {
  const zh=useLocaleStore(s=>s.locale)==='zh';
  const [messages,setMessages]=useState<Message[]>([]);
- const [expandedReplies,setExpandedReplies]=useState<string[]>([]);
+ const [visibleReplies,setVisibleReplies]=useState<Record<string,number>>({});
+ const [repliesLoaded,setRepliesLoaded]=useState<string[]>([]);
  const [nextCursor,setNextCursor]=useState<string|null>(null);
  const [paging,setPaging]=useState<string|null>(null);
  const pageLock=useRef(false);
  const [pageNotice,setPageNotice]=useState('');
- const [status,setStatus]=useState<'idle'|'posting'|'pending'|'error'>('idle');
+ const [status,setStatus]=useState<'idle'|'posting'|'success'|'error'>('idle');
  const [loading,setLoading]=useState(Boolean(endpoint));
  const [loadError,setLoadError]=useState<Failure|null>(null);
  const [postError,setPostError]=useState<Failure|null>(null);
@@ -112,9 +113,8 @@ export default function Guestbook() {
    const data=await requestMessages({},signal,`/messages?thread=${encodeURIComponent(id)}`);
    if(signal.aborted)return;
    if(!Array.isArray(data.messages)||!data.messages.length){setPageNotice(zh?'该留言尚未公开或已移除。':'This message is not public or has been removed.');return;}
-   if(id!==data.messages[0].id)setExpandedReplies(current=>[...new Set([...current,data.messages[0].id])]);
    setMessages(current=>[...data.messages,...current.filter(m=>!data.messages.some((n:Message)=>n.id===m.id))]);
-   // The API includes a linked reply even when it is beyond the first page.
+   // Resolve a reply link to its original conversation, without expanding by default.
    window.setTimeout(()=>(document.getElementById('message-'+id)??document.getElementById('message-'+data.messages[0].id))?.scrollIntoView({block:'center',behavior:'smooth'}),100);
   }catch{setPageNotice(zh?'无法定位留言，请稍后重试。':'Could not locate the message. Please retry later.');}
  }
@@ -135,15 +135,24 @@ export default function Guestbook() {
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[]);
  async function loadMore(root?:Message) {
-  const cursor=root?.replies_cursor??nextCursor;
-  if(!cursor||pageLock.current)return;
+  if(pageLock.current)return;
+  if(root){
+   const visible=visibleReplies[root.id]??0;
+   if(visible+5<=(root.replies?.length??0)||(visible<(root.replies?.length??0)&&repliesLoaded.includes(root.id)&&!root.replies_cursor)){setVisibleReplies(current=>({...current,[root.id]:visible+5}));return;}
+   if(repliesLoaded.includes(root.id)&&!root.replies_cursor)return;
+  }else if(!nextCursor)return;
+  const cursor=root?root.replies_cursor:nextCursor;
+  const query=root?`parent_id=${root.id}`:'';
   pageLock.current=true;setPaging(root?.id??'root');setPageNotice('');
   try{
-   const data=await requestMessages({},undefined,`/messages?after=${encodeURIComponent(cursor)}${root?'&parent_id='+root.id:''}`);
+   const data=await requestMessages({},undefined,`/messages?${query}${cursor?(query?'&':'')+'after='+encodeURIComponent(cursor):''}`);
    if(!Array.isArray(data.messages))throw new GuestbookError('service');
    const append=(old:Message[])=>[...old,...data.messages.filter((m:Message)=>!old.some(n=>n.id===m.id))];
-   if(root)setMessages(current=>current.map(m=>m.id===root.id?{...m,replies:append(m.replies??[]),replies_cursor:data.next_cursor??null}:m));
-   else {setMessages(append);setNextCursor(data.next_cursor??null);}
+   if(root){
+    setMessages(current=>current.map(m=>m.id===root.id?{...m,replies:append(m.replies??[]),replies_cursor:data.next_cursor??null}:m));
+    setRepliesLoaded(current=>[...new Set([...current,root.id])]);
+    setVisibleReplies(current=>({...current,[root.id]:(current[root.id]??0)+5}));
+   }else {setMessages(append);setNextCursor(data.next_cursor??null);}
   }catch(e){setPageNotice(failureText(e instanceof GuestbookError?e.kind:'service',zh));}
   finally{pageLock.current=false;setPaging(null);}
  }
@@ -151,9 +160,12 @@ export default function Guestbook() {
   e.preventDefault();if(!enabled||status==='posting'||likeLock.current)return;
   setStatus('posting');setPostError(null);
   try {
-   const result=await requestMessages({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,message,...(parent?{parent_id:parent.id}:{})})});
-   if(result.status!=='pending'||typeof result.id!=='string')throw new GuestbookError('service');
-   saveDraft('','',null);setStatus('pending');setLoadError(null);
+   const result=await requestMessages({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_version:2,name,message,...(parent?{parent_id:parent.id}:{})})});
+   if(result.status!=='approved'||typeof result.id!=='string'||result.message?.id!==result.id)throw new GuestbookError('service');
+   if(result.root_id){
+    setMessages(current=>current.map(root=>root.id===result.root_id?{...root,reply_count:(root.reply_count??0)+1,replies:repliesLoaded.includes(root.id)?[{...result.message,reply_to_id:parent?.id,reply_to_name:parent?.name},...(root.replies??[])]:root.replies}:root));
+   }else setMessages(current=>[result.message,...current]);
+   saveDraft('','',null);setStatus('success');setLoadError(null);
   } catch(e) {setStatus('error');setPostError(e instanceof GuestbookError?e.kind:'service');}
  }
  function replyTo(m:Message) {
@@ -175,19 +187,21 @@ export default function Guestbook() {
   finally {likeLock.current=false;setLiking(null);}
  }
  function entry(m:Message,isReply=false) {
-  const expanded=expandedReplies.includes(m.id);
-  const replies=expanded?m.replies:m.replies?.slice(0,3);
-  const collapsible=(m.replies?.length??0)>3||!!m.replies_cursor;
+  const visible=visibleReplies[m.id]??0;
+  const replies=m.replies?.slice(0,visible)??[];
+  const total=m.reply_count??0;
+  const hasMore=total>visible&&(!repliesLoaded.includes(m.id)||(m.replies?.length??0)>visible||!!m.replies_cursor);
   return <article id={"message-"+m.id} key={m.id} style={{scrollMarginTop:120}} className={`guestbook-entry${isReply?' guestbook-reply':''}`}>
    <header><h3>{m.name||(zh?'一位访客':'A visitor')}</h3><time dateTime={m.created_at} title={zh?'北京时间（UTC+8）':'Beijing time (UTC+8)'}>{formatGuestbookTime(m.created_at)||(zh?'时间未知':'Time unavailable')}</time></header>
+   {isReply&&<small className="guestbook-reply-context">{zh?'回复：':'Replying to: '}{m.reply_to_name===null?(zh?'已隐藏或删除的留言':'A hidden or deleted message'):m.reply_to_name||(zh?'一位访客':'A visitor')}</small>}
    <p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region||(zh?'未知':'Unknown')}</small>
    <div className="guestbook-actions">
     <button type="button" aria-pressed={liked.includes(m.id)} disabled={!enabled||!!liking||status==='posting'} onClick={()=>likeMessage(m)}>{liking===m.id?(zh?'处理中…':'Saving…'):liked.includes(m.id)?(zh?'♥ 已赞':'♥ Liked'):(zh?'♡ 点赞':'♡ Like')} · {m.likes??0}</button>
-    {!isReply&&<button type="button" disabled={!enabled||status==='posting'} onClick={()=>replyTo(m)}>{zh?'回复':'Reply'}</button>}
+    <button type="button" disabled={!enabled||status==='posting'} onClick={()=>replyTo(m)}>{zh?'回复':'Reply'}{!isReply&&` · ${total}`}</button>
+    {!isReply&&hasMore&&<button type="button" disabled={!!paging||status==='posting'} aria-expanded={visible>0} aria-controls={'replies-'+m.id} onClick={()=>loadMore(m)}>{paging===m.id?(zh?'正在加载…':'Loading…'):visible?(zh?'再展开 5 条回复':'Show 5 more replies'):(zh?'展开回复':'Show replies')}</button>}
+    {!isReply&&visible>0&&<button type="button" aria-expanded={true} aria-controls={'replies-'+m.id} onClick={()=>setVisibleReplies(current=>({...current,[m.id]:0}))}>{zh?'收起回复':'Hide replies'}</button>}
    </div>
    {!isReply&&!!replies?.length&&<div id={'replies-'+m.id} className="guestbook-replies" aria-label={zh?'留言回复':'Replies'}>{replies.map(r=>entry(r,true))}</div>}
-   {!isReply&&collapsible&&<button type="button" className="guestbook-refresh" aria-expanded={expanded} aria-controls={'replies-'+m.id} onClick={()=>setExpandedReplies(current=>expanded?current.filter(id=>id!==m.id):[...current,m.id])}>{expanded?(zh?'收起回复':'Collapse replies'):(zh?'展开回复':'Expand replies')}</button>}
-   {!isReply&&expanded&&m.replies_cursor&&<button type="button" disabled={!!paging} onClick={()=>loadMore(m)}>{paging===m.id?(zh?'正在加载…':'Loading…'):(zh?'加载更多回复':'Load more replies')}</button>}
   </article>;
  }
  return <section id="guestbook" className="guestbook-section scroll-mt-28">
@@ -201,9 +215,9 @@ export default function Guestbook() {
    <div className="guestbook-count">{message.length} / 2000</div>
    <p className="guestbook-notice" role="status">{draftUnavailable?(zh?'浏览器暂时无法保存草稿，请先复制输入内容再手动刷新。':'Your browser could not save the draft. Copy your text before refreshing manually.'):(zh?'草稿保留在当前标签页，刷新后可恢复；提交成功后自动清除。':'Your draft stays in this tab across refreshes and is cleared after a successful submission.')}</p>
    <button className="guestbook-submit" type="submit" disabled={!enabled||!message.trim()||status==='posting'||!!liking}>{status==='posting'?(zh?'正在提交…':'Posting…'):parent?(zh?'提交回复':'Post reply'):(zh?'发布留言':'Post message')}</button>
-   <p role="status" aria-live="polite" className={postError&&status!=='pending'?'guestbook-error':undefined}>{postError&&status!=='pending'&&<span aria-hidden="true">✕ </span>}{status==='pending'?(zh?'已收到，审核后会显示在这里。谢谢你的留言！':'Received — your message will appear after review. Thank you!'):postError?failureText(postError,zh):''}</p>
-   {loadError&&status!=='posting'&&status!=='pending'&&!postError&&<p role="status" className="guestbook-error"><span aria-hidden="true">✕ </span>{loadError!=='network'&&(zh?'留言列表未能加载。':'Could not load messages. ')}{failureText(loadError,zh)}</p>}
-   {(loadError||postError==='network')&&status!=='posting'&&status!=='pending'&&<button type="button" className="guestbook-refresh" onClick={refreshPage}>{zh?'刷新网页':'Refresh page'}</button>}
+   <p role="status" aria-live="polite" className={postError&&status!=='success'?'guestbook-error':undefined}>{postError&&status!=='success'&&<span aria-hidden="true">✕ </span>}{status==='success'?(zh?'留言成功！谢谢你的留言！':'Message posted successfully! Thank you for your message!'):postError?failureText(postError,zh):''}</p>
+   {loadError&&status!=='posting'&&status!=='success'&&!postError&&<p role="status" className="guestbook-error"><span aria-hidden="true">✕ </span>{loadError!=='network'&&(zh?'留言列表未能加载。':'Could not load messages. ')}{failureText(loadError,zh)}</p>}
+   {(loadError||postError==='network')&&status!=='posting'&&status!=='success'&&<button type="button" className="guestbook-refresh" onClick={refreshPage}>{zh?'刷新网页':'Refresh page'}</button>}
    {loading&&status==='idle'&&<p role="status">{zh?'正在读取留言…':'Loading messages…'}</p>}
 
   </form>
