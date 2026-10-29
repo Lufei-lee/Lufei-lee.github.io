@@ -145,10 +145,6 @@ export default function Guestbook() {
   }catch(e){setPageNotice(failureText(e instanceof GuestbookError?e.kind:'service',zh));}
   finally{pageLock.current=false;setPaging(null);}
  }
- async function copyLink(id:string){
-  try{await navigator.clipboard.writeText(`${window.location.origin}/#message-${id}`);setPageNotice(zh?'留言链接已复制。':'Message link copied.');}
-  catch{setPageNotice(zh?'复制失败，可长按或右键复制留言链接。':'Copy failed. Use the message link context menu to copy it.');}
- }
  async function submit(e:React.FormEvent) {
   e.preventDefault();if(!enabled||status==='posting'||likeLock.current)return;
   setStatus('posting');setPostError(null);
@@ -182,7 +178,6 @@ export default function Guestbook() {
    <p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region||(zh?'未知':'Unknown')}</small>
    <div className="guestbook-actions">
     <button type="button" aria-pressed={liked.includes(m.id)} disabled={!enabled||!!liking||status==='posting'} onClick={()=>likeMessage(m)}>{liking===m.id?(zh?'处理中…':'Saving…'):liked.includes(m.id)?(zh?'♥ 已赞':'♥ Liked'):(zh?'♡ 点赞':'♡ Like')} · {m.likes??0}</button>
-    <a href={`#message-${m.id}`} onClick={e=>{e.preventDefault();void copyLink(m.id);}}>{zh?'复制链接':'Copy link'}</a>
     {!isReply&&<button type="button" disabled={!enabled||status==='posting'} onClick={()=>replyTo(m)}>{zh?'回复':'Reply'}</button>}
    </div>
    {!isReply&&!!m.replies?.length&&<div className="guestbook-replies" aria-label={zh?'留言回复':'Replies'}>{m.replies.map(r=>entry(r,true))}</div>}
