@@ -88,6 +88,7 @@ function failureText(kind: Failure, zh: boolean) {
 export default function Guestbook() {
  const zh=useLocaleStore(s=>s.locale)==='zh';
  const [messages,setMessages]=useState<Message[]>([]);
+ const [expandedReplies,setExpandedReplies]=useState<string[]>([]);
  const [nextCursor,setNextCursor]=useState<string|null>(null);
  const [paging,setPaging]=useState<string|null>(null);
  const pageLock=useRef(false);
@@ -111,6 +112,7 @@ export default function Guestbook() {
    const data=await requestMessages({},signal,`/messages?thread=${encodeURIComponent(id)}`);
    if(signal.aborted)return;
    if(!Array.isArray(data.messages)||!data.messages.length){setPageNotice(zh?'该留言尚未公开或已移除。':'This message is not public or has been removed.');return;}
+   if(id!==data.messages[0].id)setExpandedReplies(current=>[...new Set([...current,data.messages[0].id])]);
    setMessages(current=>[...data.messages,...current.filter(m=>!data.messages.some((n:Message)=>n.id===m.id))]);
    // The API includes a linked reply even when it is beyond the first page.
    window.setTimeout(()=>(document.getElementById('message-'+id)??document.getElementById('message-'+data.messages[0].id))?.scrollIntoView({block:'center',behavior:'smooth'}),100);
@@ -173,6 +175,9 @@ export default function Guestbook() {
   finally {likeLock.current=false;setLiking(null);}
  }
  function entry(m:Message,isReply=false) {
+  const expanded=expandedReplies.includes(m.id);
+  const replies=expanded?m.replies:m.replies?.slice(0,3);
+  const collapsible=(m.replies?.length??0)>3||!!m.replies_cursor;
   return <article id={"message-"+m.id} key={m.id} style={{scrollMarginTop:120}} className={`guestbook-entry${isReply?' guestbook-reply':''}`}>
    <header><h3>{m.name||(zh?'一位访客':'A visitor')}</h3><time dateTime={m.created_at} title={zh?'北京时间（UTC+8）':'Beijing time (UTC+8)'}>{formatGuestbookTime(m.created_at)||(zh?'时间未知':'Time unavailable')}</time></header>
    <p>{m.message}</p><small>{zh?'IP 属地：':'IP region: '}{m.region||(zh?'未知':'Unknown')}</small>
@@ -180,8 +185,9 @@ export default function Guestbook() {
     <button type="button" aria-pressed={liked.includes(m.id)} disabled={!enabled||!!liking||status==='posting'} onClick={()=>likeMessage(m)}>{liking===m.id?(zh?'处理中…':'Saving…'):liked.includes(m.id)?(zh?'♥ 已赞':'♥ Liked'):(zh?'♡ 点赞':'♡ Like')} · {m.likes??0}</button>
     {!isReply&&<button type="button" disabled={!enabled||status==='posting'} onClick={()=>replyTo(m)}>{zh?'回复':'Reply'}</button>}
    </div>
-   {!isReply&&!!m.replies?.length&&<div className="guestbook-replies" aria-label={zh?'留言回复':'Replies'}>{m.replies.map(r=>entry(r,true))}</div>}
-   {!isReply&&m.replies_cursor&&<button type="button" disabled={!!paging} onClick={()=>loadMore(m)}>{paging===m.id?(zh?'正在加载…':'Loading…'):(zh?'加载更多回复':'Load more replies')}</button>}
+   {!isReply&&!!replies?.length&&<div id={'replies-'+m.id} className="guestbook-replies" aria-label={zh?'留言回复':'Replies'}>{replies.map(r=>entry(r,true))}</div>}
+   {!isReply&&collapsible&&<button type="button" className="guestbook-refresh" aria-expanded={expanded} aria-controls={'replies-'+m.id} onClick={()=>setExpandedReplies(current=>expanded?current.filter(id=>id!==m.id):[...current,m.id])}>{expanded?(zh?'收起回复':'Collapse replies'):(zh?'展开回复':'Expand replies')}</button>}
+   {!isReply&&expanded&&m.replies_cursor&&<button type="button" disabled={!!paging} onClick={()=>loadMore(m)}>{paging===m.id?(zh?'正在加载…':'Loading…'):(zh?'加载更多回复':'Load more replies')}</button>}
   </article>;
  }
  return <section id="guestbook" className="guestbook-section scroll-mt-28">
