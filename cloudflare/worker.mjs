@@ -1,5 +1,4 @@
 const ORIGIN = 'https://lufei-lee.github.io';
-const HOSTNAME = 'lufei-lee.github.io';
 const MAX_BODY = 16384;
 
 function json(data, status = 200) {
@@ -57,7 +56,7 @@ export async function notifyOwner(env, id) {
   });
 }
 
-export async function handle(request, env, verifyFetch = fetch, context) {
+export async function handle(request, env, context) {
   const path = new URL(request.url).pathname;
   const origin = request.headers.get('Origin');
   if (origin && origin !== ORIGIN) return json({error:'origin_not_allowed'}, 403);
@@ -73,6 +72,7 @@ export async function handle(request, env, verifyFetch = fetch, context) {
   }
   const likeMatch = path.match(/^\/messages\/([a-f0-9-]{36})\/like$/i);
   if (path !== '/messages' && path !== '/health' && !likeMatch) return json({error:'not_found'}, 404);
+  // Retain the existing private key for HMAC continuity only; no CAPTCHA calls.
   if (!env.DB || !env.TURNSTILE_SECRET) return json({error:'service_unavailable'}, 503);
   if (path === '/health' && request.method === 'GET') {
     await env.DB.prepare('SELECT id FROM messages LIMIT 1').all();
@@ -116,20 +116,8 @@ export async function handle(request, env, verifyFetch = fetch, context) {
     if (!target) return json({error:'target_unavailable'},404);
     if (!likeMatch && await env.DB.prepare('SELECT message_id FROM message_replies WHERE message_id=?').bind(targetId).first()) return json({error:'invalid_parent'},400);
   }
-  if (typeof body.token !== 'string' || !body.token || body.token.length > 2048) return json({error:'verification_required'}, 400);
   const ip = request.headers.get('CF-Connecting-IP');
   if (!ip) return json({error:'service_unavailable'}, 503);
-  let verification;
-  try {
-    const response = await verifyFetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({secret:env.TURNSTILE_SECRET, response:body.token, remoteip:ip}),
-      signal:AbortSignal.timeout(8000),
-    });
-    if (!response.ok) throw new Error('verification_unavailable');
-    verification = await response.json();
-  } catch { return json({error:'verification_unavailable'}, 503); }
-  if (verification.success !== true || verification.hostname !== HOSTNAME || verification.action !== 'guestbook') return json({error:'verification_failed'}, 403);
   const now = Date.now(); const window = Math.floor(now / 600000);
   const key = await fingerprint(ip, `${likeMatch?'like':'post'}:${window}`, env.TURNSTILE_SECRET);
   // An atomic counter prevents parallel submissions from skipping the limit.
@@ -162,7 +150,7 @@ export async function handle(request, env, verifyFetch = fetch, context) {
 
 export default {
   async fetch(request, env, context) {
-    try { return await handle(request, env, fetch, context); }
+    try { return await handle(request, env, context); }
     catch { return json({error:'service_unavailable'}, 503); }
   },
 };
