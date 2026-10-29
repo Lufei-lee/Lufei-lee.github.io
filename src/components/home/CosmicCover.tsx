@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import Image from '@/components/ui/ResponsiveImage';
 import { usePathname } from 'next/navigation';
 
 export default function CosmicCover() {

@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import Image from '@/components/ui/ResponsiveImage';
 import { Github, Orbit } from 'lucide-react';
 import type { SiteConfig } from '@/lib/config';
 import { useLocaleStore } from '@/lib/stores/localeStore';
@@ -22,6 +22,7 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
         <Image
           src={author.avatar}
           alt={locale === 'zh' ? '宇宙学书桌旁的橘白猫头像' : 'An orange and white cat at a cosmology desk'}
+          sizes="(max-width: 640px) 160px, 320px"
           width={640}
           height={640}
           className="h-full w-full object-cover object-center"

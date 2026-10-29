@@ -1,3 +1,5 @@
+import { pageMetadata } from '@/lib/pageMetadata';
+export const metadata = pageMetadata('/');
 import { getConfig } from '@/lib/config';
 import { getMarkdownContent, getBibtexContent, getTomlContent, getPageConfig } from '@/lib/content';
 import { parseBibTeX } from '@/lib/bibtexParser';

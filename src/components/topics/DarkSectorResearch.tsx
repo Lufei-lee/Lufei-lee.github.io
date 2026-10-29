@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/ui/ResponsiveImage';
 import katex from 'katex';
 import ResearchProse from './ResearchProse';
 import { researchCopy } from './research-copy';

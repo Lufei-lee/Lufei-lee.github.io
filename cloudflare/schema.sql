@@ -27,3 +27,5 @@ CREATE TABLE IF NOT EXISTS message_likes (
  created_at TEXT NOT NULL,
  PRIMARY KEY(message_id, visitor_hash)
 );
+
+CREATE TABLE IF NOT EXISTS daily_visitors (day TEXT NOT NULL, visitor_hash TEXT NOT NULL, PRIMARY KEY(day, visitor_hash));

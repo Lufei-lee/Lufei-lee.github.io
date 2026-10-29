@@ -1,0 +1,166 @@
+{
+  "/carina-nebula.png": {
+    "width": 2000,
+    "height": 1158,
+    "variants": [
+      {
+        "src": "/optimized/carina-nebula-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/carina-nebula-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/carina-nebula-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/profile-cosmo-cat.png": {
+    "width": 1254,
+    "height": 1254,
+    "variants": [
+      {
+        "src": "/optimized/profile-cosmo-cat-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/profile-cosmo-cat-800.webp",
+        "width": 800
+      }
+    ]
+  },
+  "/topics/wmap-timeline.jpg": {
+    "width": 8280,
+    "height": 5960,
+    "variants": [
+      {
+        "src": "/optimized/wmap-timeline-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/wmap-timeline-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/wmap-timeline-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/topics/wmap-cmb.png": {
+    "width": 4096,
+    "height": 2048,
+    "variants": [
+      {
+        "src": "/optimized/wmap-cmb-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/wmap-cmb-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/wmap-cmb-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/topics/large-scale-structure-illustris.webp": {
+    "width": 2000,
+    "height": 2000,
+    "variants": [
+      {
+        "src": "/optimized/large-scale-structure-illustris-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/large-scale-structure-illustris-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/large-scale-structure-illustris-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/topics/dark-matter-dark-energy.webp": {
+    "width": 2000,
+    "height": 839,
+    "variants": [
+      {
+        "src": "/optimized/dark-matter-dark-energy-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/dark-matter-dark-energy-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/dark-matter-dark-energy-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/topics/pandax-20t.png": {
+    "width": 1280,
+    "height": 642,
+    "variants": [
+      {
+        "src": "/optimized/pandax-20t-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/pandax-20t-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/pandax-20t-1280.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "/topics/dark-energy-equivalent-models.png": {
+    "width": 1132,
+    "height": 934,
+    "variants": [
+      {
+        "src": "/optimized/dark-energy-equivalent-models-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/dark-energy-equivalent-models-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/optimized/dark-energy-equivalent-models-1132.webp",
+        "width": 1132
+      }
+    ]
+  },
+  "/topics/mnist.png": {
+    "width": 594,
+    "height": 361,
+    "variants": [
+      {
+        "src": "/optimized/mnist-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/mnist-594.webp",
+        "width": 594
+      }
+    ]
+  },
+  "/topics/efficient-frontier.jpg": {
+    "width": 434,
+    "height": 239,
+    "variants": [
+      {
+        "src": "/optimized/efficient-frontier-434.webp",
+        "width": 434
+      }
+    ]
+  }
+}

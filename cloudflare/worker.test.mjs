@@ -69,7 +69,7 @@ test('valid input persists privately; approval makes only public fields visible'
   assert.equal(publicData.messages.length,0);
   sqlite.prepare("UPDATE messages SET status='approved' WHERE id=?").run(id);
   publicData = await (await handle(new Request('https://example.test/messages'),env)).json();
-  assert.deepEqual(Object.keys(publicData.messages[0]).sort(),['id','name','message','created_at','region','likes','replies'].sort());
+  assert.deepEqual(Object.keys(publicData.messages[0]).sort(),['id','name','message','created_at','region','likes','replies','replies_cursor'].sort());
   assert.ok(!JSON.stringify(publicData).includes('192.0.2.1'));
   sqlite.close();
 });
@@ -156,4 +156,42 @@ test('likes enforce their independent limit and reject a hidden reply thread',as
  assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM message_likes').get().n,1);
  sqlite.prepare("UPDATE messages SET status='rejected' WHERE id=?").run(id);
  assert.equal((await handle(like(),env)).status,404);sqlite.close();
+});
+
+test('keyset pagination includes every root and reply once, including equal timestamps',async()=>{
+ const {sqlite,env}=fixture();
+ const insert=sqlite.prepare("INSERT INTO messages VALUES (?,?,?,?,?,'approved')");
+ const ids=Array.from({length:45},()=>crypto.randomUUID()).sort();
+ for(const id of ids)insert.run(id,'name','text','2026-10-29T01:00:00.000Z','');
+ const seen=[];let cursor=null;
+ do{
+  const data=await (await handle(new Request('https://example.test/messages'+(cursor?'?after='+encodeURIComponent(cursor):'')),env)).json();
+  seen.push(...data.messages.map(m=>m.id));cursor=data.next_cursor;
+ }while(cursor);
+ assert.deepEqual(seen,[...ids].reverse());
+ const parent=ids[0], replies=Array.from({length:44},()=>crypto.randomUUID()).sort();
+ for(const id of replies){insert.run(id,'reply','text','2026-10-29T02:00:00.000Z','');sqlite.prepare('INSERT INTO message_replies VALUES (?,?)').run(id,parent);}
+ const root=await (await handle(new Request('https://example.test/messages?thread='+parent),env)).json();
+ const replyIds=root.messages[0].replies.map(m=>m.id);cursor=root.messages[0].replies_cursor;
+ do{const d=await (await handle(new Request('https://example.test/messages?parent_id='+parent+'&after='+encodeURIComponent(cursor)),env)).json();replyIds.push(...d.messages.map(m=>m.id));cursor=d.next_cursor;}while(cursor);
+ assert.deepEqual(replyIds,replies);
+ const deep=await (await handle(new Request('https://example.test/messages?thread='+replies.at(-1)),env)).json();
+ assert.ok(deep.messages[0].replies.some(r=>r.id===replies.at(-1)));
+ sqlite.prepare("UPDATE messages SET status='pending' WHERE id=?").run(parent);
+ assert.equal((await (await handle(new Request('https://example.test/messages?parent_id='+parent),env)).json()).messages.length,0);
+ assert.equal((await handle(new Request('https://example.test/messages?after=bad'),env)).status,400);
+ sqlite.close();
+});
+test('daily UV deduplicates refreshes and changes day at Beijing midnight; no public stats',async(t)=>{
+ const {sqlite,env}=fixture();const id=crypto.randomUUID();
+ let now=Date.parse('2026-10-29T15:59:00Z');t.mock.method(Date,'now',()=>now);
+ const visit=()=>new Request('https://example.test/visits',{method:'POST',headers:{Origin:'https://lufei-lee.github.io','Content-Type':'application/json','CF-Connecting-IP':'192.0.2.8'},body:JSON.stringify({visitor_id:id})});
+ for(let i=0;i<5;i++)assert.equal((await handle(visit(),env)).status,200);
+ assert.equal(sqlite.prepare('SELECT COUNT(*) n FROM daily_visitors').get().n,1);
+ now=Date.parse('2026-10-29T16:00:00Z');await handle(visit(),env);
+ const rows=sqlite.prepare('SELECT * FROM daily_visitors ORDER BY day').all();
+ assert.deepEqual(rows.map(r=>r.day),['2026-10-29','2026-10-30']);
+ assert.notEqual(rows[0].visitor_hash,rows[1].visitor_hash);assert.ok(!JSON.stringify(rows).includes(id));
+ assert.equal((await handle(new Request('https://example.test/visits'),env)).status,405);
+ sqlite.close();
 });

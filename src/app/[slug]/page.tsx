@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/pageMetadata';
 import { notFound } from 'next/navigation';
 import { getPageConfig, getMarkdownContent, getBibtexContent } from '@/lib/content';
 import { getConfig } from '@/lib/config';
@@ -67,10 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {};
   }
 
-  return {
-    title: pageConfig.title,
-    description: pageConfig.description,
-  };
+  return pageMetadata(`/${slug}/`, {title:pageConfig.title,description:pageConfig.description});
 }
 
 export default async function DynamicPage({ params }: { params: Promise<{ slug: string }> }) {

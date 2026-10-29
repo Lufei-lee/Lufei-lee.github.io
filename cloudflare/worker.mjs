@@ -57,7 +57,8 @@ export async function notifyOwner(env, id) {
 }
 
 export async function handle(request, env, context) {
-  const path = new URL(request.url).pathname;
+  const url = new URL(request.url);
+  const path = url.pathname;
   const origin = request.headers.get('Origin');
   if (origin && origin !== ORIGIN) return json({error:'origin_not_allowed'}, 403);
   if (request.method === 'OPTIONS') {
@@ -71,29 +72,68 @@ export async function handle(request, env, context) {
     }});
   }
   const likeMatch = path.match(/^\/messages\/([a-f0-9-]{36})\/like$/i);
-  if (path !== '/messages' && path !== '/health' && !likeMatch) return json({error:'not_found'}, 404);
+  if (path !== '/messages' && path !== '/health' && path !== '/visits' && !likeMatch) return json({error:'not_found'}, 404);
   // Retain the existing private key for HMAC continuity only; no CAPTCHA calls.
   if (!env.DB || !env.TURNSTILE_SECRET) return json({error:'service_unavailable'}, 503);
   if (path === '/health' && request.method === 'GET') {
     await env.DB.prepare('SELECT id FROM messages LIMIT 1').all();
     return json({status:'ok', service:'lufei-guestbook', moderation:'required', features:['replies','likes']});
   }
+  if (path === '/visits' && request.method === 'POST') {
+    if (origin !== ORIGIN) return json({error:'origin_not_allowed'},403);
+    if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) return json({error:'invalid_content_type'},415);
+    let body; try {body=await readBody(request);} catch {return json({error:'invalid_body'},400);}
+    if (!/^[a-f0-9-]{36}$/i.test(body?.visitor_id||'')) return json({error:'invalid_visitor'},400);
+    const ip=request.headers.get('CF-Connecting-IP');
+    if(!ip)return json({error:'service_unavailable'},503);
+    const now=Date.now(), bucket=Math.floor(now/600000);
+    const key=await fingerprint(ip,`uv-rate:${bucket}`,env.TURNSTILE_SECRET);
+    const rate=await env.DB.prepare('INSERT INTO rate_limits(fingerprint,count,expires_at) VALUES (?,1,?) ON CONFLICT(fingerprint) DO UPDATE SET count=count+1 RETURNING count').bind(key,(bucket+1)*600000).first();
+    await env.DB.prepare('DELETE FROM rate_limits WHERE expires_at < ?').bind(now).run();
+    if(rate.count>120)return json({error:'rate_limited'},429);
+    const day=new Date(now+8*3600000).toISOString().slice(0,10);
+    const visitor=await fingerprint(body.visitor_id,`daily-uv:${day}`,env.TURNSTILE_SECRET);
+    await env.DB.prepare('INSERT OR IGNORE INTO daily_visitors(day,visitor_hash) VALUES (?,?)').bind(day,visitor).run();
+    return json({status:'ok'});
+  }
   if (path === '/messages' && request.method === 'GET') {
-    const {results} = await env.DB.prepare(`SELECT m.id, m.name, m.message, m.created_at, m.region,
-      (SELECT COUNT(*) FROM message_likes l WHERE l.message_id=m.id) AS likes
-      FROM messages m WHERE m.status='approved' AND NOT EXISTS
-      (SELECT 1 FROM message_replies r WHERE r.message_id=m.id)
-      ORDER BY m.created_at DESC, m.id DESC LIMIT 50`).all();
-    let replies = [];
-    if (results.length) {
-      const rows = await env.DB.prepare(`SELECT m.id, m.name, m.message, m.created_at, m.region, r.parent_id,
-        (SELECT COUNT(*) FROM message_likes l WHERE l.message_id=m.id) AS likes
-        FROM messages m JOIN message_replies r ON r.message_id=m.id
-        WHERE m.status='approved' AND r.parent_id IN (${results.map(()=>'?').join(',')})
-        ORDER BY m.created_at ASC, m.id ASC LIMIT 500`).bind(...results.map(m=>m.id)).all();
-      replies = rows.results;
+    const parent=url.searchParams.get('parent_id');
+    const thread=url.searchParams.get('thread');
+    const validId=id=>/^[a-f0-9-]{36}$/i.test(id);
+    if ((parent&&!validId(parent))||(thread&&!validId(thread)))return json({error:'invalid_cursor'},400);
+    let cursor;
+    try {cursor=url.searchParams.has('after')?JSON.parse(url.searchParams.get('after')):null;} catch {return json({error:'invalid_cursor'},400);}
+    if(cursor&&(!Array.isArray(cursor)||cursor.length!==2||typeof cursor[0]!=='string'||!/^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/.test(cursor[0])||!validId(cursor[1])))return json({error:'invalid_cursor'},400);
+    const fields=`m.id,m.name,m.message,m.created_at,m.region,(SELECT COUNT(*) FROM message_likes l WHERE l.message_id=m.id) AS likes`;
+    const encode=rows=>rows.length>20?JSON.stringify([rows[19].created_at,rows[19].id]):null;
+    if(parent){
+      const args=[parent];
+      if(cursor)args.push(cursor[0],cursor[0],cursor[1]);
+      const {results}=await env.DB.prepare(`SELECT ${fields} FROM messages m JOIN message_replies r ON r.message_id=m.id
+       JOIN messages p ON p.id=r.parent_id WHERE r.parent_id=? AND m.status='approved' AND p.status='approved'
+       ${cursor?'AND (m.created_at>? OR (m.created_at=? AND m.id>?))':''}
+       ORDER BY m.created_at ASC,m.id ASC LIMIT 21`).bind(...args).all();
+      return json({messages:results.slice(0,20),next_cursor:encode(results)});
     }
-    return json({messages:results.map(m=>({...m,replies:replies.filter(r=>r.parent_id===m.id)}))});
+    if(thread&&!await env.DB.prepare("SELECT id FROM messages WHERE id=? AND status='approved'").bind(thread).first())return json({error:'target_unavailable'},404);
+    const args=[];let filter='';
+    if(thread){filter='AND m.id=COALESCE((SELECT parent_id FROM message_replies WHERE message_id=?),?)';args.push(thread,thread);}
+    else if(cursor){filter='AND (m.created_at<? OR (m.created_at=? AND m.id<?))';args.push(cursor[0],cursor[0],cursor[1]);}
+    const {results}=await env.DB.prepare(`SELECT ${fields} FROM messages m WHERE m.status='approved' AND NOT EXISTS
+      (SELECT 1 FROM message_replies r WHERE r.message_id=m.id) ${filter}
+      ORDER BY m.created_at DESC,m.id DESC LIMIT 21`).bind(...args).all();
+    const roots=results.slice(0,20);
+    const messages=await Promise.all(roots.map(async m=>{
+      const {results:replies}=await env.DB.prepare(`SELECT ${fields} FROM messages m JOIN message_replies r ON r.message_id=m.id
+       WHERE m.status='approved' AND r.parent_id=? ORDER BY m.created_at ASC,m.id ASC LIMIT 21`).bind(m.id).all();
+      const visible=replies.slice(0,20);
+      if(thread&&thread!==m.id&&!visible.some(r=>r.id===thread)){
+        const target=await env.DB.prepare(`SELECT ${fields} FROM messages m JOIN message_replies r ON r.message_id=m.id WHERE m.id=? AND r.parent_id=? AND m.status='approved'`).bind(thread,m.id).first();
+        if(target)visible.push(target);
+      }
+      return {...m,replies:visible,replies_cursor:encode(replies)};
+    }));
+    return json({messages,next_cursor:thread?null:encode(results)});
   }
   if ((path !== '/messages' && !likeMatch) || request.method !== 'POST') return json({error:'method_not_allowed'}, 405);
   if (origin !== ORIGIN) return json({error:'origin_not_allowed'}, 403);

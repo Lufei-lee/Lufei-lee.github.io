@@ -3,7 +3,7 @@
 import Profile from '@/components/home/Profile';
 import Guestbook from '@/components/home/Guestbook';
 import FriendLinks from '@/components/home/FriendLinks';
-import Image from 'next/image';
+import Image from '@/components/ui/ResponsiveImage';
 import type { SiteConfig } from '@/lib/config';
 import type { Publication } from '@/types/publication';
 import type { CardPageConfig, PublicationPageConfig, TextPageConfig } from '@/types/page';

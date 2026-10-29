@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+import Image from '@/components/ui/ResponsiveImage';
 import { Fragment } from 'react';
 import Link from 'next/link';
 import katex from 'katex';
