@@ -43,11 +43,6 @@ interface HomePageClientProps {
 
 const zhihuArticles = [
   {
-    "zh": "电动力学",
-    "en": "Electrodynamics",
-    "url": "https://zhuanlan.zhihu.com/p/2098722128728159667"
-  },
-  {
     "zh": "分析力学",
     "en": "Analytical Mechanics",
     "url": "https://zhuanlan.zhihu.com/p/30058778439"
@@ -76,6 +71,16 @@ const zhihuArticles = [
     "zh": "热力学与统计物理习题及解答",
     "en": "Thermodynamics and Statistical Physics: Problems and Solutions",
     "url": "https://zhuanlan.zhihu.com/p/1916452006551352790"
+  },
+  {
+    "zh": "电动力学（一）",
+    "en": "Electrodynamics I",
+    "url": "https://zhuanlan.zhihu.com/p/2098722128728159667"
+  },
+  {
+    "zh": "电动力学（二）",
+    "en": "Electrodynamics II",
+    "url": "https://zhuanlan.zhihu.com/p/2099170063014277511"
   }
 ];
 
