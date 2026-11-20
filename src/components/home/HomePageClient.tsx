@@ -81,6 +81,21 @@ const zhihuArticles = [
     "zh": "电动力学（二）",
     "en": "Electrodynamics II",
     "url": "https://zhuanlan.zhihu.com/p/2099170063014277511"
+  },
+  {
+    "zh": "量子力学（一）",
+    "en": "Quantum Mechanics I",
+    "url": "https://zhuanlan.zhihu.com/p/2100730043785918096"
+  },
+  {
+    "zh": "量子力学（二）",
+    "en": "Quantum Mechanics II",
+    "url": "https://zhuanlan.zhihu.com/p/2100870818431492450"
+  },
+  {
+    "zh": "量子力学（三）",
+    "en": "Quantum Mechanics III",
+    "url": "https://zhuanlan.zhihu.com/p/2101656028895093640"
   }
 ];
 
